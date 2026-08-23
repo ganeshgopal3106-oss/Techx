@@ -21,7 +21,7 @@ export const Hero: React.FC = () => {
           </div>
 
           <div className="hero-actions">
-            <a href="/register" className="btn btn-primary">Register Pass</a>
+            <a href="/register" className="btn btn-primary">Claim Your Spot</a>
             <a href="#about" className="btn btn-secondary">Explore Vision</a>
           </div>
         </div>
