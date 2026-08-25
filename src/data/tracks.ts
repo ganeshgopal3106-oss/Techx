@@ -9,35 +9,35 @@ export interface Track {
 
 export const tracksData: Track[] = [
   {
-    id: "iot-building",
+    id: "tech-workshops",
     num: "01",
-    name: "IoT Building",
-    description: "Master firmware deployment, sensor configurations, and embedded systems to construct physical prototypes.",
-    badge: "HANDS-ON OFFLINE WORKSHOP",
-    actionLink: "#join"
+    name: "Hands-on Workshops",
+    description: "Hands-on workshops will be organized as two tracks and held offline.",
+    badge: "TECH / OFFLINE SPRINT",
+    actionLink: "/register"
   },
   {
-    id: "llm-building",
+    id: "tech-talks",
     num: "02",
-    name: "LLM Building",
-    description: "Build custom large language models, execute model fine-tuning, and design specialized agentic systems.",
-    badge: "HANDS-ON OFFLINE WORKSHOP",
-    actionLink: "#join"
+    name: "Talk Sessions",
+    description: "Interactive talk sessions on interdisciplinary topics including Advanced Driver Assistance Systems (ADAS) and AI in Healthcare.",
+    badge: "TECH / INTERDISCIPLINARY TALKS",
+    actionLink: "/register"
   },
   {
-    id: "adas-genetech",
+    id: "train-softskills",
     num: "03",
-    name: "ADAS & Genetech",
-    description: "Dive into Advanced Driver Assistance Systems (ADAS) and explore how computational biology scales through Gene Computing.",
-    badge: "INTERDISCIPLINARY TALK SESSIONS",
-    actionLink: "#join"
+    name: "Soft Skills",
+    description: "Interactive sessions on soft skills and effective communication to aid the placement process of students.",
+    badge: "TRAIN / CAREER PLACEMENT SESSIONS",
+    actionLink: "/register"
   },
   {
-    id: "placement-mentor",
+    id: "train-mentoring",
     num: "04",
-    name: "Placement & Mentor",
-    description: "Engage in interactive self-leadership, resume building, and get personalized mentoring directly from industry professionals.",
-    badge: "CAREER LAUNCHPAD & PERSONALIZED GUIDANCE",
-    actionLink: "#join"
+    name: "Nano-Mentoring",
+    description: "A mentoring session for participants based on their requirements by eminent young professionals from the industry. The session will provide personalized guidance to each participant.",
+    badge: "TRAIN / 1-ON-1 PERSONALIZED GUIDANCE",
+    actionLink: "/register"
   }
 ];

@@ -2102,3 +2102,133 @@ img {
     max-width: 100%;
   }
 }
+
+/* Unique Section Styling */
+.unique-section {
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.unique-container {
+  display: grid;
+  grid-template-columns: 0.3fr 1.7fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.unique-left-col {
+  position: sticky;
+  top: calc(var(--nav-height) + var(--space-sm));
+}
+
+.unique-section-number {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+}
+
+.unique-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.unique-heading {
+  font-size: 2.25rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.unique-grid-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+}
+
+.unique-feature-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.unique-feature-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--space-xs);
+  margin-bottom: var(--space-xs);
+}
+
+.unique-feature-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.engage-block {
+  border-top: 1px solid var(--border-color);
+  padding-top: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.engage-title {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.engage-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.engage-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.engage-bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+.engage-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .unique-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  .unique-left-col {
+    position: static;
+  }
+  .unique-heading {
+    font-size: 1.85rem;
+  }
+  .unique-grid-features {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+}

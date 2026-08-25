@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { EventInfo } from './components/EventInfo';
 import { AboutSection } from './components/AboutSection';
+import { UniqueSection } from './components/UniqueSection';
 import { TracksSection } from './components/TracksSection';
 import { Timeline } from './components/Timeline';
 import { PeopleSection } from './components/PeopleSection';
@@ -90,26 +91,29 @@ function App() {
         {/* 4. About Section */}
         <AboutSection />
 
-        {/* 5. Tracks Section */}
+        {/* 5. Unique Features Section */}
+        <UniqueSection />
+
+        {/* 6. Tracks Section */}
         <TracksSection />
 
-        {/* 6. Event Timeline / Schedule */}
+        {/* 7. Event Timeline / Schedule */}
         <Timeline />
 
-        {/* 7. Speakers / Mentors (toggleable inside config) */}
+        {/* 8. Speakers / Mentors (toggleable inside config) */}
         <PeopleSection />
 
-        {/* 8. Partners / Collaborators */}
+        {/* 9. Partners / Collaborators */}
         <PartnerGrid />
 
-        {/* 9. FAQ Section */}
+        {/* 10. FAQ Section */}
         <FAQAccordion allowMultipleOpen={false} />
 
-        {/* 10. Registration CTA */}
+        {/* 11. Registration CTA */}
         <RegistrationCTA />
       </main>
 
-      {/* 11. Footer */}
+      {/* 12. Footer */}
       <Footer />
     </div>
   );
