@@ -10,8 +10,8 @@ export const Footer: React.FC = () => {
     <footer className="footer-container">
       <div className="container footer-content">
         <div className="footer-brand">
-          <div className="footer-logo">
-            TECHX<span className="logo-dot">.</span>
+          <div className="footer-logo" style={{ display: 'flex', alignItems: 'center', height: '40px', marginBottom: '8px' }}>
+            <img src="/logo.png" alt="IEEE CS SYP TECHX" style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
           </div>
           <p className="footer-tagline">REIGNITE {eventData.dates.year}</p>
           <p className="footer-description">

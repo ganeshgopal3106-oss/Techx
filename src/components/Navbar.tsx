@@ -23,8 +23,8 @@ export const Navbar: React.FC = () => {
   return (
     <header className={`navbar-container ${isScrolled ? 'scrolled' : ''}`}>
       <div className="container navbar-content">
-        <a href="#hero" className="navbar-logo" onClick={closeMenu}>
-          TECHX<span className="logo-dot">.</span>
+        <a href="#hero" className="navbar-logo" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center', height: '40px' }}>
+          <img src="/logo.png" alt="IEEE CS SYP TECHX" style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
         </a>
 
         {/* Desktop Navigation */}
