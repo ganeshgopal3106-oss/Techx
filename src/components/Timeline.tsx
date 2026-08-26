@@ -110,12 +110,7 @@ export const Timeline: React.FC = () => {
                 const isExpanded = expandedDay === me.date;
 
                 return (
-                  <div key={idx} style={{ 
-                    border: '1px solid var(--border-color)', 
-                    borderRadius: 'var(--radius-sm)',
-                    padding: '24px',
-                    transition: 'border-color var(--transition-normal)'
-                  }}>
+                  <div key={idx} className="card timeline-card" style={{ padding: '24px' }}>
                     <div style={{ 
                       display: 'flex', 
                       justifyContent: 'space-between', 

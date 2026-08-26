@@ -271,12 +271,13 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack }) => {
           <span className="back-arrow">←</span> Back
         </button>
 
-        <div className="form-header">
-          <h1 className="form-title">CLAIM YOUR SPOT</h1>
-          <p className="form-subtitle">Register for {eventData.title}</p>
-        </div>
+        <div className="card registration-card-wrapper">
+          <div className="form-header">
+            <h1 className="form-title">CLAIM YOUR SPOT</h1>
+            <p className="form-subtitle">Register for {eventData.title}</p>
+          </div>
 
-        <form onSubmit={handleSubmit} className="register-form" noValidate>
+          <form onSubmit={handleSubmit} className="register-form" noValidate>
           
           {/* SECTION 1: PERSONAL DETAILS */}
           <div className="form-section-block">
@@ -587,6 +588,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack }) => {
           </div>
 
         </form>
+        </div>
       </div>
     </div>
   );

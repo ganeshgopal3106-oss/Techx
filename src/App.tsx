@@ -12,9 +12,20 @@ import { FAQAccordion } from './components/FAQAccordion';
 import { RegistrationCTA } from './components/RegistrationCTA';
 import { Footer } from './components/Footer';
 import { RegisterPage } from './components/RegisterPage';
+import { EnergyFlowBackground } from './components/EnergyFlowBackground';
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
+
+  function navigateTo(path: string) {
+    window.history.pushState({}, '', path);
+    window.dispatchEvent(new Event('navigate'));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  const handleBackToHome = () => {
+    navigateTo('/');
+  };
 
   useEffect(() => {
     const handleLocationChange = () => {
@@ -58,19 +69,10 @@ function App() {
     };
   }, []);
 
-  const navigateTo = (path: string) => {
-    window.history.pushState({}, '', path);
-    window.dispatchEvent(new Event('navigate'));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleBackToHome = () => {
-    navigateTo('/');
-  };
-
   if (currentPath === '/register') {
     return (
       <div className="app-wrapper">
+        <EnergyFlowBackground />
         <RegisterPage onBack={handleBackToHome} />
       </div>
     );
@@ -78,6 +80,7 @@ function App() {
 
   return (
     <div className="app-wrapper">
+      <EnergyFlowBackground />
       {/* 1. Navbar */}
       <Navbar />
 
