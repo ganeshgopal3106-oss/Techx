@@ -1,4 +1,5 @@
 import React from 'react';
+import { ScrollReveal } from './ScrollReveal';
 
 export const UniqueSection: React.FC = () => {
   return (
@@ -10,7 +11,7 @@ export const UniqueSection: React.FC = () => {
         </div>
 
         {/* Right Column / Content */}
-        <div className="unique-right-col">
+        <ScrollReveal className="unique-right-col">
           <div className="unique-header-block">
             <h2 className="unique-heading">What Makes TechX Unique</h2>
           </div>
@@ -51,7 +52,7 @@ export const UniqueSection: React.FC = () => {
               </li>
             </ul>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

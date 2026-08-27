@@ -12,7 +12,6 @@ import { FAQAccordion } from './components/FAQAccordion';
 import { RegistrationCTA } from './components/RegistrationCTA';
 import { Footer } from './components/Footer';
 import { RegisterPage } from './components/RegisterPage';
-import { EnergyFlowBackground } from './components/EnergyFlowBackground';
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -72,7 +71,6 @@ function App() {
   if (currentPath === '/register') {
     return (
       <div className="app-wrapper">
-        <EnergyFlowBackground />
         <RegisterPage onBack={handleBackToHome} />
       </div>
     );
@@ -80,7 +78,6 @@ function App() {
 
   return (
     <div className="app-wrapper">
-      <EnergyFlowBackground />
       {/* 1. Navbar */}
       <Navbar />
 

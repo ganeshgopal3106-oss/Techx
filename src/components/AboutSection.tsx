@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ScrollReveal } from './ScrollReveal';
 
 export const AboutSection: React.FC = () => {
   const [showFullSbcText, setShowFullSbcText] = useState(false);
@@ -12,7 +13,7 @@ export const AboutSection: React.FC = () => {
         </div>
 
         {/* Right Column / Primary Info */}
-        <div className="about-right-col">
+        <ScrollReveal className="about-right-col">
           {/* Block 1: TechX REIGNITE Description */}
           <div className="about-block" style={{ marginBottom: '40px' }}>
             <h2 className="about-heading">About TechX REIGNITE</h2>
@@ -34,31 +35,34 @@ export const AboutSection: React.FC = () => {
                 IEEE CS SCT Student Branch Chapter is a thriving community of computer science enthusiasts. Led by the passion for emerging technologies, members actively participate in events upskilling themselves while at the same time contributing to the community.
               </p>
               
-              {showFullSbcText ? (
-                <p className="about-lead animate-fade-in" style={{ marginTop: '16px', fontSize: '0.95rem', fontWeight: 'normal' }}>
-                  IEEE CS SCT SBC received the Outstanding Student Branch Chapter award in 2022. We were able to secure more than 180 registrations in less than twenty-four hours for technical tracks as a part of Dhyuthi 6.0, the flagship event of IEEE SCT SB. Also, IEEE CS SBC was recognized as the Best Student Branch Chapter of IEEE SCT SB in 2024. We have successfully organized six events (5 online and 1 offline) as of now in 2026.
-                </p>
-              ) : null}
+              <div className={`about-expandable-drawer ${showFullSbcText ? 'open' : ''}`}>
+                <div className="about-expandable-drawer-inner">
+                  <p className="about-lead" style={{ marginTop: '16px', fontSize: '0.95rem', fontWeight: 'normal' }}>
+                    IEEE CS SCT SBC received the Outstanding Student Branch Chapter award in 2022. We were able to secure more than 180 registrations in less than twenty-four hours for technical tracks as a part of Dhyuthi 6.0, the flagship event of IEEE SCT SB. Also, IEEE CS SBC was recognized as the Best Student Branch Chapter of IEEE SCT SB in 2024. We have successfully organized six events (5 online and 1 offline) as of now in 2026.
+                  </p>
+                </div>
+              </div>
 
               <div className="about-actions" style={{ marginTop: '16px' }}>
                 <button 
                   className="btn btn-secondary" 
                   onClick={() => setShowFullSbcText(!showFullSbcText)}
                   style={{ height: '36px', padding: '0 16px', fontSize: '0.75rem' }}
+                  aria-expanded={showFullSbcText}
                 >
-                  {showFullSbcText ? 'Show Less' : 'Read History & Achievements'}
+                  {showFullSbcText ? 'READ LESS −' : 'READ MORE +'}
                 </button>
               </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Placeholder image area */}
-        <div className="about-image-area">
+        <ScrollReveal className="about-image-area" delayMs={200}>
           <div className="image-placeholder">
             <span>[ TECHX Reignite Logo / Event Artwork ]</span>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

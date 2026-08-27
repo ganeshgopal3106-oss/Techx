@@ -1,18 +1,19 @@
 import React from 'react';
 import { eventData } from '../data/event';
+import { ScrollReveal } from './ScrollReveal';
 
 export const RegistrationCTA: React.FC = () => {
   return (
     <section id="join" className="registration-section section-padding">
       <div className="container registration-container">
-        <div className="registration-header">
+        <ScrollReveal className="registration-header">
           <p className="registration-num">06 / REGISTRATION</p>
           <h2 className="registration-title">Ready to Join?</h2>
           <p className="registration-subtitle">Register for {eventData.title} and secure your ticket today.</p>
-        </div>
+        </ScrollReveal>
 
         {/* Ticket Tiers Grid */}
-        <div className="ticket-grid">
+        <ScrollReveal className="ticket-grid" delayMs={150}>
           {/* Card 1 */}
           <div className="card ticket-card">
             <div className="ticket-badge">IEEE CS Member</div>
@@ -36,14 +37,14 @@ export const RegistrationCTA: React.FC = () => {
             <p className="ticket-description">General admission open for all external engineering students, developers, and designers.</p>
             <div className="ticket-id">#GEN-2026-003</div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Action Button */}
-        <div className="registration-action-area">
-          <a href="/register" className="btn btn-primary btn-large">
-            Claim Your Spot
+        <ScrollReveal className="registration-action-area" delayMs={250}>
+          <a href="/register" className="btn btn-primary btn-large hero-primary-cta" aria-label="Claim Your Spot Pass">
+            Claim Your Spot <span className="arrow">→</span>
           </a>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

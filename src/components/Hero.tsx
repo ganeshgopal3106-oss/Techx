@@ -21,8 +21,23 @@ export const Hero: React.FC = () => {
           </div>
 
           <div className="hero-actions">
-            <a href="/register" className="btn btn-primary">Claim Your Spot</a>
-            <a href="#about" className="btn btn-secondary">Explore Vision</a>
+            <a href="/register" className="btn btn-primary hero-primary-cta">
+              Claim Your Spot <span className="arrow">→</span>
+            </a>
+            <a 
+              href="#about" 
+              className="btn btn-secondary hero-secondary-cta"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById('about');
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth' });
+                  window.history.pushState(null, '', '#about');
+                }
+              }}
+            >
+              Explore TechX <span className="arrow">↓</span>
+            </a>
           </div>
         </div>
 

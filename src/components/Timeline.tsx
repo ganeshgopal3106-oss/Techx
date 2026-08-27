@@ -1,217 +1,317 @@
 import React, { useState } from 'react';
 import { scheduleData } from '../data/schedule';
 import { SectionHeader } from './SectionHeader';
+import { ScrollReveal } from './ScrollReveal';
+
+interface EventDetails {
+  description: string;
+  venue?: string;
+  requirements?: string;
+  organizer?: string;
+}
+
+const eventDetailsMap: Record<string, EventDetails> = {
+  // Pre-events
+  "Online Workshop": {
+    description: "An introductory online bootcamp designed to get all participants familiar with the pre-requisites and setup files required for the main offline tracks. Ideal for beginners.",
+    venue: "Google Meet / Discord (Online)",
+    organizer: "IEEE CS CEAL SBC",
+    requirements: "Requires stable internet connection and a basic text editor."
+  },
+  "BlindScript": {
+    description: "A thrilling programming speed sprint where developers write code with their monitors turned off! Your code is judged on execution accuracy, compile rate, and syntax correctness. Compete to win exclusive credits.",
+    venue: "Hackerrank (Online)",
+    organizer: "IEEE CS SCT SBC",
+    requirements: "Fast typing and strong muscle memory."
+  },
+  "AI in HealthCare": {
+    description: "A keynote session discussing deep learning neural networks applied to diagnosis, CT scan analysis, and biotech engineering. Learn about the intersection of computer science and medicine.",
+    venue: "Google Meet (Online)",
+    organizer: "IEEE EMBS SCT SBC"
+  },
+  "Competition": {
+    description: "Online coding marathon testing algorithmic solving. Problems range from easy arrays to dynamic programming.",
+    venue: "Online Platform",
+    organizer: "IEEE CS GECBH SBC"
+  },
+  "CypherX": {
+    description: "A cryptography puzzle hunt challenge. Decrypt logs, solve riddles, and decode files to find the flags first.",
+    venue: "Online (CTF Portal)",
+    organizer: "IEEE COMSOC SCT SBC"
+  },
+  "ADAS — The Future of Driving": {
+    description: "Expert session on how Advanced Driver Assistance Systems (ADAS) work, focusing on sensor fusion, lidar vision networks, and autopilot control loops.",
+    venue: "Google Meet (Online)",
+    organizer: "IEEE IAS SCT SBC"
+  },
+
+  // Main Events - 26 Sep
+  "Inauguration": {
+    description: "Grand opening of TECHX REIGNITE. Featuring addresses from senior IEEE officials, outlining the agenda, objectives, and career tracks.",
+    venue: "Main Seminar Hall (Offline)",
+    requirements: "Arrival by 9:00 AM for ID badge collection."
+  },
+  "Workshop Session I (2 Tracks)": {
+    description: "Parallel technical workshops. Track 1: Hands-on Full-stack Web Development. Track 2: Advanced IoT Systems & ADAS. Led by industry experts.",
+    venue: "Computer Labs 2 & 3",
+    requirements: "Laptops are mandatory. Pre-installed Node.js and VS Code."
+  },
+  "Lunch Break": {
+    description: "Catered lunch at the campus canteen. Great opportunity to chat informally with speakers and IEEE members."
+  },
+  "Workshop Session II": {
+    description: "Continuation of the Hands-on labs. Building projects, integrating APIs, solving implementation bugs, and preparing for the next day's sprint.",
+    venue: "Computer Labs 2 & 3",
+    requirements: "Laptops."
+  },
+  "Soft Skills Talk Session": {
+    description: "An interactive placement talk helping students with resume structure, GitHub curation, and interviewing strategies to stand out in recruitment drives.",
+    venue: "Auditorium Annex"
+  },
+  "Break": {
+    description: "Refreshments, tea, and networking time."
+  },
+  "Games": {
+    description: "Tech-focused interactive games and icebreakers. Compete in quick-fire quizzes and mini-games to win goodies.",
+    venue: "Seminar Hall Lobby"
+  },
+
+  // Main Events - 27 Sep
+  "Competition (based on workshop)": {
+    description: "Apply the skills learned on Day 1! Teams will compete in a 3.5-hour sprint to build and pitch a functional prototype. Top teams win exciting cash prizes.",
+    venue: "Main Seminar Hall",
+    requirements: "Mandatory project submission on GitHub."
+  },
+  "Nano Mentoring": {
+    description: "1-on-1 personalized review sessions with corporate developers and product leads. Discuss your resume, projects, and career roadmap.",
+    venue: "Mentorship Zone (Library Block)",
+    requirements: "Prior slot booking required upon arrival."
+  },
+  "Vibe Check, CS MD Session": {
+    description: "A fun community engagement and networking session. Discover global IEEE Computer Society benefits, grant programs, and how to get active.",
+    venue: "CS Lounge"
+  },
+  "Culturals": {
+    description: "Performances, live music, and talent showcase prepared by the SCT SB team to celebrate the summit's success.",
+    venue: "Central Courtyard"
+  },
+  "Closing Ceremony": {
+    description: "Award distribution for competition winners, distribution of participation certificates, feedback collection, and valedictory address.",
+    venue: "Main Seminar Hall"
+  }
+};
 
 export const Timeline: React.FC = () => {
-  const [expandedDay, setExpandedDay] = useState<string | null>(null);
+  const [filter, setFilter] = useState<'ALL' | 'ONLINE' | 'OFFLINE'>('ALL');
+  const [selectedDate, setSelectedDate] = useState<string>('13th September');
+  const [expandedEvents, setExpandedEvents] = useState<Record<string, boolean>>({});
 
-  const toggleDay = (date: string) => {
-    setExpandedDay(prev => (prev === date ? null : date));
+  // Helper to convert "13th September" to "13 SEP"
+  const formatDateShort = (dateStr: string) => {
+    const parts = dateStr.split(' ');
+    const num = parts[0].replace('th', '');
+    const month = parts[1].substring(0, 3).toUpperCase();
+    return `${num} ${month}`;
   };
 
-  // Helper to check if a day is Saturday or Sunday
-  const getWeekday = (date: string): string => {
-    return date.includes('26th') ? 'SATURDAY' : 'SUNDAY';
+  // Pre-event and main event date groupings
+  const preEventDates = scheduleData.preEvents.map(pe => pe.date);
+  const mainEventDates = scheduleData.mainEvents.map(me => me.date);
+
+  const handleFilterChange = (newFilter: 'ALL' | 'ONLINE' | 'OFFLINE') => {
+    setFilter(newFilter);
+    setExpandedEvents({});
+    if (newFilter === 'ONLINE' && !preEventDates.includes(selectedDate)) {
+      setSelectedDate(preEventDates[0]);
+    } else if (newFilter === 'OFFLINE' && !mainEventDates.includes(selectedDate)) {
+      setSelectedDate(mainEventDates[0]);
+    }
   };
 
-  const getBriefDescription = (date: string): string => {
-    return date.includes('26th') 
-      ? 'Workshops, talks, games and interactions.'
-      : 'Competitions, mentoring, culturals and closing ceremony.';
+  const toggleEventDetail = (eventTitle: string) => {
+    setExpandedEvents(prev => ({
+      ...prev,
+      [eventTitle]: !prev[eventTitle]
+    }));
   };
+
+  // Get active items based on active date
+  const isPreEventActive = preEventDates.includes(selectedDate);
+  const activeEventsList = isPreEventActive
+    ? scheduleData.preEvents.filter(pe => pe.date === selectedDate).map(pe => ({
+        time: "6:00 PM – 7:30 PM", // default time slot for online pre-events
+        event: pe.title,
+        isParallel: false
+      }))
+    : scheduleData.mainEvents.find(me => me.date === selectedDate)?.timeline || [];
+
+  // Group events by time slot to identify parallel events
+  const groupedEvents: { time: string; items: typeof activeEventsList }[] = [];
+  activeEventsList.forEach(item => {
+    const existing = groupedEvents.find(g => g.time === item.time);
+    if (existing) {
+      existing.items.push(item);
+    } else {
+      groupedEvents.push({ time: item.time, items: [item] });
+    }
+  });
+
+  const showPreEvents = filter === 'ALL' || filter === 'ONLINE';
+  const showMainEvents = filter === 'ALL' || filter === 'OFFLINE';
 
   return (
     <section id="schedule" className="schedule-section section-padding">
-      <div className="container schedule-container">
-        {/* Left Column */}
-        <div className="schedule-sidebar">
-          <SectionHeader num="03 / SCHEDULE" title="Event Timeline" />
-          <p className="schedule-intro">
-            A comprehensive upskilling journey featuring pre-events from 13th–19th September followed by the main TECHX REIGNITE programme on 26th–27th September.
-          </p>
-          <div className="schedule-legend" style={{ borderTop: 'none', paddingTop: 0, marginTop: '24px' }}>
-            <div className="legend-item" style={{ marginBottom: '8px' }}>
-              <span className="indicator" style={{ backgroundColor: 'var(--border-hover)', width: '8px', height: '8px', marginRight: '8px' }}></span>
-              Pre-Events (Online)
-            </div>
-            <div className="legend-item">
-              <span className="indicator" style={{ backgroundColor: 'var(--accent)', width: '8px', height: '8px', marginRight: '8px' }}></span>
-              Main Event (Offline)
+      <div className="container">
+        <SectionHeader num="03 / SCHEDULE" title="Event Timeline" />
+        
+        {/* Schedule Controls */}
+        <ScrollReveal className="schedule-controls">
+          {/* 1. Subtle Filter */}
+          <div className="schedule-filter-group">
+            <span className="schedule-filter-label">FILTER</span>
+            <div className="schedule-dates-row">
+              <button 
+                className={`schedule-filter-btn ${filter === 'ALL' ? 'active' : ''}`}
+                onClick={() => handleFilterChange('ALL')}
+              >
+                ALL
+              </button>
+              <button 
+                className={`schedule-filter-btn ${filter === 'ONLINE' ? 'active' : ''}`}
+                onClick={() => handleFilterChange('ONLINE')}
+              >
+                ONLINE
+              </button>
+              <button 
+                className={`schedule-filter-btn ${filter === 'OFFLINE' ? 'active' : ''}`}
+                onClick={() => handleFilterChange('OFFLINE')}
+              >
+                OFFLINE
+              </button>
             </div>
           </div>
-        </div>
 
-        {/* Right Column */}
-        <div className="timeline-flow" style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
-          
-          {/* 1. Pre-Events Timeline */}
-          <div className="timeline-group">
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '32px' }}>
-              <h3 style={{ 
-                fontFamily: 'var(--font-mono)', 
-                fontSize: '0.85rem', 
-                color: 'var(--accent)', 
-                letterSpacing: '0.15em', 
-                whiteSpace: 'nowrap',
-                textTransform: 'uppercase',
-                marginRight: '16px'
-              }}>
-                Pre-Events (13 Sep — 19 Sep)
-              </h3>
-              <div style={{ flexGrow: 1, height: '1px', backgroundColor: 'var(--border-color)' }}></div>
+          {/* 2. Pre-Events Dates */}
+          {showPreEvents && (
+            <div className="schedule-date-group">
+              <span className="schedule-date-label">PRE-EVENTS</span>
+              <div className="schedule-dates-row">
+                {scheduleData.preEvents.map((pe, idx) => (
+                  <button
+                    key={idx}
+                    className={`schedule-date-btn ${selectedDate === pe.date ? 'active' : ''}`}
+                    onClick={() => { setSelectedDate(pe.date); setExpandedEvents({}); }}
+                    aria-label={`Select ${pe.date}`}
+                  >
+                    {formatDateShort(pe.date)}
+                  </button>
+                ))}
+              </div>
             </div>
-            
-            <div className="timeline-container-grid">
-              <div className="timeline-vertical-line"></div>
-              
-              {scheduleData.preEvents.map((pe, idx) => {
-                const dateParts = pe.date.split(' '); // e.g. "13th", "September"
-                const dateNum = dateParts[0].replace('th', ''); // e.g. "13"
-                const monthShort = dateParts[1].substring(0, 3).toUpperCase(); // e.g. "SEP"
-                
-                return (
-                  <div key={idx} className="timeline-row-item-custom">
-                    <div className="timeline-dot-custom"></div>
-                    <div className="timeline-date-col">
-                      {dateNum} {monthShort}
-                    </div>
-                    <div className="timeline-content-col">
-                      <div className="timeline-event-title">{pe.title}</div>
-                      <div className="timeline-event-organizer">Organizer: {pe.organizer}</div>
-                    </div>
+          )}
+
+          {/* 3. Main Event Dates */}
+          {showMainEvents && (
+            <div className="schedule-date-group" style={{ borderTop: 'none', paddingTop: 0 }}>
+              <span className="schedule-date-label">MAIN EVENT</span>
+              <div className="schedule-dates-row">
+                {scheduleData.mainEvents.map((me, idx) => (
+                  <button
+                    key={idx}
+                    className={`schedule-date-btn ${selectedDate === me.date ? 'active' : ''}`}
+                    onClick={() => { setSelectedDate(me.date); setExpandedEvents({}); }}
+                    aria-label={`Select ${me.date}`}
+                  >
+                    {formatDateShort(me.date)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </ScrollReveal>
+
+        {/* Selected Day's Timeline List */}
+        <ScrollReveal className="timeline-flow-list">
+          {groupedEvents.map((group, groupIdx) => {
+            const hasParallel = group.items.length > 1;
+
+            if (hasParallel) {
+              return (
+                <div key={groupIdx} className="timeline-parallel-wrapper">
+                  <div className="timeline-parallel-time">{group.time}</div>
+                  <div className="timeline-parallel-grid">
+                    {group.items.map((item, itemIdx) => {
+                      const details = eventDetailsMap[item.event];
+                      const isOpen = expandedEvents[item.event] || false;
+                      
+                      return (
+                        <button
+                          key={itemIdx}
+                          className={`timeline-parallel-col ${isOpen ? 'open' : ''}`}
+                          onClick={() => toggleEventDetail(item.event)}
+                          aria-expanded={isOpen}
+                          style={{ border: '1px solid var(--border-color)', display: 'block', width: '100%', font: 'inherit' }}
+                        >
+                          <div className="parallel-meta">SIMULTANEOUS</div>
+                          <h4 className="parallel-title">{item.event}</h4>
+                          <p className="parallel-desc" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                            {isOpen ? 'Click to collapse description' : 'Click to view details'}
+                          </p>
+                          
+                          <div className={`timeline-event-details ${isOpen ? 'open' : ''}`} aria-hidden={!isOpen}>
+                            <div className="timeline-event-details-inner" style={{ paddingLeft: 0 }}>
+                              {details?.description && <p style={{ margin: '8px 0 0 0' }}>{details.description}</p>}
+                              <div className="timeline-details-card" style={{ padding: '8px', marginTop: '8px' }}>
+                                {details?.venue && <div><strong>Venue:</strong> {details.venue}</div>}
+                                {details?.organizer && <div><strong>Organizer:</strong> {details.organizer}</div>}
+                                {details?.requirements && <div style={{ marginTop: '4px' }}><strong>Requirements:</strong> {details.requirements}</div>}
+                              </div>
+                            </div>
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
-                );
-              })}
-            </div>
-          </div>
+                </div>
+              );
+            }
 
-          {/* 2. Main Event Timeline */}
-          <div className="timeline-group">
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '32px' }}>
-              <h3 style={{ 
-                fontFamily: 'var(--font-mono)', 
-                fontSize: '0.85rem', 
-                color: 'var(--accent)', 
-                letterSpacing: '0.15em', 
-                whiteSpace: 'nowrap',
-                textTransform: 'uppercase',
-                marginRight: '16px'
-              }}>
-                Main Event (Offline)
-              </h3>
-              <div style={{ flexGrow: 1, height: '1px', backgroundColor: 'var(--border-color)' }}></div>
-            </div>
+            // Normal timeline row
+            const item = group.items[0];
+            const details = eventDetailsMap[item.event];
+            const isOpen = expandedEvents[item.event] || false;
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              {scheduleData.mainEvents.map((me, idx) => {
-                const dateNum = me.date.split('th')[0]; // "26" or "27"
-                const weekday = getWeekday(me.date);
-                const desc = getBriefDescription(me.date);
-                const isExpanded = expandedDay === me.date;
+            return (
+              <button
+                key={groupIdx}
+                className={`timeline-event-row ${isOpen ? 'open' : ''}`}
+                onClick={() => toggleEventDetail(item.event)}
+                aria-expanded={isOpen}
+              >
+                <div className="timeline-event-main">
+                  <div className="timeline-event-title-block">
+                    <span className="timeline-event-time">{group.time}</span>
+                    <h4 className="timeline-event-title">{item.event}</h4>
+                  </div>
+                  <span className="timeline-event-toggle-icon">+</span>
+                </div>
 
-                return (
-                  <div key={idx} className="card timeline-card" style={{ padding: '24px' }}>
-                    <div style={{ 
-                      display: 'flex', 
-                      justifyContent: 'space-between', 
-                      alignItems: 'flex-start',
-                      flexWrap: 'wrap',
-                      gap: '16px'
-                    }}>
-                      {/* Left: Date number & details */}
-                      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                        <div style={{ 
-                          fontSize: '3rem', 
-                          fontWeight: '850', 
-                          color: 'var(--accent)', 
-                          lineHeight: '1',
-                          fontFamily: 'var(--font-sans)'
-                        }}>
-                          {dateNum}
-                        </div>
-                        <div>
-                          <div style={{ fontSize: '0.8rem', fontWeight: 'bold', color: 'var(--text-primary)', letterSpacing: '0.05em' }}>
-                            SEPTEMBER
-                          </div>
-                          <div style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-                            {weekday}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Center: Brief text */}
-                      <div style={{ 
-                        flexGrow: 1, 
-                        maxWidth: '320px', 
-                        fontSize: '0.9rem', 
-                        color: 'var(--text-secondary)',
-                        lineHeight: '1.5'
-                      }}>
-                        {desc}
-                      </div>
-
-                      {/* Right: Expand Trigger */}
-                      <button 
-                        onClick={() => toggleDay(me.date)}
-                        className="btn btn-secondary"
-                        style={{ height: '36px', padding: '0 16px', fontSize: '0.75rem' }}
-                      >
-                        {isExpanded ? 'CLOSE SCHEDULE ↑' : 'VIEW SCHEDULE →'}
-                      </button>
-                    </div>
-
-                    {/* Detailed Timeline Slices */}
-                    {isExpanded && (
-                      <div style={{ 
-                        marginTop: '24px', 
-                        paddingTop: '24px', 
-                        borderTop: '1px dashed var(--border-color)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '12px'
-                      }}>
-                        {me.timeline.map((item, itemIdx) => (
-                          <div key={itemIdx} style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            padding: '12px 0',
-                            borderBottom: itemIdx === me.timeline.length - 1 ? 'none' : '1px solid rgba(59, 36, 20, 0.08)',
-                            gap: '16px'
-                          }}>
-                            <div className="timeline-sub-time" style={{ width: '160px', fontWeight: 'bold', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                              {item.time}
-                            </div>
-                            <div className="timeline-sub-content" style={{ 
-                              flexGrow: 1, 
-                              flexDirection: 'row', 
-                              alignItems: 'center', 
-                              justifyContent: 'space-between', 
-                              gap: '12px',
-                              display: 'flex',
-                              width: '100%'
-                            }}>
-                              <h4 className="timeline-sub-title" style={{ fontSize: '0.9rem', margin: 0, fontWeight: '600', color: 'var(--text-primary)' }}>
-                                {item.event}
-                              </h4>
-                              {item.isParallel && (
-                                <span className="badge" style={{ fontSize: '0.65rem', padding: '2px 8px', color: 'var(--accent)', borderColor: 'var(--accent)' }}>
-                                  Parallel Session
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        ))}
+                <div className={`timeline-event-details ${isOpen ? 'open' : ''}`} aria-hidden={!isOpen}>
+                  <div className="timeline-event-details-inner">
+                    {details?.description && <p>{details.description}</p>}
+                    {(details?.venue || details?.requirements || details?.organizer) && (
+                      <div className="timeline-details-card">
+                        {details.venue && <div><strong>Venue:</strong> {details.venue}</div>}
+                        {details.organizer && <div><strong>Organizer:</strong> {details.organizer}</div>}
+                        {details.requirements && <div style={{ marginTop: '4px' }}><strong>Requirements:</strong> {details.requirements}</div>}
                       </div>
                     )}
                   </div>
-                );
-              })}
-            </div>
-          </div>
-
-        </div>
+                </div>
+              </button>
+            );
+          })}
+        </ScrollReveal>
       </div>
     </section>
   );

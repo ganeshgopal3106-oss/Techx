@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { faqData } from '../data/faq';
 import { SectionHeader } from './SectionHeader';
+import { ScrollReveal } from './ScrollReveal';
 
 interface FAQAccordionProps {
   allowMultipleOpen?: boolean;
@@ -30,7 +31,7 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({ allowMultipleOpen = 
   return (
     <section id="faq" className="faq-section section-padding">
       <div className="container faq-container">
-        <div className="faq-sidebar">
+        <ScrollReveal className="faq-sidebar">
           <SectionHeader num="05 / FAQ" title="Frequently Asked Questions" />
           <p className="faq-intro">
             Find answers to common questions about schedules, team configurations, venues, and registration criteria.
@@ -39,9 +40,9 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({ allowMultipleOpen = 
             <span className="support-label">Need direct support?</span>
             <a href="mailto:mailtoieeesctsb@gmail.com" className="support-email">mailtoieeesctsb@gmail.com</a>
           </div>
-        </div>
+        </ScrollReveal>
 
-        <div className="faq-list">
+        <ScrollReveal className="faq-list">
           {faqData.map((item) => {
             const isOpen = isItemOpen(item.id);
             return (
@@ -68,7 +69,7 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({ allowMultipleOpen = 
               </div>
             );
           })}
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );
