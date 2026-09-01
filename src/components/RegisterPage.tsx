@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { tracksData } from '../data/tracks';
-import { eventData } from '../data/event';
 
 interface RegisterPageProps {
   onBack: () => void;
@@ -210,17 +209,17 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
             <div className="success-icon" style={{ fontSize: '3rem', color: 'var(--accent)', marginBottom: 'var(--space-md)' }}>
               ✓
             </div>
-            <p className="section-number" style={{ color: 'var(--accent)', marginBottom: '8px' }}>REGISTRATION CONFIRMED</p>
-            <h1 style={{ fontSize: '2rem', marginBottom: 'var(--space-sm)' }}>You're In!</h1>
+            <p className="section-number" style={{ color: 'var(--accent)', marginBottom: '8px' }}>REGISTRATION SUBMITTED</p>
+            <h1 style={{ fontSize: '2rem', marginBottom: 'var(--space-sm)' }}>Thank you for registering for TECHX.</h1>
             
             <div className="track-context-banner" style={{ textAlign: 'left', margin: 'var(--space-lg) 0' }}>
               <div className="track-context-label">REGISTERED TRACK</div>
-              <div className="track-context-title">{selectedTrack.name} (TRACK {selectedTrack.num})</div>
+              <div className="track-context-title">{selectedTrack.title} (TRACK {selectedTrack.num})</div>
               <div className="track-context-sub">{selectedTrack.badge}</div>
             </div>
 
             <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-lg)', lineHeight: '1.6' }}>
-              Thank you, <strong>{formData.fullName}</strong>. Your registration and payment verification have been logged. We've sent a confirmation email to <strong>{formData.email}</strong>.
+              Your registration has been received successfully. We have logged your details and payment verification for <strong>{formData.fullName}</strong>.
             </p>
 
             <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: 'var(--space-lg)' }}>
@@ -253,7 +252,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
           {/* Header */}
           <div style={{ marginBottom: 'var(--space-lg)' }}>
             <p className="section-number" style={{ color: 'var(--accent)', marginBottom: '4px' }}>
-              {eventData.title}
+              TECHX REIGNITE
             </p>
             <h1 style={{ fontSize: '2.2rem', textTransform: 'uppercase', marginBottom: '8px' }}>
               Registration
@@ -263,9 +262,9 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
           {/* Track Context Banner */}
           <div className="track-context-banner">
             <div className="track-context-label">TRACK {selectedTrack.num}</div>
-            <h2 className="track-context-title">{selectedTrack.name}</h2>
+            <h2 className="track-context-title">{selectedTrack.title}</h2>
             <p className="track-context-sub">
-              Register specifically for this track. {selectedTrack.description}
+              You are registering specifically for this track.
             </p>
           </div>
 

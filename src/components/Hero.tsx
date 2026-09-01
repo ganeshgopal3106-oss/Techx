@@ -22,8 +22,8 @@ export const Hero: React.FC = () => {
           </p>
           
           <div className="hero-meta" style={{ marginBottom: '32px' }}>
-            <span className="hero-meta-date" style={{ color: 'var(--accent)', fontWeight: 700 }}>
-              13th – 27th September 2026
+            <span className="hero-meta-date" style={{ color: 'var(--accent)', fontWeight: 700, letterSpacing: '0.05em' }}>
+              13 — 27 SEPTEMBER 2026
             </span>
             <span className="hero-meta-divider">|</span>
             <span className="hero-meta-location">{eventData.locationShort}</span>

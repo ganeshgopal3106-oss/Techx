@@ -38,49 +38,72 @@ export const TracksSection: React.FC = () => {
 
         {/* Tracks Card Grid */}
         <ScrollReveal className="tracks-card-grid">
-          {filteredTracks.map((track) => (
-            <div key={track.id} className="track-card">
-              {/* Blurred Image Visual with Centered Coming Soon Badge */}
-              <div className="track-image-container">
-                <img 
-                  src={track.image} 
-                  alt={track.name} 
-                  className="track-image-blurred"
-                  loading="lazy"
-                />
-                {track.status === 'coming-soon' && (
-                  <div className="track-coming-soon-badge">
-                    COMING SOON
+          {filteredTracks.map((track) => {
+            const isComingSoon = track.status === 'COMING_SOON';
+            const isClosed = track.status === 'CLOSED';
+
+            return (
+              <div key={track.id} className="track-card">
+                {/* Image Visual (Blurred if COMING_SOON, Crisp if OPEN) */}
+                <div className="track-image-container">
+                  <img 
+                    src={track.image} 
+                    alt={track.title} 
+                    className={isComingSoon ? "track-image-blurred" : "track-image-crisp"}
+                    loading="lazy"
+                  />
+                  {isComingSoon && (
+                    <div className="track-coming-soon-badge">
+                      COMING SOON
+                    </div>
+                  )}
+                  {isClosed && (
+                    <div className="track-coming-soon-badge" style={{ backgroundColor: 'var(--text-muted)' }}>
+                      REGISTRATION CLOSED
+                    </div>
+                  )}
+                </div>
+
+                {/* Card Body */}
+                <div className="track-card-body">
+                  <div className="track-card-meta">
+                    <span className="track-card-num">TRACK {track.num}</span>
+                    <span className="track-card-badge">{track.badge}</span>
                   </div>
-                )}
-              </div>
 
-              {/* Card Body */}
-              <div className="track-card-body">
-                <div className="track-card-meta">
-                  <span className="track-card-num">TRACK {track.num}</span>
-                  <span className="track-card-badge">{track.badge}</span>
+                  <h3 className="track-card-title">{track.title}</h3>
+                  <p className="track-card-desc">{track.description}</p>
+
+                  {/* Track-Specific CTA */}
+                  <div className="track-card-actions">
+                    {track.registrationEnabled && !isClosed ? (
+                      <a 
+                        href={track.registrationLink} 
+                        className="track-register-btn"
+                        aria-label={`Register for ${track.title}`}
+                      >
+                        REGISTER FOR THIS TRACK <span className="arrow">→</span>
+                      </a>
+                    ) : (
+                      <button 
+                        disabled 
+                        className="track-register-btn" 
+                        style={{ opacity: 0.6, cursor: 'not-allowed' }}
+                      >
+                        {isClosed ? 'REGISTRATION CLOSED' : 'REGISTRATION OPENS SOON'}
+                      </button>
+                    )}
+                    
+                    <span className="track-notice-text">
+                      {isComingSoon 
+                        ? 'The details for this track will be revealed soon.' 
+                        : 'Limited seats per cohort. Secure your place now.'}
+                    </span>
+                  </div>
                 </div>
-
-                <h3 className="track-card-title">{track.name}</h3>
-                <p className="track-card-desc">{track.description}</p>
-
-                {/* Track-Specific CTA */}
-                <div className="track-card-actions">
-                  <a 
-                    href={track.registrationLink} 
-                    className="track-register-btn"
-                    aria-label={`Register for ${track.name}`}
-                  >
-                    REGISTER FOR THIS TRACK <span className="arrow">→</span>
-                  </a>
-                  <span className="track-notice-text">
-                    The details for this track will be revealed soon.
-                  </span>
-                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </ScrollReveal>
       </div>
     </section>
