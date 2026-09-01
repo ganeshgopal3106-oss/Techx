@@ -7,66 +7,77 @@ export const AboutSection: React.FC = () => {
   return (
     <section id="about" className="about-section section-padding blueprint-circuit-bg" style={{ position: 'relative' }}>
       <div className="container about-container">
-        {/* Left Column / Mobile Header */}
+        {/* Left Column / Section Header */}
         <div className="about-left-col">
           <span className="blueprint-tag">[ SYS // VISION ]</span>
-          <div className="about-section-number" style={{ marginTop: '4px' }}>01 / THE VISION</div>
+          <div className="about-section-number" style={{ marginTop: '6px', fontSize: '0.85rem', fontWeight: 800 }}>
+            02 / ABOUT TECHX
+          </div>
         </div>
 
-        {/* Right Column / Primary Info */}
+        {/* Right Column / Primary Product Story */}
         <ScrollReveal className="about-right-col">
-          {/* Block 1: TechX REIGNITE Description */}
-          <div className="about-block" style={{ marginBottom: '40px' }}>
-            <h2 className="about-heading">About TechX REIGNITE</h2>
+          {/* Story Headline & Lead */}
+          <div className="about-block" style={{ marginBottom: '48px' }}>
+            <h2 className="about-heading" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.1, textTransform: 'uppercase', marginBottom: '20px' }}>
+              Bridging Academic Learning & Industry Readiness
+            </h2>
             <div className="about-content">
-              <p className="about-lead">
-                TechX REIGNITE is a global technical upskilling initiative hosted by IEEE CS SCT SBC to bridge the gap between academic learning and industry readiness.
+              <p className="about-lead" style={{ fontSize: '1.2rem', lineHeight: 1.6, color: 'var(--text-primary)', fontWeight: 500 }}>
+                TechX REIGNITE is a premier technical upskilling initiative hosted by IEEE CS SCT SBC, designed to transform theoretical engineering fundamentals into battle-tested industry readiness.
               </p>
-              <p className="about-lead" style={{ marginTop: '16px', fontWeight: 'normal', fontSize: '0.95rem' }}>
-                The event features hands-on technical tracks alongside interactive career development and 1-on-1 nano-mentoring. Designed with an emphasis on interdisciplinary inclusivity, it empowers students across all engineering branches to build, collaborate, and innovate. Supported by an official IEEE grant, TechX REIGNITE serves as a launchpad for future tech leaders.
+              <p className="about-lead" style={{ marginTop: '20px', fontWeight: 'normal', fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+                The event combines intensive hands-on coding sprints with interdisciplinary keynotes, placement communication tracks, and personalized 1-on-1 nano-mentoring. Backed by an official IEEE grant, TechX REIGNITE serves as an equitable launchpad empowering students across all engineering branches.
               </p>
             </div>
           </div>
 
-          {/* Block 2: IEEE CS SCT SBC Description */}
+          {/* Chapter Narrative */}
           <div className="about-block">
-            <h2 className="about-heading" style={{ fontSize: '1.75rem' }}>IEEE CS SCT SBC</h2>
+            <span className="blueprint-tag">HOST CHAPTER // EXCELLENCE RECORD</span>
+            <h3 style={{ fontSize: '1.8rem', fontWeight: 800, textTransform: 'uppercase', margin: '8px 0 16px', color: 'var(--text-primary)' }}>
+              IEEE CS SCT Student Branch Chapter
+            </h3>
             <div className="about-content">
-              <p className="about-lead" style={{ fontSize: '0.95rem', fontWeight: 'normal' }}>
-                IEEE CS SCT Student Branch Chapter is a thriving community of computer science enthusiasts. Led by the passion for emerging technologies, members actively participate in events upskilling themselves while at the same time contributing to the community.
+              <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+                IEEE CS SCT SBC is a vibrant student-led technical chapter at Sree Chitra Thirunal College of Engineering. Committed to fostering innovation, the chapter regularly hosts high-impact workshops, hackathons, and symposiums.
               </p>
               
               <div className={`about-expandable-drawer ${showFullSbcText ? 'open' : ''}`}>
                 <div className="about-expandable-drawer-inner">
-                  <p className="about-lead" style={{ marginTop: '16px', fontSize: '0.95rem', fontWeight: 'normal' }}>
-                    IEEE CS SCT SBC received the Outstanding Student Branch Chapter award in 2022. We were able to secure more than 180 registrations in less than twenty-four hours for technical tracks as a part of Dhyuthi 6.0, the flagship event of IEEE SCT SB. Also, IEEE CS SBC was recognized as the Best Student Branch Chapter of IEEE SCT SB in 2024. We have successfully organized six events (5 online and 1 offline) as of now in 2026.
+                  <p style={{ marginTop: '16px', fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+                    Recognized with the Outstanding Student Branch Chapter Award in 2022 and named Best Student Branch Chapter of IEEE SCT SB in 2024, our community has organized six major technical milestones in 2026 alone, driving rapid upskilling across Kerala and beyond.
                   </p>
                 </div>
               </div>
 
-              <div className="about-actions" style={{ marginTop: '16px' }}>
+              <div className="about-actions" style={{ marginTop: '20px' }}>
                 <button 
                   className="btn btn-secondary" 
                   onClick={() => setShowFullSbcText(!showFullSbcText)}
-                  style={{ height: '36px', padding: '0 16px', fontSize: '0.75rem' }}
+                  style={{ height: '38px', padding: '0 20px', fontSize: '0.75rem', fontWeight: 700 }}
                   aria-expanded={showFullSbcText}
                 >
-                  {showFullSbcText ? 'READ LESS −' : 'READ MORE +'}
+                  {showFullSbcText ? 'READ LESS −' : 'EXPLORE CHAPTER ACHIEVEMENTS +'}
                 </button>
               </div>
             </div>
           </div>
         </ScrollReveal>
 
-        {/* Placeholder image area */}
+        {/* Supporting Visual / Architectural Block */}
         <ScrollReveal className="about-image-area" delayMs={200}>
-          <div className="image-placeholder blueprint-grid-bg" style={{ minHeight: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)' }}>
-            <span className="blueprint-tag">[ SCHEMATIC // CHAPTER ]</span>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent)', marginTop: '8px' }}>
-              IEEE CS SCT SBC
+          <div className="image-placeholder blueprint-grid-bg" style={{ minHeight: '380px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)', padding: '32px' }}>
+            <span className="blueprint-tag">[ ARCHITECTURE // SUMMIT ]</span>
+            <div style={{ fontSize: '2rem', fontWeight: 900, color: 'var(--accent)', marginTop: '12px', letterSpacing: '-0.02em' }}>
+              TECHX
             </div>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-              RECOGNISED EXCELLENCE
+            <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+              REIGNITE 2026
+            </div>
+            <div style={{ width: '40px', height: '2px', backgroundColor: 'var(--accent)', margin: '16px 0' }} />
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textAlign: 'center', lineHeight: '1.4' }}>
+              SCTCE CAMPUS • TRIVANDRUM<br />IEEE CS SCT SBC CHAPTER
             </span>
           </div>
         </ScrollReveal>

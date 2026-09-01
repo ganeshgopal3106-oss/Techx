@@ -3,9 +3,11 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { EventInfo } from './components/EventInfo';
 import { AboutSection } from './components/AboutSection';
-import { UniqueSection } from './components/UniqueSection';
+import { TechTrainSection } from './components/TechTrainSection';
 import { TracksSection } from './components/TracksSection';
 import { Timeline } from './components/Timeline';
+import { MainEventSection } from './components/MainEventSection';
+import { UniqueSection } from './components/UniqueSection';
 import { PeopleSection } from './components/PeopleSection';
 import { PartnerGrid } from './components/PartnerGrid';
 import { FAQAccordion } from './components/FAQAccordion';
@@ -33,7 +35,7 @@ function App() {
     window.addEventListener('popstate', handleLocationChange);
     window.addEventListener('navigate', handleLocationChange);
 
-    // Global Link Interceptor to route all register clicks smoothly
+    // Global Link Interceptor to route register clicks to specific track registration
     const handleLinkClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const anchor = target.closest('a');
@@ -69,39 +71,45 @@ function App() {
 
   return (
     <div className="app-wrapper">
-      {/* 1. Navbar */}
+      {/* Floating Navigation Capsule */}
       <Navbar />
 
       <main>
-        {/* 2. Hero */}
+        {/* 01 / HERO */}
         <Hero />
 
-        {/* 3. Event Info Strip */}
+        {/* METADATA STRIP */}
         <EventInfo />
 
-        {/* 4. About Section */}
+        {/* 02 / ABOUT TECHX */}
         <AboutSection />
 
-        {/* 5. Unique Features Section */}
-        <UniqueSection />
+        {/* 03 / DUAL PILLARS: TECH & TRAIN */}
+        <TechTrainSection />
 
-        {/* 6. Tracks Section */}
+        {/* 04 / TRACKS SHOWCASE (Alternating Layout) */}
         <TracksSection />
 
-        {/* 7. Event Timeline / Schedule */}
+        {/* 05 / EVENT JOURNEY (Pre-Events Circuit) */}
         <Timeline />
 
-        {/* 8. Speakers / Mentors */}
+        {/* 06 / MAIN EVENT SHOWCASE (26-27 September & Parallel Branch) */}
+        <MainEventSection />
+
+        {/* 07 / COMMUNITY & IMPACT */}
+        <UniqueSection />
+
+        {/* DISTINGUISHED MENTORS & GUESTS */}
         <PeopleSection />
 
-        {/* 9. Partners / Collaborators */}
+        {/* COLLABORATING PARTNERS */}
         <PartnerGrid />
 
-        {/* 10. FAQ Section */}
+        {/* 08 / FREQUENTLY ASKED QUESTIONS */}
         <FAQAccordion allowMultipleOpen={false} />
       </main>
 
-      {/* 11. Footer */}
+      {/* 09 / FOOTER */}
       <Footer />
     </div>
   );

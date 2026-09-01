@@ -8,15 +8,14 @@ export const Navbar: React.FC = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      // Simple active section highlights
-      const sections = ['about', 'tracks', 'schedule', 'faq'];
+      const sections = ['about', 'pillars', 'tracks', 'journey', 'schedule', 'community', 'faq'];
       let currentSection = 'hero';
 
       for (const sectionId of sections) {
         const el = document.getElementById(sectionId);
         if (el) {
           const rect = el.getBoundingClientRect();
-          if (rect.top <= 150 && rect.bottom >= 150) {
+          if (rect.top <= 180 && rect.bottom >= 180) {
             currentSection = sectionId;
             break;
           }
@@ -77,11 +76,25 @@ export const Navbar: React.FC = () => {
             Tracks
           </a>
           <a 
+            href="#journey" 
+            className={`nav-link ${activeSection === 'journey' ? 'active' : ''}`}
+            onClick={(e) => handleNavClick(e, 'journey')}
+          >
+            Journey
+          </a>
+          <a 
             href="#schedule" 
             className={`nav-link ${activeSection === 'schedule' ? 'active' : ''}`}
             onClick={(e) => handleNavClick(e, 'schedule')}
           >
-            Schedule
+            Main Event
+          </a>
+          <a 
+            href="#community" 
+            className={`nav-link ${activeSection === 'community' ? 'active' : ''}`}
+            onClick={(e) => handleNavClick(e, 'community')}
+          >
+            Community
           </a>
           <a 
             href="#faq" 

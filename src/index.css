@@ -3350,10 +3350,227 @@ a:focus-visible {
   margin-bottom: 2px;
 }
 
-.review-value {
-  font-size: 0.95rem;
+/* Alternating Track Showcase */
+.tracks-showcase-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-huge);
+  margin-top: var(--space-xl);
+}
+
+.track-showcase-row {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--space-xxl);
+  align-items: center;
+}
+
+.track-showcase-row.reversed {
+  grid-template-columns: 1fr 1.1fr;
+}
+
+.track-showcase-row.reversed .track-showcase-image-wrap {
+  order: 2;
+}
+
+.track-showcase-row.reversed .track-showcase-info {
+  order: 1;
+}
+
+@media (max-width: 900px) {
+  .track-showcase-row,
+  .track-showcase-row.reversed {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  
+  .track-showcase-row.reversed .track-showcase-image-wrap {
+    order: 1;
+  }
+  
+  .track-showcase-row.reversed .track-showcase-info {
+    order: 2;
+  }
+}
+
+.track-showcase-image-wrap {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(28, 23, 19, 0.04);
+}
+
+.track-showcase-image-wrap:hover .track-image-blurred {
+  filter: blur(4px) brightness(0.95);
+  transform: scale(1.06);
+}
+
+.track-showcase-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.track-showcase-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 800;
+  text-transform: uppercase;
   color: var(--text-primary);
-  font-weight: 500;
+  line-height: 1.1;
+}
+
+/* Dedicated Tech / Train Interactive Switch Section */
+.tech-train-switch-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+.tech-train-pill {
+  padding: 12px 36px;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  color: var(--text-secondary);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.tech-train-pill.active {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+  box-shadow: 0 4px 16px rgba(207, 131, 38, 0.25);
+}
+
+.tech-train-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+}
+
+@media (max-width: 768px) {
+  .tech-train-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tech-train-block {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: var(--space-xl);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  position: relative;
+}
+
+.tech-train-block:hover {
+  border-color: var(--accent);
+}
+
+/* Dedicated Main Event Showcase */
+.main-event-section {
+  background-color: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.main-event-dates-tabs {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--space-sm);
+}
+
+.main-event-date-tab {
+  background: none;
+  border: 1px solid var(--border-color);
+  padding: 10px 24px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.main-event-date-tab.active {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+/* Community & Benefits Editorial Showcase */
+.community-editorial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-primary);
+  overflow: hidden;
+}
+
+@media (max-width: 992px) {
+  .community-editorial-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .community-editorial-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.community-benefit-item {
+  padding: var(--space-xl);
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  transition: background-color 200ms ease;
+}
+
+.community-benefit-item:hover {
+  background-color: var(--bg-secondary);
+}
+
+.benefit-num {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+
+.benefit-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.benefit-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { tracksData } from '../data/tracks';
-import type { Track, TrackCategory } from '../data/tracks';
+import type { Track } from '../data/tracks';
 import { SectionHeader } from './SectionHeader';
 import { ScrollReveal } from './ScrollReveal';
 
 export const TracksSection: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TrackCategory>('TECH');
   const [selectedTrack, setSelectedTrack] = useState<Track | null>(null);
-
-  const filteredTracks = tracksData.filter(track => track.category === activeTab);
 
   // Close modal on Escape key
   useEffect(() => {
@@ -32,53 +29,29 @@ export const TracksSection: React.FC = () => {
   return (
     <section id="tracks" className="tracks-section section-padding blueprint-grid-bg" style={{ position: 'relative' }}>
       <div className="container">
-        <SectionHeader num="02 / TRACKS" title="Explore The Tracks" />
+        <SectionHeader num="04 / TRACKS SHOWCASE" title="Explore The Upcoming Tracks" />
         
-        {/* TECH / TRAIN Switcher */}
-        <ScrollReveal>
-          <div className="tracks-toggle-bar" role="tablist" aria-label="Track Categories">
-            <button 
-              role="tab"
-              aria-selected={activeTab === 'TECH'}
-              className={`toggle-btn ${activeTab === 'TECH' ? 'active' : ''}`}
-              onClick={() => setActiveTab('TECH')}
-            >
-              TECH
-            </button>
-            <button 
-              role="tab"
-              aria-selected={activeTab === 'TRAIN'}
-              className={`toggle-btn ${activeTab === 'TRAIN' ? 'active' : ''}`}
-              onClick={() => setActiveTab('TRAIN')}
-            >
-              TRAIN
-            </button>
-          </div>
-        </ScrollReveal>
-
-        {/* Tracks Card Grid */}
-        <ScrollReveal className="tracks-card-grid">
-          {filteredTracks.map((track) => {
+        {/* Alternating Tracks Showcase List */}
+        <div className="tracks-showcase-list">
+          {tracksData.map((track, index) => {
+            const isReversed = index % 2 === 1;
             const isComingSoon = track.status === 'COMING_SOON';
-            const isClosed = track.status === 'CLOSED';
 
             return (
-              <div 
-                key={track.id} 
-                className="track-card" 
-                onClick={() => setSelectedTrack(track)}
-                style={{ cursor: 'pointer' }}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedTrack(track); } }}
-                aria-label={`View details for ${track.title}`}
-              >
-                {/* Image Visual (Blurred if COMING_SOON, Crisp if OPEN) */}
-                <div className="track-image-container">
+              <ScrollReveal key={track.id} className={`track-showcase-row ${isReversed ? 'reversed' : ''}`}>
+                {/* Large Visual Block (Blurred with Centered Coming Soon Overlay) */}
+                <div 
+                  className="track-showcase-image-wrap"
+                  onClick={() => setSelectedTrack(track)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedTrack(track); } }}
+                  aria-label={`View track details for ${track.title}`}
+                >
                   <img 
                     src={track.image} 
                     alt={track.title} 
-                    className={isComingSoon ? "track-image-blurred" : "track-image-crisp"}
+                    className="track-image-blurred"
                     loading="lazy"
                   />
                   {isComingSoon && (
@@ -86,35 +59,38 @@ export const TracksSection: React.FC = () => {
                       COMING SOON
                     </div>
                   )}
-                  {isClosed && (
-                    <div className="track-coming-soon-badge" style={{ backgroundColor: 'var(--text-muted)' }}>
-                      REGISTRATION CLOSED
-                    </div>
-                  )}
                 </div>
 
-                {/* Card Body */}
-                <div className="track-card-body">
-                  <div className="track-card-meta">
-                    <span className="track-card-num">TRACK {track.num}</span>
-                    <span className="track-card-badge">{track.badge}</span>
+                {/* Information Column */}
+                <div className="track-showcase-info">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span className="blueprint-tag">TRACK {track.num} // {track.category}</span>
+                    <span className="badge">{track.badge}</span>
                   </div>
 
-                  <h3 className="track-card-title">{track.title}</h3>
-                  <p className="track-card-desc">{track.description}</p>
+                  <h3 className="track-showcase-title">
+                    {track.title}
+                  </h3>
 
-                  {/* Exploration Action */}
-                  <div className="track-card-actions" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.6', margin: '8px 0 16px' }}>
+                    {track.description}
+                  </p>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <button
+                      onClick={() => setSelectedTrack(track)}
+                      className="btn btn-secondary"
+                      style={{ height: '40px', padding: '0 20px', fontSize: '0.85rem', fontWeight: 700 }}
+                    >
+                      Explore Track Details <span className="arrow">→</span>
+                    </button>
                     <span className="blueprint-tag">STATUS: {track.status}</span>
-                    <span className="track-link" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                      EXPLORE <span className="arrow">→</span>
-                    </span>
                   </div>
                 </div>
-              </div>
+              </ScrollReveal>
             );
           })}
-        </ScrollReveal>
+        </div>
       </div>
 
       {/* Expanded Track Detail Modal */}
@@ -129,7 +105,7 @@ export const TracksSection: React.FC = () => {
           <div className="track-modal-card">
             <div className="track-modal-header">
               <div>
-                <span className="blueprint-tag">TRACK {selectedTrack.num} // {selectedTrack.badge}</span>
+                <span className="blueprint-tag">TRACK {selectedTrack.num} // {selectedTrack.category}</span>
                 <h3 id="track-modal-title" style={{ fontSize: '1.4rem', fontWeight: 800, textTransform: 'uppercase', marginTop: '4px' }}>
                   {selectedTrack.title}
                 </h3>
@@ -149,11 +125,11 @@ export const TracksSection: React.FC = () => {
                   <div style={{ color: 'var(--accent)', fontWeight: 800, fontSize: '1.1rem', letterSpacing: '0.1em', marginBottom: '8px' }}>
                     COMING SOON
                   </div>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.6' }}>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.6' }}>
                     The complete curriculum, workshop modules, and mentor lineups for this track will be revealed soon.
                   </p>
                   <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginTop: '8px', fontFamily: 'var(--font-mono)' }}>
-                    Stay tuned for syllabus updates and registration opening.
+                    Stay tuned for syllabus updates and track registration announcements.
                   </p>
                 </div>
               ) : selectedTrack.registrationEnabled ? (
