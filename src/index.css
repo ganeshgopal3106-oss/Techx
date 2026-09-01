@@ -1,28 +1,28 @@
 /* 
-  TECHX DESIGN SYSTEM - Refined Editorial Redesign
-  Theme: Warm Cream & Charcoal with Burnt Orange Accents
+  TECHX REIGNITE DESIGN SYSTEM
+  Theme: Primary Orange (#CF8326) & Off White (#FFFCF1) Editorial Palette
   Typography: Inter (Sans) & JetBrains Mono (Mono)
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;850&family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
-  /* Color Palette - Cream & Charcoal Editorial Theme */
-  --bg-primary: #F5E7D0;       /* Cream primary background */
-  --bg-secondary: #E6D6B8;     /* Sand secondary surface */
-  --bg-tertiary: #dfcea9;      /* Darker sand surface */
+  /* Color Palette - Approved Minimal Editorial Identity */
+  --bg-primary: #FFFCF1;       /* Off-White primary canvas */
+  --bg-secondary: #F5EEDC;     /* Warm Sand secondary surface */
+  --bg-tertiary: #EFE6D2;      /* Muted Sand surface */
   
-  --text-primary: #111111;     /* Charcoal primary text */
-  --text-secondary: #3B2414;   /* Chocolate secondary text */
-  --text-muted: #5f4a3d;       /* Muted chocolate */
+  --text-primary: #1C1713;     /* Deep Warm Charcoal */
+  --text-secondary: #4A3C31;   /* Warm Chocolate-Charcoal */
+  --text-muted: #7D6A5B;       /* Muted Warm Chocolate */
   
-  --border-color: #d4c2a5;     /* Warm sand border */
-  --border-hover: #bba683;     /* Darker sand border on hover */
+  --border-color: #E8DFD0;     /* Thin Warm Sand Border */
+  --border-hover: #CF8326;     /* Primary Orange on hover */
   
-  --accent: #D35400;           /* Burnt Orange primary accent */
-  --accent-hover: #b84900;     /* Darker burnt orange */
-  --accent-secondary: #F39C12; /* Amber secondary accent */
-  --accent-text: #F5E7D0;      /* Cream text on accent buttons */
+  --accent: #CF8326;           /* Primary Orange */
+  --accent-hover: #B87018;     /* Deep Orange */
+  --accent-secondary: #E5983B; /* Amber-Orange */
+  --accent-text: #FFFCF1;      /* Off-White text on accent surfaces */
   
   /* Typography Scale */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -45,9 +45,9 @@
   --radius-lg: 8px;
   
   --transition-normal: 200ms cubic-bezier(0.16, 1, 0.3, 1);
-  --shadow-sm: 0 1px 3px rgba(59, 36, 20, 0.04);
-  --shadow-md: 0 4px 16px rgba(59, 36, 20, 0.06);
-  --shadow-lg: 0 12px 32px rgba(59, 36, 20, 0.08);
+  --shadow-sm: 0 1px 3px rgba(28, 23, 19, 0.03);
+  --shadow-md: 0 4px 16px rgba(28, 23, 19, 0.05);
+  --shadow-lg: 0 12px 32px rgba(28, 23, 19, 0.07);
 }
 
 /* Reset and base elements */
@@ -2337,7 +2337,7 @@ img {
   padding-top: var(--space-sm);
 }
 
-/* 4. Tracks TECH / TRAIN Switcher and Explorer Card */
+/* 4. Tracks TECH / TRAIN Switcher and Blurred Coming Soon Cards */
 .tracks-toggle-bar {
   display: flex;
   justify-content: center;
@@ -2358,6 +2358,8 @@ img {
   transition: color 250ms ease, border-color 250ms ease;
   text-transform: uppercase;
   margin-bottom: -1px;
+  background: none;
+  cursor: pointer;
 }
 
 .toggle-btn:hover {
@@ -2369,125 +2371,212 @@ img {
   border-bottom-color: var(--accent);
 }
 
-.track-row-item {
-  cursor: pointer;
-  transition: border-color var(--transition-normal), background-color var(--transition-normal);
-}
-
-.track-row-item:hover {
-  border-bottom-color: var(--border-hover);
-  background-color: rgba(59, 36, 20, 0.015);
-}
-
-.track-link .arrow {
-  transition: transform 200ms ease;
-  display: inline-block;
-}
-
-.track-row-item:hover .track-link .arrow {
-  transform: translateX(4px);
-}
-
-/* Inline Track Details Drawer */
-.track-details-drawer {
+/* Track Card Grid */
+.tracks-card-grid {
   display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 300ms cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden;
-  border-bottom: 1px solid var(--border-color);
-  background-color: rgba(59, 36, 20, 0.01);
-}
-
-.track-details-drawer.open {
-  grid-template-rows: 1fr;
-}
-
-.track-details-inner {
-  overflow: hidden;
-  padding: var(--space-md) var(--space-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-}
-
-.track-details-columns {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-xl);
 }
 
-.track-details-title {
+@media (max-width: 768px) {
+  .tracks-card-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+}
+
+.track-card {
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-normal), transform var(--transition-normal);
+  position: relative;
+}
+
+.track-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.track-image-container {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background-color: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.track-image-blurred {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(10px) brightness(0.9);
+  transform: scale(1.08);
+  transition: filter 350ms cubic-bezier(0.16, 1, 0.3, 1), transform 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: filter, transform;
+}
+
+.track-card:hover .track-image-blurred {
+  filter: blur(4px) brightness(0.95);
+  transform: scale(1.12);
+}
+
+.track-coming-soon-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(207, 131, 38, 0.95);
+  color: var(--accent-text);
+  padding: 8px 18px;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  color: var(--accent);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.track-card-body {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: var(--space-xs);
+  background-color: var(--bg-primary);
+}
+
+.track-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 4px;
 }
 
-.track-learn-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.track-card-num {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.1em;
 }
 
-.track-learn-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--text-secondary);
-}
-
-.track-learn-bullet {
-  content: '';
-  width: 5px;
-  height: 5px;
-  background-color: var(--accent);
-  border-radius: 50%;
-  margin-top: 7px;
-  flex-shrink: 0;
-}
-
-.track-info-panel {
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  padding: var(--space-md);
-  background-color: var(--bg-secondary);
-}
-
-.track-info-row {
-  margin-bottom: var(--space-sm);
-}
-
-.track-info-label {
+.track-card-badge {
   font-family: var(--font-mono);
   font-size: 0.65rem;
-  font-weight: 700;
+  padding: 2px 8px;
+  border: 1px solid var(--border-color);
   color: var(--text-muted);
   text-transform: uppercase;
+  border-radius: 2px;
 }
 
-.track-info-val {
-  font-size: 0.85rem;
-  font-weight: 600;
+.track-card-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  text-transform: uppercase;
   color: var(--text-primary);
+  line-height: 1.2;
 }
 
-.track-details-actions {
+.track-card-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 4px;
+  flex-grow: 1;
+}
+
+.track-card-actions {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-color);
   display: flex;
-  justify-content: flex-end;
-  gap: var(--space-md);
-  align-items: center;
+  flex-direction: column;
+  gap: var(--space-xs);
 }
 
-@media (max-width: 768px) {
-  .track-details-columns {
-    grid-template-columns: 1fr;
-    gap: var(--space-md);
-  }
+.track-register-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--accent);
+  color: var(--accent-text);
+  padding: 10px 16px;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+}
+
+.track-register-btn:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.track-register-btn .arrow {
+  transition: transform 200ms ease;
+}
+
+.track-register-btn:hover .arrow {
+  transform: translateX(4px);
+}
+
+.track-notice-text {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* Track Context Banner on Register Page */
+.track-context-banner {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--accent);
+  padding: var(--space-md);
+  margin-bottom: var(--space-lg);
+  border-radius: var(--radius-sm);
+}
+
+.track-context-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.track-context-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.track-context-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
 }
 
 /* 5. Schedule date switcher & timeline */

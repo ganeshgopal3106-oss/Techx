@@ -1,43 +1,61 @@
+export type TrackStatus = 'coming-soon' | 'open' | 'closed';
+export type TrackCategory = 'TECH' | 'TRAIN';
+
 export interface Track {
   id: string;
   num: string;
   name: string;
+  category: TrackCategory;
   description: string;
   badge: string;
-  actionLink: string;
+  image: string;
+  status: TrackStatus;
+  registrationLink: string;
 }
 
 export const tracksData: Track[] = [
   {
-    id: "tech-workshops",
+    id: "track-01",
     num: "01",
     name: "Hands-on Workshops",
-    description: "Hands-on workshops will be organized as two tracks and held offline.",
+    category: "TECH",
+    description: "Intensive coding sprints and technical labs organized as two specialized offline tracks.",
     badge: "TECH / OFFLINE SPRINT",
-    actionLink: "/register"
+    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
+    status: "coming-soon",
+    registrationLink: "/register?track=track-01"
   },
   {
-    id: "tech-talks",
+    id: "track-02",
     num: "02",
     name: "Talk Sessions",
-    description: "Interactive talk sessions on interdisciplinary topics including Advanced Driver Assistance Systems (ADAS) and AI in Healthcare.",
+    category: "TECH",
+    description: "Expert keynotes on interdisciplinary breakthroughs including Advanced Driver Assistance Systems (ADAS) and AI in Healthcare.",
     badge: "TECH / INTERDISCIPLINARY TALKS",
-    actionLink: "/register"
+    image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80",
+    status: "coming-soon",
+    registrationLink: "/register?track=track-02"
   },
   {
-    id: "train-softskills",
+    id: "track-03",
     num: "03",
     name: "Soft Skills",
-    description: "Interactive sessions on soft skills and effective communication to aid the placement process of students.",
+    category: "TRAIN",
+    description: "Master placement communication, resume curation, pitch delivery, and industry-ready soft skills.",
     badge: "TRAIN / CAREER PLACEMENT SESSIONS",
-    actionLink: "/register"
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80",
+    status: "coming-soon",
+    registrationLink: "/register?track=track-03"
   },
   {
-    id: "train-mentoring",
+    id: "track-04",
     num: "04",
     name: "Nano-Mentoring",
-    description: "A mentoring session for participants based on their requirements by eminent young professionals from the industry. The session will provide personalized guidance to each participant.",
+    category: "TRAIN",
+    description: "Personalized 1-on-1 career counseling and portfolio roadmapping with distinguished young professionals from top tech firms.",
     badge: "TRAIN / 1-ON-1 PERSONALIZED GUIDANCE",
-    actionLink: "/register"
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
+    status: "coming-soon",
+    registrationLink: "/register?track=track-04"
   }
 ];

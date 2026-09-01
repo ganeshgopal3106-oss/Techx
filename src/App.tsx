@@ -14,7 +14,7 @@ import { Footer } from './components/Footer';
 import { RegisterPage } from './components/RegisterPage';
 
 function App() {
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [currentPath, setCurrentPath] = useState(window.location.pathname + window.location.search);
 
   function navigateTo(path: string) {
     window.history.pushState({}, '', path);
@@ -28,13 +28,13 @@ function App() {
 
   useEffect(() => {
     const handleLocationChange = () => {
-      setCurrentPath(window.location.pathname);
+      setCurrentPath(window.location.pathname + window.location.search);
     };
 
     window.addEventListener('popstate', handleLocationChange);
     window.addEventListener('navigate', handleLocationChange);
 
-    // Global Link Interceptor to route all register clicks to /register
+    // Global Link Interceptor to route all register clicks smoothly
     const handleLinkClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const anchor = target.closest('a');
@@ -42,10 +42,11 @@ function App() {
         const href = anchor.getAttribute('href');
         if (href) {
           const isRegisterAction = 
-            href === '/register' || 
+            href.startsWith('/register') || 
             href === '#join' || 
             anchor.classList.contains('nav-cta') || 
             anchor.classList.contains('mobile-cta') ||
+            anchor.classList.contains('track-register-btn') ||
             anchor.textContent?.toLowerCase().includes('register') || 
             anchor.textContent?.toLowerCase().includes('claim your spot') ||
             anchor.textContent?.toLowerCase().includes('join the sprint') ||
@@ -53,7 +54,11 @@ function App() {
 
           if (isRegisterAction) {
             e.preventDefault();
-            navigateTo('/register');
+            if (href.startsWith('/register')) {
+              navigateTo(href);
+            } else {
+              navigateTo('/register');
+            }
           }
         }
       }
@@ -68,10 +73,14 @@ function App() {
     };
   }, []);
 
-  if (currentPath === '/register') {
+  const isRegisterPage = currentPath.startsWith('/register') || window.location.pathname.startsWith('/register');
+  const searchParams = new URLSearchParams(window.location.search);
+  const trackIdParam = searchParams.get('track') || undefined;
+
+  if (isRegisterPage) {
     return (
       <div className="app-wrapper">
-        <RegisterPage onBack={handleBackToHome} />
+        <RegisterPage onBack={handleBackToHome} initialTrackId={trackIdParam} />
       </div>
     );
   }
@@ -100,7 +109,7 @@ function App() {
         {/* 7. Event Timeline / Schedule */}
         <Timeline />
 
-        {/* 8. Speakers / Mentors (toggleable inside config) */}
+        {/* 8. Speakers / Mentors */}
         <PeopleSection />
 
         {/* 9. Partners / Collaborators */}

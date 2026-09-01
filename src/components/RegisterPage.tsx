@@ -1,11 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { tracksData } from '../data/tracks';
 import { eventData } from '../data/event';
 
 interface RegisterPageProps {
   onBack: () => void;
+  initialTrackId?: string;
 }
 
 interface FormState {
+  trackId: string;
+  trackName: string;
   fullName: string;
   email: string;
   phone: string;
@@ -14,7 +18,6 @@ interface FormState {
   department: string;
   ieeeMember: 'yes' | 'no' | '';
   ieeeMembershipId: string;
-  ieeeCSMember: 'yes' | 'no' | '';
   paymentScreenshot: File | null;
 }
 
@@ -27,12 +30,16 @@ interface FormErrors {
   department?: string;
   ieeeMember?: string;
   ieeeMembershipId?: string;
-  ieeeCSMember?: string;
   paymentScreenshot?: string;
 }
 
-export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack }) => {
+export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrackId }) => {
+  // Identify the target track from prop or fallback to first track
+  const matchedTrack = tracksData.find(t => t.id === initialTrackId) || tracksData[0];
+
   const [formData, setFormData] = useState<FormState>({
+    trackId: matchedTrack.id,
+    trackName: matchedTrack.name,
     fullName: '',
     email: '',
     phone: '',
@@ -41,7 +48,6 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack }) => {
     department: '',
     ieeeMember: '',
     ieeeMembershipId: '',
-    ieeeCSMember: '',
     paymentScreenshot: null,
   });
 
@@ -49,6 +55,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack }) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
 
   // Clean up object URL to prevent memory leaks
   useEffect(() => {
@@ -61,18 +68,10 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack }) => {
 
   // Calculate ticket amount based on membership selections
   const getTicketAmount = (): number => {
-    if (formData.ieeeMember === 'no') {
-      return 400;
-    }
     if (formData.ieeeMember === 'yes') {
-      if (formData.ieeeCSMember === 'yes') {
-        return 200;
-      }
-      if (formData.ieeeCSMember === 'no') {
-        return 300;
-      }
+      return 300;
     }
-    return 400; // Default fallback
+    return 400; // Default for non-members
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -81,7 +80,6 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack }) => {
       ...prev,
       [name]: value
     }));
-    // Clear error for this field
     if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({
         ...prev,
@@ -90,127 +88,104 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack }) => {
     }
   };
 
-  const handleRadioChange = (name: 'ieeeMember' | 'ieeeCSMember', value: 'yes' | 'no') => {
+  const handleRadioChange = (name: 'ieeeMember', value: 'yes' | 'no') => {
     setFormData(prev => ({
       ...prev,
       [name]: value,
-      // Clear secondary dependent fields if parent toggled
-      ...(name === 'ieeeMember' && value === 'no' ? { ieeeMembershipId: '', ieeeCSMember: '' } : {})
+      ...(value === 'no' ? { ieeeMembershipId: '' } : {})
     }));
-
-    setErrors(prev => ({
-      ...prev,
-      [name]: undefined,
-      ...(name === 'ieeeMember' && value === 'no' ? { ieeeMembershipId: undefined, ieeeCSMember: undefined } : {})
-    }));
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: undefined,
+        ieeeMembershipId: undefined
+      }));
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      validateAndSetFile(file);
-    }
-  };
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  const validateAndSetFile = (file: File) => {
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    const maxSizeBytes = 5 * 1024 * 1024; // 5 MB
-
-    if (!allowedTypes.includes(file.type)) {
+    // Validate type (JPG, JPEG, PNG)
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    if (!validTypes.includes(file.type.toLowerCase())) {
       setErrors(prev => ({
         ...prev,
-        paymentScreenshot: 'Only JPG, JPEG, and PNG images are supported.'
+        paymentScreenshot: 'Please upload a valid image file (JPG, JPEG, or PNG).'
       }));
-      clearFile();
       return;
     }
 
-    if (file.size > maxSizeBytes) {
+    // Validate size (max 5 MB)
+    if (file.size > 5 * 1024 * 1024) {
       setErrors(prev => ({
         ...prev,
-        paymentScreenshot: 'Screenshot exceeds the 5 MB file size limit.'
+        paymentScreenshot: 'File size exceeds 5 MB. Please upload a smaller image.'
       }));
-      clearFile();
       return;
     }
+
+    // Set preview
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
 
     setFormData(prev => ({
       ...prev,
       paymentScreenshot: file
     }));
-    
-    // Clear error
+
     setErrors(prev => ({
       ...prev,
       paymentScreenshot: undefined
     }));
-
-    // Revoke old URL if it exists
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-    }
-
-    const objectUrl = URL.createObjectURL(file);
-    setPreviewUrl(objectUrl);
   };
 
-  const clearFile = () => {
-    setFormData(prev => ({
-      ...prev,
-      paymentScreenshot: null
-    }));
+  const handleRemoveFile = () => {
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
       setPreviewUrl(null);
     }
+    setFormData(prev => ({
+      ...prev,
+      paymentScreenshot: null
+    }));
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
   };
 
-  const triggerUploadClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const validateForm = (): boolean => {
+  const validate = (): boolean => {
     const newErrors: FormErrors = {};
 
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Full Name is required.';
-    }
+    if (!formData.fullName.trim()) newErrors.fullName = 'Full Name is required';
     if (!formData.email.trim()) {
-      newErrors.email = 'Email Address is required.';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address.';
+      newErrors.email = 'Email Address is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
     }
+
     if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone Number is required.';
-    } else if (!/^\+?[0-9\s-]{8,15}$/.test(formData.phone)) {
-      newErrors.phone = 'Please enter a valid phone number.';
+      newErrors.phone = 'Phone Number is required';
+    } else if (!/^[0-9+\-\s]{10,15}$/.test(formData.phone.trim())) {
+      newErrors.phone = 'Please enter a valid contact number (10-15 digits)';
     }
-    if (!formData.college.trim()) {
-      newErrors.college = 'College or Organization name is required.';
-    }
-    if (!formData.year) {
-      newErrors.year = 'Please select your Year / Semester.';
-    }
-    if (!formData.department) {
-      newErrors.department = 'Please select your Department.';
-    }
+
+    if (!formData.college.trim()) newErrors.college = 'College/Organization name is required';
+    if (!formData.year.trim()) newErrors.year = 'Please select your current year/semester';
+    if (!formData.department.trim()) newErrors.department = 'Department / Branch is required';
+
     if (!formData.ieeeMember) {
-      newErrors.ieeeMember = 'Please select whether you are an IEEE member.';
+      newErrors.ieeeMember = 'Please select IEEE membership status';
+    } else if (formData.ieeeMember === 'yes' && !formData.ieeeMembershipId.trim()) {
+      newErrors.ieeeMembershipId = 'IEEE Membership ID is required';
     }
-    if (formData.ieeeMember === 'yes') {
-      if (!formData.ieeeMembershipId.trim()) {
-        newErrors.ieeeMembershipId = 'IEEE Membership ID is required when Yes is selected.';
-      }
-      if (!formData.ieeeCSMember) {
-        newErrors.ieeeCSMember = 'Please specify if you are an IEEE Computer Society (CS) member.';
-      }
-    }
+
     if (!formData.paymentScreenshot) {
-      newErrors.paymentScreenshot = 'Payment screenshot is required.';
+      newErrors.paymentScreenshot = 'Payment screenshot is required to verify your pass';
     }
 
     setErrors(newErrors);
@@ -219,44 +194,40 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      // Backend Data Structure verification
-      console.log('Backend-Ready Data Structure:', {
-        fullName: formData.fullName,
-        email: formData.email,
-        phone: formData.phone,
-        college: formData.college,
-        year: formData.year,
-        department: formData.department,
-        ieeeMember: formData.ieeeMember,
-        ieeeMembershipId: formData.ieeeMember === 'yes' ? formData.ieeeMembershipId : '',
-        ieeeCSMember: formData.ieeeMember === 'yes' ? formData.ieeeCSMember : 'no',
-        ticketAmount: getTicketAmount(),
-        paymentScreenshotName: formData.paymentScreenshot?.name,
-        paymentScreenshotSize: formData.paymentScreenshot?.size
-      });
-
+    if (validate()) {
       setIsSubmitted(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
+  const selectedTrack = tracksData.find(t => t.id === formData.trackId) || matchedTrack;
+
   if (isSubmitted) {
     return (
-      <div className="registration-page section-padding">
-        <div className="container form-max-width success-state-container">
-          <div className="success-icon-wrapper">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="success-check-icon">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-          </div>
-          <h2 className="success-heading">Registration Submitted!</h2>
-          <p className="success-text">Thank you for registering for <strong>{eventData.title}</strong>.</p>
-          <p className="success-subtext">Your registration details and payment screenshot have been received successfully. We will verify your payment and email your event ticket pass soon.</p>
-          <div className="success-actions">
-            <button className="btn btn-primary" onClick={onBack}>
-              Go to Homepage
-            </button>
+      <div className="register-page-container">
+        <div className="container" style={{ maxWidth: '680px', padding: 'var(--space-xl) var(--space-md)' }}>
+          <div className="card success-card" style={{ padding: 'var(--space-xl)', textAlign: 'center' }}>
+            <div className="success-icon" style={{ fontSize: '3rem', color: 'var(--accent)', marginBottom: 'var(--space-md)' }}>
+              ✓
+            </div>
+            <p className="section-number" style={{ color: 'var(--accent)', marginBottom: '8px' }}>REGISTRATION CONFIRMED</p>
+            <h1 style={{ fontSize: '2rem', marginBottom: 'var(--space-sm)' }}>You're In!</h1>
+            
+            <div className="track-context-banner" style={{ textAlign: 'left', margin: 'var(--space-lg) 0' }}>
+              <div className="track-context-label">REGISTERED TRACK</div>
+              <div className="track-context-title">{selectedTrack.name} (TRACK {selectedTrack.num})</div>
+              <div className="track-context-sub">{selectedTrack.badge}</div>
+            </div>
+
+            <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-lg)', lineHeight: '1.6' }}>
+              Thank you, <strong>{formData.fullName}</strong>. Your registration and payment verification have been logged. We've sent a confirmation email to <strong>{formData.email}</strong>.
+            </p>
+
+            <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: 'var(--space-lg)' }}>
+              <button onClick={onBack} className="btn btn-primary" style={{ padding: '12px 32px' }}>
+                Back to TechX Summit
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -264,330 +235,312 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack }) => {
   }
 
   return (
-    <div className="registration-page section-padding">
-      <div className="container form-max-width">
-        {/* Back navigation */}
-        <button className="back-link-btn" onClick={onBack}>
-          <span className="back-arrow">←</span> Back
-        </button>
+    <div className="register-page-container">
+      <div className="container" style={{ maxWidth: '780px', padding: 'var(--space-xl) var(--space-md)' }}>
+        
+        {/* Navigation Breadcrumb / Back button */}
+        <div style={{ marginBottom: 'var(--space-lg)' }}>
+          <button 
+            onClick={onBack} 
+            className="btn btn-secondary" 
+            style={{ height: '36px', padding: '0 16px', fontSize: '0.8rem' }}
+          >
+            ← Back to Overview
+          </button>
+        </div>
 
-        <div className="card registration-card-wrapper">
-          <div className="form-header">
-            <h1 className="form-title">CLAIM YOUR SPOT</h1>
-            <p className="form-subtitle">Register for {eventData.title}</p>
+        <div className="card registration-card-wrapper" style={{ padding: 'var(--space-xl)' }}>
+          {/* Header */}
+          <div style={{ marginBottom: 'var(--space-lg)' }}>
+            <p className="section-number" style={{ color: 'var(--accent)', marginBottom: '4px' }}>
+              {eventData.title}
+            </p>
+            <h1 style={{ fontSize: '2.2rem', textTransform: 'uppercase', marginBottom: '8px' }}>
+              Registration
+            </h1>
           </div>
 
-          <form onSubmit={handleSubmit} className="register-form" noValidate>
-          
-          {/* SECTION 1: PERSONAL DETAILS */}
-          <div className="form-section-block">
-            <h3 className="form-section-title">PERSONAL DETAILS</h3>
-            
-            <div className="form-group">
-              <label htmlFor="fullName" className="form-label">Full Name *</label>
-              <input 
-                type="text" 
-                id="fullName" 
-                name="fullName"
-                value={formData.fullName} 
-                onChange={handleInputChange}
-                className={`form-input-text ${errors.fullName ? 'has-error' : ''}`}
-                placeholder="John Doe"
-              />
-              {errors.fullName && <span className="error-message-text">{errors.fullName}</span>}
-            </div>
-
-            <div className="form-row-2">
-              <div className="form-group">
-                <label htmlFor="email" className="form-label">Email Address *</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  name="email"
-                  value={formData.email} 
-                  onChange={handleInputChange}
-                  className={`form-input-text ${errors.email ? 'has-error' : ''}`}
-                  placeholder="john@example.com"
-                />
-                {errors.email && <span className="error-message-text">{errors.email}</span>}
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="phone" className="form-label">Phone Number *</label>
-                <input 
-                  type="tel" 
-                  id="phone" 
-                  name="phone"
-                  value={formData.phone} 
-                  onChange={handleInputChange}
-                  className={`form-input-text ${errors.phone ? 'has-error' : ''}`}
-                  placeholder="+91 XXXXX XXXXX"
-                />
-                {errors.phone && <span className="error-message-text">{errors.phone}</span>}
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="college" className="form-label">College / Organization *</label>
-              <input 
-                type="text" 
-                id="college" 
-                name="college"
-                value={formData.college} 
-                onChange={handleInputChange}
-                className={`form-input-text ${errors.college ? 'has-error' : ''}`}
-                placeholder="College / Institution Name"
-              />
-              {errors.college && <span className="error-message-text">{errors.college}</span>}
-            </div>
-
-            <div className="form-row-2">
-              <div className="form-group">
-                <label htmlFor="year" className="form-label">Year / Semester *</label>
-                <select 
-                  id="year" 
-                  name="year"
-                  value={formData.year}
-                  onChange={handleInputChange}
-                  className={`form-select ${errors.year ? 'has-error' : ''}`}
-                >
-                  <option value="">Select Year/Semester</option>
-                  <option value="1st Year - S1">1st Year - Semester 1</option>
-                  <option value="1st Year - S2">1st Year - Semester 2</option>
-                  <option value="2nd Year - S3">2nd Year - Semester 3</option>
-                  <option value="2nd Year - S4">2nd Year - Semester 4</option>
-                  <option value="3rd Year - S5">3rd Year - Semester 5</option>
-                  <option value="3rd Year - S6">3rd Year - Semester 6</option>
-                  <option value="4th Year - S7">4th Year - Semester 7</option>
-                  <option value="4th Year - S8">4th Year - Semester 8</option>
-                  <option value="Other / Non-Student">Other / Professional / Non-Student</option>
-                </select>
-                {errors.year && <span className="error-message-text">{errors.year}</span>}
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="department" className="form-label">Department *</label>
-                <select 
-                  id="department" 
-                  name="department"
-                  value={formData.department}
-                  onChange={handleInputChange}
-                  className={`form-select ${errors.department ? 'has-error' : ''}`}
-                >
-                  <option value="">Select Department</option>
-                  <option value="CSE">Computer Science & Engineering</option>
-                  <option value="IT">Information Technology</option>
-                  <option value="ECE">Electronics & Communication</option>
-                  <option value="EEE">Electrical & Electronics</option>
-                  <option value="ME">Mechanical Engineering</option>
-                  <option value="CE">Civil Engineering</option>
-                  <option value="Other">Other Department / Non-Engineering</option>
-                </select>
-                {errors.department && <span className="error-message-text">{errors.department}</span>}
-              </div>
-            </div>
+          {/* Track Context Banner */}
+          <div className="track-context-banner">
+            <div className="track-context-label">TRACK {selectedTrack.num}</div>
+            <h2 className="track-context-title">{selectedTrack.name}</h2>
+            <p className="track-context-sub">
+              Register specifically for this track. {selectedTrack.description}
+            </p>
           </div>
 
-          <hr className="form-divider" />
-
-          {/* SECTION 2: IEEE MEMBERSHIP */}
-          <div className="form-section-block">
-            <h3 className="form-section-title">IEEE MEMBERSHIP</h3>
+          <form onSubmit={handleSubmit} noValidate>
             
-            <div className="form-group">
-              <label className="form-label">Are you an IEEE member? *</label>
-              <div className="form-radio-group">
-                <label className="radio-label">
-                  <input 
-                    type="radio" 
-                    name="ieeeMember" 
-                    checked={formData.ieeeMember === 'yes'}
-                    onChange={() => handleRadioChange('ieeeMember', 'yes')}
-                    className="form-radio-input"
-                  />
-                  <span className="radio-custom"></span>
-                  Yes
-                </label>
-                
-                <label className="radio-label">
-                  <input 
-                    type="radio" 
-                    name="ieeeMember" 
-                    checked={formData.ieeeMember === 'no'}
-                    onChange={() => handleRadioChange('ieeeMember', 'no')}
-                    className="form-radio-input"
-                  />
-                  <span className="radio-custom"></span>
-                  No
-                </label>
+            {/* Section 1: Personal Details */}
+            <div className="form-section">
+              <h3 className="form-section-title">1. Personal Details</h3>
+              
+              <div className="form-group">
+                <label className="form-label" htmlFor="fullName">Full Name *</label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  placeholder="e.g. Alex Rivera"
+                  className={`form-input ${errors.fullName ? 'has-error' : ''}`}
+                />
+                {errors.fullName && <span className="form-error-text">{errors.fullName}</span>}
               </div>
-              {errors.ieeeMember && <span className="error-message-text">{errors.ieeeMember}</span>}
+
+              <div className="form-grid-2">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="email">Email Address *</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="alex@example.com"
+                    className={`form-input ${errors.email ? 'has-error' : ''}`}
+                  />
+                  {errors.email && <span className="form-error-text">{errors.email}</span>}
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label" htmlFor="phone">Phone / WhatsApp Number *</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="+91 9876543210"
+                    className={`form-input ${errors.phone ? 'has-error' : ''}`}
+                  />
+                  {errors.phone && <span className="form-error-text">{errors.phone}</span>}
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" htmlFor="college">College / University / Organization *</label>
+                <input
+                  type="text"
+                  id="college"
+                  name="college"
+                  value={formData.college}
+                  onChange={handleInputChange}
+                  placeholder="e.g. SCT College of Engineering"
+                  className={`form-input ${errors.college ? 'has-error' : ''}`}
+                />
+                {errors.college && <span className="form-error-text">{errors.college}</span>}
+              </div>
+
+              <div className="form-grid-2">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="year">Year / Semester *</label>
+                  <select
+                    id="year"
+                    name="year"
+                    value={formData.year}
+                    onChange={handleInputChange}
+                    className={`form-input form-select ${errors.year ? 'has-error' : ''}`}
+                  >
+                    <option value="">Select current year</option>
+                    <option value="1st Year">1st Year / S1-S2</option>
+                    <option value="2nd Year">2nd Year / S3-S4</option>
+                    <option value="3rd Year">3rd Year / S5-S6</option>
+                    <option value="4th Year">4th Year / S7-S8</option>
+                    <option value="Postgraduate / Professional">Postgraduate / Professional</option>
+                  </select>
+                  {errors.year && <span className="form-error-text">{errors.year}</span>}
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label" htmlFor="department">Department / Branch *</label>
+                  <input
+                    type="text"
+                    id="department"
+                    name="department"
+                    value={formData.department}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Computer Science, ECE, Mech, Biotech"
+                    className={`form-input ${errors.department ? 'has-error' : ''}`}
+                  />
+                  {errors.department && <span className="form-error-text">{errors.department}</span>}
+                </div>
+              </div>
             </div>
 
-            {/* Transition Panel for IEEE Membership Details */}
-            <div className={`ieee-details-transition ${formData.ieeeMember === 'yes' ? 'visible' : ''}`}>
+            {/* Section 2: IEEE Membership */}
+            <div className="form-section">
+              <h3 className="form-section-title">2. IEEE Membership</h3>
+              
               <div className="form-group">
-                <label htmlFor="ieeeMembershipId" className="form-label">IEEE Membership ID *</label>
-                <input 
-                  type="text" 
-                  id="ieeeMembershipId" 
-                  name="ieeeMembershipId"
-                  value={formData.ieeeMembershipId} 
-                  onChange={handleInputChange}
-                  className={`form-input-text ${errors.ieeeMembershipId ? 'has-error' : ''}`}
-                  placeholder="Membership Number"
-                  disabled={formData.ieeeMember !== 'yes'}
-                />
-                {errors.ieeeMembershipId && <span className="error-message-text">{errors.ieeeMembershipId}</span>}
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Are you an IEEE Computer Society (CS) member? *</label>
-                <div className="form-radio-group">
-                  <label className="radio-label">
-                    <input 
-                      type="radio" 
-                      name="ieeeCSMember" 
-                      checked={formData.ieeeCSMember === 'yes'}
-                      onChange={() => handleRadioChange('ieeeCSMember', 'yes')}
-                      className="form-radio-input"
-                      disabled={formData.ieeeMember !== 'yes'}
+                <label className="form-label">Are you an active IEEE Member? *</label>
+                <div className="radio-group-row">
+                  <label className={`radio-label-box ${formData.ieeeMember === 'yes' ? 'selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="ieeeMember"
+                      value="yes"
+                      checked={formData.ieeeMember === 'yes'}
+                      onChange={() => handleRadioChange('ieeeMember', 'yes')}
                     />
-                    <span className="radio-custom"></span>
-                    Yes
+                    <span>YES</span>
                   </label>
                   
-                  <label className="radio-label">
-                    <input 
-                      type="radio" 
-                      name="ieeeCSMember" 
-                      checked={formData.ieeeCSMember === 'no'}
-                      onChange={() => handleRadioChange('ieeeCSMember', 'no')}
-                      className="form-radio-input"
-                      disabled={formData.ieeeMember !== 'yes'}
+                  <label className={`radio-label-box ${formData.ieeeMember === 'no' ? 'selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="ieeeMember"
+                      value="no"
+                      checked={formData.ieeeMember === 'no'}
+                      onChange={() => handleRadioChange('ieeeMember', 'no')}
                     />
-                    <span className="radio-custom"></span>
-                    No
+                    <span>NO</span>
                   </label>
                 </div>
-                {errors.ieeeCSMember && <span className="error-message-text">{errors.ieeeCSMember}</span>}
-              </div>
-            </div>
-          </div>
-
-          <hr className="form-divider" />
-
-          {/* SECTION 3: PAYMENT */}
-          <div className="form-section-block">
-            <h3 className="form-section-title">PAYMENT</h3>
-            <p className="payment-instruction">Complete the payment using the QR code below.</p>
-            
-            <div className="payment-qr-container">
-              {/* Responsive Vector SVG UPI QR code */}
-              <svg viewBox="0 0 150 150" className="payment-qr-svg" aria-label="Payment QR Code">
-                <rect width="150" height="150" fill="white" />
-                {/* Border frames */}
-                <path d="M10 10 h30 M10 10 v30 M140 10 h-30 M140 10 v30 M10 140 h30 M10 140 v-30 M140 140 h-30 M140 140 v-30" stroke="black" strokeWidth="4" fill="none" />
-                {/* Top-Left Corner Box */}
-                <rect x="20" y="20" width="30" height="30" fill="black" />
-                <rect x="25" y="25" width="20" height="20" fill="white" />
-                <rect x="30" y="30" width="10" height="10" fill="black" />
-                {/* Top-Right Corner Box */}
-                <rect x="100" y="20" width="30" height="30" fill="black" />
-                <rect x="105" y="25" width="20" height="20" fill="white" />
-                <rect x="110" y="30" width="10" height="10" fill="black" />
-                {/* Bottom-Left Corner Box */}
-                <rect x="20" y="100" width="30" height="30" fill="black" />
-                <rect x="25" y="105" width="20" height="20" fill="white" />
-                <rect x="30" y="110" width="10" height="10" fill="black" />
-                {/* QR Code Matrix Elements (premium mock look) */}
-                <rect x="60" y="20" width="10" height="15" fill="black" />
-                <rect x="80" y="20" width="15" height="10" fill="black" />
-                <rect x="65" y="45" width="20" height="10" fill="black" />
-                <rect x="90" y="40" width="5" height="20" fill="black" />
-                <rect x="110" y="60" width="20" height="5" fill="black" />
-                <rect x="125" y="70" width="10" height="20" fill="black" />
-                
-                <rect x="20" y="60" width="15" height="10" fill="black" />
-                <rect x="45" y="60" width="10" height="30" fill="black" />
-                <rect x="25" y="80" width="10" height="10" fill="black" />
-                
-                <rect x="60" y="70" width="30" height="25" fill="black" />
-                <rect x="65" y="75" width="20" height="15" fill="white" />
-                <rect x="72" y="82" width="6" height="6" fill="black" />
-                
-                <rect x="100" y="100" width="15" height="10" fill="black" />
-                <rect x="120" y="105" width="10" height="25" fill="black" />
-                <rect x="60" y="110" width="15" height="10" fill="black" />
-                <rect x="80" y="125" width="30" height="10" fill="black" />
-                <rect x="60" y="130" width="10" height="10" fill="black" />
-                {/* UPI identifier in center */}
-                <rect x="63" y="63" width="24" height="24" rx="4" fill="white" stroke="black" strokeWidth="1.5" />
-                <text x="75" y="77" fontSize="8" fontWeight="bold" fontFamily="sans-serif" textAnchor="middle" fill="black">UPI</text>
-              </svg>
-            </div>
-
-            <div className="payment-amount-display">
-              Amount: <span className="amount-val">₹{getTicketAmount()}</span>
-            </div>
-
-            <div className="form-group screenshot-upload-group">
-              <label className="form-label">Payment Screenshot *</label>
-              
-              <div 
-                className={`upload-dropzone ${errors.paymentScreenshot ? 'has-error' : ''}`}
-                onClick={triggerUploadClick}
-              >
-                <input 
-                  type="file" 
-                  ref={fileInputRef} 
-                  onChange={handleFileChange}
-                  accept=".jpg,.jpeg,.png"
-                  className="hidden-file-input"
-                />
-                
-                <div className="upload-prompt">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="upload-icon">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="17 8 12 3 7 8"></polyline>
-                    <line x1="12" y1="3" x2="12" y2="15"></line>
-                  </svg>
-                  <span className="upload-action-text">Upload Screenshot</span>
-                  <span className="upload-meta-text">JPG, JPEG or PNG • Maximum 5 MB</span>
-                </div>
+                {errors.ieeeMember && <span className="form-error-text">{errors.ieeeMember}</span>}
               </div>
 
-              {errors.paymentScreenshot && <span className="error-message-text">{errors.paymentScreenshot}</span>}
-
-              {/* Screenshot Preview */}
-              {formData.paymentScreenshot && previewUrl && (
-                <div className="screenshot-preview-container">
-                  <div className="preview-header">
-                    <span className="preview-filename" title={formData.paymentScreenshot.name}>
-                      {formData.paymentScreenshot.name}
-                    </span>
-                    <button type="button" className="preview-remove-btn" onClick={clearFile}>
-                      Remove
-                    </button>
-                  </div>
-                  <div className="preview-body">
-                    <img src={previewUrl} alt="Screenshot Preview" className="preview-img" />
-                  </div>
+              {/* Conditional IEEE Membership ID */}
+              {formData.ieeeMember === 'yes' && (
+                <div className="form-group animate-fade-in" style={{ marginTop: 'var(--space-md)' }}>
+                  <label className="form-label" htmlFor="ieeeMembershipId">IEEE Membership Number (8-9 digits) *</label>
+                  <input
+                    type="text"
+                    id="ieeeMembershipId"
+                    name="ieeeMembershipId"
+                    value={formData.ieeeMembershipId}
+                    onChange={handleInputChange}
+                    placeholder="e.g. 98765432"
+                    className={`form-input ${errors.ieeeMembershipId ? 'has-error' : ''}`}
+                  />
+                  {errors.ieeeMembershipId && <span className="form-error-text">{errors.ieeeMembershipId}</span>}
                 </div>
               )}
             </div>
-          </div>
 
-          <hr className="form-divider" />
+            {/* Section 3: Payment */}
+            <div className="form-section">
+              <h3 className="form-section-title">3. Payment</h3>
+              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: 'var(--space-md)' }}>
+                Complete the payment using the official UPI QR code below.
+              </p>
 
-          {/* SUBMIT BUTTON */}
-          <div className="form-submit-container">
-            <button type="submit" className="btn btn-primary btn-large form-submit-btn">
-              CLAIM YOUR SPOT →
-            </button>
-          </div>
+              <div className="payment-qr-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: 'var(--bg-secondary)', padding: 'var(--space-lg)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', marginBottom: 'var(--space-md)' }}>
+                
+                {/* Clean Payment QR SVG Mock */}
+                <div style={{ background: '#FFFFFF', padding: '16px', borderRadius: '4px', border: '1px solid var(--border-color)', marginBottom: '12px' }}>
+                  <svg width="180" height="180" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100" height="100" fill="white"/>
+                    <path fillRule="evenodd" clipRule="evenodd" d="M10 10H40V40H10V10ZM15 15V35H35V15H15Z" fill="#1C1713"/>
+                    <rect x="20" y="20" width="10" height="10" fill="#CF8326"/>
+                    <path fillRule="evenodd" clipRule="evenodd" d="M60 10H90V40H60V10ZM65 15V35H85V15H65Z" fill="#1C1713"/>
+                    <rect x="70" y="20" width="10" height="10" fill="#CF8326"/>
+                    <path fillRule="evenodd" clipRule="evenodd" d="M10 60H40V90H10V60ZM15 65V85H35V65H15Z" fill="#1C1713"/>
+                    <rect x="20" y="70" width="10" height="10" fill="#CF8326"/>
+                    <rect x="45" y="10" width="10" height="10" fill="#1C1713"/>
+                    <rect x="45" y="25" width="10" height="10" fill="#CF8326"/>
+                    <rect x="45" y="45" width="10" height="10" fill="#1C1713"/>
+                    <rect x="10" y="45" width="10" height="10" fill="#1C1713"/>
+                    <rect x="25" y="45" width="10" height="10" fill="#CF8326"/>
+                    <rect x="60" y="45" width="10" height="10" fill="#CF8326"/>
+                    <rect x="75" y="45" width="15" height="10" fill="#1C1713"/>
+                    <rect x="60" y="60" width="10" height="15" fill="#1C1713"/>
+                    <rect x="75" y="60" width="15" height="15" fill="#CF8326"/>
+                    <rect x="45" y="65" width="10" height="25" fill="#1C1713"/>
+                    <rect x="60" y="80" width="30" height="10" fill="#1C1713"/>
+                  </svg>
+                </div>
 
-        </form>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--accent)', marginBottom: '4px' }}>
+                    Amount: ₹{getTicketAmount()}
+                  </div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                    UPI ID: ieeesctsb@okhdfcbank
+                  </div>
+                </div>
+              </div>
+
+              {/* Payment Screenshot Upload */}
+              <div className="form-group" style={{ marginTop: 'var(--space-md)' }}>
+                <label className="form-label">Upload Payment Screenshot * (JPG, JPEG, PNG, max 5 MB)</label>
+                
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  accept=".jpg,.jpeg,.png"
+                  style={{ display: 'none' }}
+                />
+
+                {!formData.paymentScreenshot ? (
+                  <div 
+                    onClick={() => fileInputRef.current?.click()}
+                    style={{
+                      border: `2px dashed ${errors.paymentScreenshot ? '#D32F2F' : 'var(--border-color)'}`,
+                      padding: 'var(--space-lg)',
+                      textAlign: 'center',
+                      cursor: 'pointer',
+                      borderRadius: 'var(--radius-sm)',
+                      backgroundColor: 'rgba(207, 131, 38, 0.02)',
+                      transition: 'border-color 200ms ease'
+                    }}
+                  >
+                    <div style={{ color: 'var(--accent)', fontSize: '1.5rem', marginBottom: '4px' }}>⇪</div>
+                    <div style={{ fontWeight: 600, fontSize: '0.85rem', marginBottom: '2px' }}>
+                      Click to choose screenshot
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                      Supports JPG, JPEG, PNG up to 5 MB
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ border: '1px solid var(--border-color)', padding: 'var(--space-md)', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: 'var(--space-md)', backgroundColor: 'var(--bg-secondary)' }}>
+                    {previewUrl && (
+                      <img 
+                        src={previewUrl} 
+                        alt="Payment Screenshot Preview" 
+                        style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px', border: '1px solid var(--border-color)' }}
+                      />
+                    )}
+                    <div style={{ flexGrow: 1, overflow: 'hidden' }}>
+                      <div style={{ fontSize: '0.85rem', fontWeight: 600, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                        {formData.paymentScreenshot.name}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                        {(formData.paymentScreenshot.size / (1024 * 1024)).toFixed(2)} MB
+                      </div>
+                    </div>
+                    <button 
+                      type="button"
+                      onClick={handleRemoveFile}
+                      className="btn btn-secondary"
+                      style={{ height: '32px', padding: '0 12px', fontSize: '0.75rem' }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
+                {errors.paymentScreenshot && <span className="form-error-text">{errors.paymentScreenshot}</span>}
+              </div>
+            </div>
+
+            {/* Submit Action */}
+            <div style={{ marginTop: 'var(--space-xl)', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+              <button 
+                type="submit" 
+                className="btn btn-primary btn-large"
+                style={{ width: '100%', height: '48px', fontSize: '0.9rem' }}
+              >
+                Complete Registration for Track {selectedTrack.num} →
+              </button>
+              <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                Your ticket credentials and orientation schedule will be delivered to your registered email.
+              </p>
+            </div>
+
+          </form>
         </div>
       </div>
     </div>
