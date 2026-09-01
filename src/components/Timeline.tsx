@@ -3,6 +3,8 @@ import { scheduleData } from '../data/schedule';
 import { SectionHeader } from './SectionHeader';
 import { ScrollReveal } from './ScrollReveal';
 
+type TimelineFilter = 'ALL' | 'PRE-EVENTS' | 'MAIN EVENT';
+
 interface EventDetails {
   description: string;
   venue?: string;
@@ -78,239 +80,275 @@ const eventDetailsMap: Record<string, EventDetails> = {
 
   // Main Events - 27 Sep
   "Competition (based on workshop)": {
-    description: "Apply the skills learned on Day 1! Teams will compete in a 3.5-hour sprint to build and pitch a functional prototype. Top teams win exciting cash prizes.",
-    venue: "Main Seminar Hall",
-    requirements: "Mandatory project submission on GitHub."
+    description: "Final capstone hackathon and coding project evaluation. Put everything you learned during the sessions to the test in front of a jury panel.",
+    venue: "Main Computer Center",
+    requirements: "Team submissions by 12:30 PM."
   },
   "Nano Mentoring": {
-    description: "1-on-1 personalized review sessions with corporate developers and product leads. Discuss your resume, projects, and career roadmap.",
-    venue: "Mentorship Zone (Library Block)",
-    requirements: "Prior slot booking required upon arrival."
+    description: "Personalized 1-on-1 mentoring sessions where students sit with young engineering professionals for direct career guidance, portfolio reviews, and mock question drills.",
+    venue: "Mentorship Zone (Classrooms 101–104)"
   },
   "Vibe Check, CS MD Session": {
-    description: "A fun community engagement and networking session. Discover global IEEE Computer Society benefits, grant programs, and how to get active.",
+    description: "Interactive IEEE Computer Society Membership Development (CS MD) community networking session. Open conversations, lightning talks, and community insights.",
     venue: "CS Lounge"
   },
   "Culturals": {
-    description: "Performances, live music, and talent showcase prepared by the SCT SB team to celebrate the summit's success.",
-    venue: "Central Courtyard"
+    description: "Live musical performances, student showcases, and cultural acts to celebrate the conclusion of TECHX.",
+    venue: "Open Air Auditorium"
   },
   "Closing Ceremony": {
-    description: "Award distribution for competition winners, distribution of participation certificates, feedback collection, and valedictory address.",
+    description: "Award distribution for competition winners, certificate presentations, and closing remarks by the IEEE organizing committee.",
     venue: "Main Seminar Hall"
   }
 };
 
+const allDates = [
+  { id: "13th September", short: "13 SEP", type: "PRE-EVENT", title: "Online Workshop" },
+  { id: "14th September", short: "14 SEP", type: "PRE-EVENT", title: "BlindScript" },
+  { id: "15th September", short: "15 SEP", type: "PRE-EVENT", title: "AI in HealthCare" },
+  { id: "16th September", short: "16 SEP", type: "PRE-EVENT", title: "Competition" },
+  { id: "17th September", short: "17 SEP", type: "PRE-EVENT", title: "CypherX" },
+  { id: "19th September", short: "19 SEP", type: "PRE-EVENT", title: "ADAS — The Future of Driving" },
+  { id: "26th September", short: "26 SEP", type: "MAIN EVENT", title: "Day 01 — Workshops & Talks" },
+  { id: "27th September", short: "27 SEP", type: "MAIN EVENT", title: "Day 02 — Sprints & Mentoring" }
+];
+
 export const Timeline: React.FC = () => {
-  const [filter, setFilter] = useState<'ALL' | 'ONLINE' | 'OFFLINE'>('ALL');
-  const [selectedDate, setSelectedDate] = useState<string>('13th September');
-  const [expandedEvents, setExpandedEvents] = useState<Record<string, boolean>>({});
+  const [filter, setFilter] = useState<TimelineFilter>('ALL');
+  const [selectedDate, setSelectedDate] = useState<string>("26th September");
+  const [expandedSlots, setExpandedSlots] = useState<Record<string, boolean>>({});
 
-  // Helper to convert "13th September" to "13 SEP"
-  const formatDateShort = (dateStr: string) => {
-    const parts = dateStr.split(' ');
-    const num = parts[0].replace('th', '');
-    const month = parts[1].substring(0, 3).toUpperCase();
-    return `${num} ${month}`;
+  const toggleSlot = (key: string) => {
+    setExpandedSlots(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
-  // Pre-event and main event date groupings
-  const preEventDates = scheduleData.preEvents.map(pe => pe.date);
-  const mainEventDates = scheduleData.mainEvents.map(me => me.date);
-
-  const handleFilterChange = (newFilter: 'ALL' | 'ONLINE' | 'OFFLINE') => {
-    setFilter(newFilter);
-    setExpandedEvents({});
-    if (newFilter === 'ONLINE' && !preEventDates.includes(selectedDate)) {
-      setSelectedDate(preEventDates[0]);
-    } else if (newFilter === 'OFFLINE' && !mainEventDates.includes(selectedDate)) {
-      setSelectedDate(mainEventDates[0]);
-    }
-  };
-
-  const toggleEventDetail = (eventTitle: string) => {
-    setExpandedEvents(prev => ({
-      ...prev,
-      [eventTitle]: !prev[eventTitle]
-    }));
-  };
-
-  // Get active items based on active date
-  const isPreEventActive = preEventDates.includes(selectedDate);
-  const activeEventsList = isPreEventActive
-    ? scheduleData.preEvents.filter(pe => pe.date === selectedDate).map(pe => ({
-        time: "6:00 PM – 7:30 PM", // default time slot for online pre-events
-        event: pe.title,
-        isParallel: false
-      }))
-    : scheduleData.mainEvents.find(me => me.date === selectedDate)?.timeline || [];
-
-  // Group events by time slot to identify parallel events
-  const groupedEvents: { time: string; items: typeof activeEventsList }[] = [];
-  activeEventsList.forEach(item => {
-    const existing = groupedEvents.find(g => g.time === item.time);
-    if (existing) {
-      existing.items.push(item);
-    } else {
-      groupedEvents.push({ time: item.time, items: [item] });
-    }
+  const filteredDates = allDates.filter(d => {
+    if (filter === 'PRE-EVENTS') return d.type === 'PRE-EVENT';
+    if (filter === 'MAIN EVENT') return d.type === 'MAIN EVENT';
+    return true;
   });
 
-  const showPreEvents = filter === 'ALL' || filter === 'ONLINE';
-  const showMainEvents = filter === 'ALL' || filter === 'OFFLINE';
+  const isSelectedPreEvent = scheduleData.preEvents.some(pe => pe.date === selectedDate);
+  const selectedPreEvent = scheduleData.preEvents.find(pe => pe.date === selectedDate);
+  const selectedMainEvent = scheduleData.mainEvents.find(me => me.date === selectedDate);
 
   return (
-    <section id="schedule" className="schedule-section section-padding">
+    <section id="schedule" className="schedule-section section-padding blueprint-circuit-bg" style={{ position: 'relative' }}>
       <div className="container">
-        <SectionHeader num="03 / SCHEDULE" title="Event Timeline" />
+        <SectionHeader num="03 / SCHEDULE" title="Interactive Timeline" />
         
-        {/* Schedule Controls */}
-        <ScrollReveal className="schedule-controls">
-          {/* 1. Subtle Filter */}
-          <div className="schedule-filter-group">
-            <span className="schedule-filter-label">FILTER</span>
-            <div className="schedule-dates-row">
-              <button 
-                className={`schedule-filter-btn ${filter === 'ALL' ? 'active' : ''}`}
-                onClick={() => handleFilterChange('ALL')}
+        {/* Filter Controls & Circuit Bus Header */}
+        <ScrollReveal className="circuit-bus-header">
+          <span className="blueprint-tag">[ BUS // CIRCUIT ROUTE ]</span>
+          <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto' }}>
+            {(['ALL', 'PRE-EVENTS', 'MAIN EVENT'] as TimelineFilter[]).map((f) => (
+              <button
+                key={f}
+                className={`schedule-filter-btn ${filter === f ? 'active' : ''}`}
+                onClick={() => {
+                  setFilter(f);
+                  if (f === 'PRE-EVENTS' && !isSelectedPreEvent) {
+                    setSelectedDate("13th September");
+                  } else if (f === 'MAIN EVENT' && isSelectedPreEvent) {
+                    setSelectedDate("26th September");
+                  }
+                }}
               >
-                ALL
+                {f}
               </button>
-              <button 
-                className={`schedule-filter-btn ${filter === 'ONLINE' ? 'active' : ''}`}
-                onClick={() => handleFilterChange('ONLINE')}
-              >
-                ONLINE
-              </button>
-              <button 
-                className={`schedule-filter-btn ${filter === 'OFFLINE' ? 'active' : ''}`}
-                onClick={() => handleFilterChange('OFFLINE')}
-              >
-                OFFLINE
-              </button>
-            </div>
+            ))}
           </div>
-
-          {/* 2. Pre-Events Dates */}
-          {showPreEvents && (
-            <div className="schedule-date-group">
-              <span className="schedule-date-label">PRE-EVENTS</span>
-              <div className="schedule-dates-row">
-                {scheduleData.preEvents.map((pe, idx) => (
-                  <button
-                    key={idx}
-                    className={`schedule-date-btn ${selectedDate === pe.date ? 'active' : ''}`}
-                    onClick={() => { setSelectedDate(pe.date); setExpandedEvents({}); }}
-                    aria-label={`Select ${pe.date}`}
-                  >
-                    {formatDateShort(pe.date)}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* 3. Main Event Dates */}
-          {showMainEvents && (
-            <div className="schedule-date-group" style={{ borderTop: 'none', paddingTop: 0 }}>
-              <span className="schedule-date-label">MAIN EVENT</span>
-              <div className="schedule-dates-row">
-                {scheduleData.mainEvents.map((me, idx) => (
-                  <button
-                    key={idx}
-                    className={`schedule-date-btn ${selectedDate === me.date ? 'active' : ''}`}
-                    onClick={() => { setSelectedDate(me.date); setExpandedEvents({}); }}
-                    aria-label={`Select ${me.date}`}
-                  >
-                    {formatDateShort(me.date)}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
         </ScrollReveal>
 
-        {/* Selected Day's Timeline List */}
-        <ScrollReveal className="timeline-flow-list">
-          {groupedEvents.map((group, groupIdx) => {
-            const hasParallel = group.items.length > 1;
-
-            if (hasParallel) {
+        {/* Continuous Interactive Circuit Track */}
+        <ScrollReveal>
+          <div className="circuit-track-line" role="tablist" aria-label="Event Dates Circuit">
+            {filteredDates.map((dateObj) => {
+              const isActive = selectedDate === dateObj.id;
               return (
-                <div key={groupIdx} className="timeline-parallel-wrapper">
-                  <div className="timeline-parallel-time">{group.time}</div>
-                  <div className="timeline-parallel-grid">
-                    {group.items.map((item, itemIdx) => {
-                      const details = eventDetailsMap[item.event];
-                      const isOpen = expandedEvents[item.event] || false;
-                      
-                      return (
-                        <button
-                          key={itemIdx}
-                          className={`timeline-parallel-col ${isOpen ? 'open' : ''}`}
-                          onClick={() => toggleEventDetail(item.event)}
-                          aria-expanded={isOpen}
-                          style={{ border: '1px solid var(--border-color)', display: 'block', width: '100%', font: 'inherit' }}
-                        >
-                          <div className="parallel-meta">SIMULTANEOUS</div>
-                          <h4 className="parallel-title">{item.event}</h4>
-                          <p className="parallel-desc" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
-                            {isOpen ? 'Click to collapse description' : 'Click to view details'}
-                          </p>
-                          
-                          <div className={`timeline-event-details ${isOpen ? 'open' : ''}`} aria-hidden={!isOpen}>
-                            <div className="timeline-event-details-inner" style={{ paddingLeft: 0 }}>
-                              {details?.description && <p style={{ margin: '8px 0 0 0' }}>{details.description}</p>}
-                              <div className="timeline-details-card" style={{ padding: '8px', marginTop: '8px' }}>
-                                {details?.venue && <div><strong>Venue:</strong> {details.venue}</div>}
-                                {details?.organizer && <div><strong>Organizer:</strong> {details.organizer}</div>}
-                                {details?.requirements && <div style={{ marginTop: '4px' }}><strong>Requirements:</strong> {details.requirements}</div>}
-                              </div>
-                            </div>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
+                <button
+                  key={dateObj.id}
+                  className={`circuit-node-button ${isActive ? 'active' : ''}`}
+                  onClick={() => setSelectedDate(dateObj.id)}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-label={dateObj.id}
+                >
+                  <div className="circuit-node-point" />
+                  <span className="circuit-node-date">{dateObj.short}</span>
+                  <span style={{ fontSize: '0.65rem', color: isActive ? 'var(--accent)' : 'var(--text-muted)', textTransform: 'uppercase', marginTop: '2px' }}>
+                    {dateObj.type === 'PRE-EVENT' ? 'Online' : 'Main'}
+                  </span>
+                </button>
               );
-            }
+            })}
+          </div>
+        </ScrollReveal>
 
-            // Normal timeline row
-            const item = group.items[0];
-            const details = eventDetailsMap[item.event];
-            const isOpen = expandedEvents[item.event] || false;
+        {/* Selected Date Event Content Panel */}
+        <ScrollReveal className="circuit-details-panel">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-md)', borderBottom: '1px solid var(--border-color)', paddingBottom: 'var(--space-sm)' }}>
+            <div>
+              <span className="blueprint-tag">DATE // {selectedDate}</span>
+              <h3 style={{ fontSize: '1.4rem', textTransform: 'uppercase', fontWeight: 800, color: 'var(--text-primary)', marginTop: '2px' }}>
+                {isSelectedPreEvent ? selectedPreEvent?.title : selectedMainEvent?.date}
+              </h3>
+            </div>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', padding: '4px 10px', backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '2px', color: 'var(--accent)', fontWeight: 700 }}>
+              {isSelectedPreEvent ? 'ONLINE PRE-EVENT' : 'OFFLINE MAIN SUMMIT'}
+            </span>
+          </div>
 
-            return (
-              <button
-                key={groupIdx}
-                className={`timeline-event-row ${isOpen ? 'open' : ''}`}
-                onClick={() => toggleEventDetail(item.event)}
-                aria-expanded={isOpen}
-              >
-                <div className="timeline-event-main">
-                  <div className="timeline-event-title-block">
-                    <span className="timeline-event-time">{group.time}</span>
-                    <h4 className="timeline-event-title">{item.event}</h4>
-                  </div>
-                  <span className="timeline-event-toggle-icon">+</span>
+          {/* If Pre-Event Selected */}
+          {isSelectedPreEvent && selectedPreEvent && (
+            <div style={{ padding: 'var(--space-md) 0' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-md)' }}>
+                <div style={{ background: 'var(--bg-secondary)', padding: 'var(--space-md)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
+                  <div className="blueprint-tag">ORGANIZER</div>
+                  <div style={{ fontWeight: 700, marginTop: '4px', color: 'var(--text-primary)' }}>{selectedPreEvent.organizer}</div>
                 </div>
+                <div style={{ background: 'var(--bg-secondary)', padding: 'var(--space-md)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
+                  <div className="blueprint-tag">PLATFORM / VENUE</div>
+                  <div style={{ fontWeight: 700, marginTop: '4px', color: 'var(--text-primary)' }}>
+                    {eventDetailsMap[selectedPreEvent.title]?.venue || 'Online Virtual Meeting'}
+                  </div>
+                </div>
+              </div>
 
-                <div className={`timeline-event-details ${isOpen ? 'open' : ''}`} aria-hidden={!isOpen}>
-                  <div className="timeline-event-details-inner">
-                    {details?.description && <p>{details.description}</p>}
-                    {(details?.venue || details?.requirements || details?.organizer) && (
-                      <div className="timeline-details-card">
-                        {details.venue && <div><strong>Venue:</strong> {details.venue}</div>}
-                        {details.organizer && <div><strong>Organizer:</strong> {details.organizer}</div>}
-                        {details.requirements && <div style={{ marginTop: '4px' }}><strong>Requirements:</strong> {details.requirements}</div>}
+              <p style={{ marginTop: 'var(--space-md)', color: 'var(--text-secondary)', lineHeight: '1.6', fontSize: '0.95rem' }}>
+                {eventDetailsMap[selectedPreEvent.title]?.description}
+              </p>
+              {eventDetailsMap[selectedPreEvent.title]?.requirements && (
+                <div style={{ marginTop: 'var(--space-sm)', fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                  REQUIREMENT: {eventDetailsMap[selectedPreEvent.title]?.requirements}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* If Main Event Selected */}
+          {!isSelectedPreEvent && selectedMainEvent && (
+            <div className="main-event-schedule-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {selectedDate === "27th September" ? (
+                /* 27 September with Parallel Split Circuit */
+                <>
+                  <div className="timeline-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--accent)' }}>09:30 AM – 01:00 PM</span>
+                      <span className="badge">OFFLINE SPRINT</span>
+                    </div>
+                    <div style={{ fontWeight: 700, fontSize: '1.05rem', margin: '4px 0' }}>Competition (based on workshop)</div>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{eventDetailsMap["Competition (based on workshop)"]?.description}</p>
+                  </div>
+
+                  <div className="timeline-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>01:00 PM – 02:00 PM</span>
+                    <div style={{ fontWeight: 600, fontSize: '1rem', margin: '4px 0' }}>Lunch Break</div>
+                  </div>
+
+                  {/* PARALLEL CIRCUIT BRANCH (2:00 PM – 4:00 PM) */}
+                  <div style={{ margin: 'var(--space-sm) 0', padding: 'var(--space-md)', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <span className="blueprint-tag">[ BRANCH // PARALLEL SESSIONS ]</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>02:00 PM – 04:00 PM</span>
+                    </div>
+
+                    <div className="circuit-branch-container">
+                      {/* Branch 1: Nano Mentoring */}
+                      <div style={{ background: 'var(--bg-primary)', padding: 'var(--space-md)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
+                        <span className="blueprint-tag">BRANCH A // MENTORSHIP</span>
+                        <div style={{ fontWeight: 800, fontSize: '1.05rem', marginTop: '4px', color: 'var(--text-primary)' }}>
+                          Nano Mentoring
+                        </div>
+                        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: '1.5' }}>
+                          {eventDetailsMap["Nano Mentoring"]?.description}
+                        </p>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginTop: '8px' }}>
+                          VENUE: {eventDetailsMap["Nano Mentoring"]?.venue}
+                        </div>
                       </div>
-                    )}
+
+                      {/* Branch 2: Vibe Check */}
+                      <div style={{ background: 'var(--bg-primary)', padding: 'var(--space-md)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
+                        <span className="blueprint-tag">BRANCH B // CS MD SESSION</span>
+                        <div style={{ fontWeight: 800, fontSize: '1.05rem', marginTop: '4px', color: 'var(--text-primary)' }}>
+                          Vibe Check, CS MD Session
+                        </div>
+                        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: '1.5' }}>
+                          {eventDetailsMap["Vibe Check, CS MD Session"]?.description}
+                        </p>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginTop: '8px' }}>
+                          VENUE: {eventDetailsMap["Vibe Check, CS MD Session"]?.venue}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </button>
-            );
-          })}
+
+                  <div className="timeline-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>04:00 PM – 04:30 PM</span>
+                    <div style={{ fontWeight: 600, fontSize: '1rem', margin: '4px 0' }}>Break & Refreshments</div>
+                  </div>
+
+                  <div className="timeline-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--accent)' }}>04:30 PM – 05:30 PM</span>
+                    <div style={{ fontWeight: 700, fontSize: '1.05rem', margin: '4px 0' }}>Culturals</div>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{eventDetailsMap["Culturals"]?.description}</p>
+                  </div>
+
+                  <div className="timeline-item">
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--accent)' }}>05:30 PM – 06:30 PM</span>
+                    <div style={{ fontWeight: 700, fontSize: '1.05rem', margin: '4px 0' }}>Closing Ceremony & Awards</div>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{eventDetailsMap["Closing Ceremony"]?.description}</p>
+                  </div>
+                </>
+              ) : (
+                /* 26 September Schedule */
+                selectedMainEvent.timeline.map((item, idx) => {
+                  const key = `26-${idx}`;
+                  const isExpanded = expandedSlots[key];
+                  const details = eventDetailsMap[item.event];
+
+                  return (
+                    <div 
+                      key={idx} 
+                      className="timeline-item" 
+                      onClick={() => toggleSlot(key)}
+                      style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '10px', cursor: details ? 'pointer' : 'default' }}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: item.time.includes('9:30') || item.time.includes('10:30') || item.time.includes('2:00') ? 'var(--accent)' : 'var(--text-muted)' }}>
+                          {item.time}
+                        </span>
+                        {details && (
+                          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                            {isExpanded ? '− LESS' : '+ DETAILS'}
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ fontWeight: 700, fontSize: '1.05rem', margin: '4px 0', color: 'var(--text-primary)' }}>
+                        {item.event}
+                      </div>
+                      {isExpanded && details && (
+                        <div style={{ marginTop: '8px', padding: '12px', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+                          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>{details.description}</p>
+                          {details.venue && (
+                            <div style={{ fontSize: '0.75rem', color: 'var(--accent)', fontFamily: 'var(--font-mono)', marginTop: '4px' }}>
+                              VENUE: {details.venue}
+                            </div>
+                          )}
+                          {details.requirements && (
+                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginTop: '2px' }}>
+                              REQUIREMENT: {details.requirements}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          )}
         </ScrollReveal>
       </div>
     </section>

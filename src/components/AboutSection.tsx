@@ -5,11 +5,12 @@ export const AboutSection: React.FC = () => {
   const [showFullSbcText, setShowFullSbcText] = useState(false);
 
   return (
-    <section id="about" className="about-section section-padding">
+    <section id="about" className="about-section section-padding blueprint-circuit-bg" style={{ position: 'relative' }}>
       <div className="container about-container">
         {/* Left Column / Mobile Header */}
         <div className="about-left-col">
-          <div className="about-section-number">01 / THE VISION</div>
+          <span className="blueprint-tag">[ SYS // VISION ]</span>
+          <div className="about-section-number" style={{ marginTop: '4px' }}>01 / THE VISION</div>
         </div>
 
         {/* Right Column / Primary Info */}
@@ -59,8 +60,14 @@ export const AboutSection: React.FC = () => {
 
         {/* Placeholder image area */}
         <ScrollReveal className="about-image-area" delayMs={200}>
-          <div className="image-placeholder">
-            <span>[ TECHX Reignite Logo / Event Artwork ]</span>
+          <div className="image-placeholder blueprint-grid-bg" style={{ minHeight: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)' }}>
+            <span className="blueprint-tag">[ SCHEMATIC // CHAPTER ]</span>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent)', marginTop: '8px' }}>
+              IEEE CS SCT SBC
+            </div>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+              RECOGNISED EXCELLENCE
+            </span>
           </div>
         </ScrollReveal>
       </div>

@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
           </div>
           <p className="footer-tagline">REIGNITE {eventData.dates.year}</p>
           <p className="footer-description">
-            Powering Minds, One spark at a time. The premier flagship engineering sprint organized by the {eventData.organizedByFull} at Sree Chitra Thirunal College of Engineering.
+            Powering Minds, One spark at a time. The premier flagship engineering summit organized by the {eventData.organizedByFull} at Sree Chitra Thirunal College of Engineering.
           </p>
           
           <div className="footer-meta-id">
@@ -24,26 +24,25 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="footer-links-grid">
-          {/* Column 1: Sprints */}
+          {/* Column 1: Navigation */}
           <div className="footer-links-col">
-            <h4 className="footer-col-title">Sprints</h4>
+            <h4 className="footer-col-title">Navigation</h4>
             <ul className="footer-links-list">
               <li><a href="#about" className="footer-link">About</a></li>
               <li><a href="#tracks" className="footer-link">Tracks</a></li>
               <li><a href="#schedule" className="footer-link">Schedule</a></li>
               <li><a href="#faq" className="footer-link">FAQ</a></li>
-              <li><a href="/register" className="footer-link">Register</a></li>
             </ul>
           </div>
 
           {/* Column 2: Event Tracks */}
           <div className="footer-links-col">
-            <h4 className="footer-col-title">Event Tracks</h4>
+            <h4 className="footer-col-title">Tracks (Coming Soon)</h4>
             <ul className="footer-links-list">
-              <li><a href="#tracks" className="footer-link">IoT Building</a></li>
-              <li><a href="#tracks" className="footer-link">LLM Building</a></li>
-              <li><a href="#tracks" className="footer-link">ADAS & Genetech</a></li>
-              <li><a href="#tracks" className="footer-link">Placement & Mentor</a></li>
+              <li><a href="#tracks" className="footer-link">Hands-on Workshops</a></li>
+              <li><a href="#tracks" className="footer-link">Talk Sessions</a></li>
+              <li><a href="#tracks" className="footer-link">Soft Skills</a></li>
+              <li><a href="#tracks" className="footer-link">Nano-Mentoring</a></li>
             </ul>
           </div>
 

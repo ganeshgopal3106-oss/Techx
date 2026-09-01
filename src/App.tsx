@@ -9,7 +9,6 @@ import { Timeline } from './components/Timeline';
 import { PeopleSection } from './components/PeopleSection';
 import { PartnerGrid } from './components/PartnerGrid';
 import { FAQAccordion } from './components/FAQAccordion';
-import { RegistrationCTA } from './components/RegistrationCTA';
 import { Footer } from './components/Footer';
 import { RegisterPage } from './components/RegisterPage';
 
@@ -40,26 +39,9 @@ function App() {
       const anchor = target.closest('a');
       if (anchor) {
         const href = anchor.getAttribute('href');
-        if (href) {
-          const isRegisterAction = 
-            href.startsWith('/register') || 
-            href === '#join' || 
-            anchor.classList.contains('nav-cta') || 
-            anchor.classList.contains('mobile-cta') ||
-            anchor.classList.contains('track-register-btn') ||
-            anchor.textContent?.toLowerCase().includes('register') || 
-            anchor.textContent?.toLowerCase().includes('claim your spot') ||
-            anchor.textContent?.toLowerCase().includes('join the sprint') ||
-            anchor.textContent?.toLowerCase().includes('register pass');
-
-          if (isRegisterAction) {
-            e.preventDefault();
-            if (href.startsWith('/register')) {
-              navigateTo(href);
-            } else {
-              navigateTo('/register');
-            }
-          }
+        if (href && href.startsWith('/register')) {
+          e.preventDefault();
+          navigateTo(href);
         }
       }
     };
@@ -117,12 +99,9 @@ function App() {
 
         {/* 10. FAQ Section */}
         <FAQAccordion allowMultipleOpen={false} />
-
-        {/* 11. Registration CTA */}
-        <RegistrationCTA />
       </main>
 
-      {/* 12. Footer */}
+      {/* 11. Footer */}
       <Footer />
     </div>
   );

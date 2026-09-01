@@ -3026,16 +3026,334 @@ a:focus-visible {
 
 /* Floating Capsule Refined Style */
 .navbar-capsule {
-  background-color: rgba(245, 231, 208, 0.92) !important;
+  background-color: rgba(255, 252, 241, 0.92) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
-  box-shadow: 0 8px 32px rgba(59, 36, 20, 0.04) !important;
-  border: 1px solid rgba(59, 36, 20, 0.12) !important;
+  box-shadow: 0 8px 32px rgba(28, 23, 19, 0.04) !important;
+  border: 1px solid var(--border-color) !important;
 }
 
 .navbar-container.scrolled .navbar-capsule {
-  background-color: rgba(245, 231, 208, 0.98) !important;
-  box-shadow: 0 10px 36px rgba(59, 36, 20, 0.08) !important;
+  background-color: rgba(255, 252, 241, 0.98) !important;
+  box-shadow: 0 10px 36px rgba(28, 23, 19, 0.06) !important;
+}
+
+/* Technical Blueprint Static Background Textures */
+.blueprint-grid-bg {
+  background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(circle at 1px 1px, rgba(207, 131, 38, 0.12) 1px, transparent 0),
+    linear-gradient(to right, rgba(207, 131, 38, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(207, 131, 38, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.blueprint-circuit-bg {
+  position: relative;
+}
+
+.blueprint-circuit-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(to right, rgba(207, 131, 38, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(207, 131, 38, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Technical Blueprint Markers */
+.blueprint-marker-plus {
+  position: absolute;
+  color: rgba(207, 131, 38, 0.35);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.blueprint-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: rgba(207, 131, 38, 0.65);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+/* Track Detail Modal */
+.track-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(17, 17, 17, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+}
+
+.track-modal-card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  max-width: 520px;
+  width: 100%;
+  padding: var(--space-xl);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+  position: relative;
+  animation: modalFadeIn 200ms ease;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.track-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--space-sm);
+}
+
+.track-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.track-modal-close:hover {
+  color: var(--accent);
+}
+
+/* Circuit Timeline Redesign */
+.circuit-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  position: relative;
+}
+
+.circuit-bus-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.circuit-bus-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.circuit-track-line {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+  padding: var(--space-md) 0;
+  overflow-x: auto;
+}
+
+.circuit-track-line::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 24px;
+  right: 24px;
+  height: 2px;
+  background-color: var(--border-color);
+  z-index: 1;
+}
+
+.circuit-node-button {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 16px;
+  transition: transform 200ms ease;
+  min-width: 72px;
+}
+
+.circuit-node-button:hover {
+  transform: translateY(-2px);
+}
+
+.circuit-node-point {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  margin-bottom: 8px;
+  transition: all 200ms ease;
+}
+
+.circuit-node-button:hover .circuit-node-point {
+  border-color: var(--accent);
+}
+
+.circuit-node-button.active .circuit-node-point {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(207, 131, 38, 0.18);
+  transform: scale(1.15);
+}
+
+.circuit-node-date {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.circuit-node-button.active .circuit-node-date {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.circuit-details-panel {
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  padding: var(--space-lg);
+  border-radius: var(--radius-sm);
+  border-left: 4px solid var(--accent);
+  margin-top: var(--space-md);
+}
+
+/* Parallel Branch */
+.circuit-branch-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  margin: var(--space-md) 0;
+  padding-left: var(--space-md);
+  border-left: 2px dashed var(--accent);
+}
+
+@media (max-width: 768px) {
+  .circuit-branch-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 4-Step Registration Tracker */
+.form-step-tracker {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-xs);
+  margin-bottom: var(--space-xl);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--space-md);
+}
+
+@media (max-width: 600px) {
+  .form-step-tracker {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm);
+  }
+}
+
+.step-tracker-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.step-tracker-item.active {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.step-tracker-item.completed {
+  color: var(--text-primary);
+}
+
+.step-tracker-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.step-tracker-item.active .step-tracker-num {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.step-tracker-item.completed .step-tracker-num {
+  background-color: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+/* Review Step Card */
+.reg-review-block {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.review-section-row {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--space-sm);
+}
+
+.review-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.review-value {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 500;
 }
 
 @media (prefers-reduced-motion: reduce) {

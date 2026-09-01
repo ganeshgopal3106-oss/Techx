@@ -16,7 +16,6 @@ export const Navbar: React.FC = () => {
         const el = document.getElementById(sectionId);
         if (el) {
           const rect = el.getBoundingClientRect();
-          // If section is close to top of viewport
           if (rect.top <= 150 && rect.bottom >= 150) {
             currentSection = sectionId;
             break;
@@ -92,11 +91,6 @@ export const Navbar: React.FC = () => {
             FAQ
           </a>
         </nav>
-
-        {/* Right: Register Button */}
-        <a href="/register" className="btn btn-primary nav-register-btn" aria-label="Register Pass">
-          Register →
-        </a>
       </div>
     </header>
   );
