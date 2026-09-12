@@ -46,7 +46,7 @@ export const ContactSection: React.FC = () => {
                 referrerPolicy="no-referrer-when-downgrade"
               />
 
-              {/* Direct Coordinators Contact Info */}
+              {/* Official Branch Contact Info */}
               <div className="contact-info-block">
                 <div className="contact-info-row">
                   <span className="contact-icon">✉</span>
@@ -59,15 +59,12 @@ export const ContactSection: React.FC = () => {
                 </div>
 
                 <div className="contact-info-row">
-                  <span className="contact-icon">📞</span>
+                  <span className="contact-icon">🌐</span>
                   <div>
-                    <div style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>STUDENT COORDINATORS</div>
-                    <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                      <strong>Alfy Joseph Kunjumon:</strong> <a href="tel:+919567694707" style={{ color: 'var(--text-primary)' }}>+91 9567694707</a>
-                    </div>
-                    <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                      <strong>Sneha Bijee:</strong> <a href="tel:+918590499957" style={{ color: 'var(--text-primary)' }}>+91 8590499957</a>
-                    </div>
+                    <div style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>STUDENT BRANCH CHAPTER</div>
+                    <a href="https://ieeesctsb.org/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', fontWeight: 700, fontSize: '0.9rem' }}>
+                      ieeesctsb.org
+                    </a>
                   </div>
                 </div>
               </div>
@@ -85,7 +82,7 @@ export const ContactSection: React.FC = () => {
                   <div style={{ fontSize: '2.5rem', color: 'var(--accent)', marginBottom: '8px' }}>✓</div>
                   <h4 style={{ fontSize: '1.2rem', fontWeight: 800, textTransform: 'uppercase' }}>Message Received</h4>
                   <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '8px' }}>
-                    Thank you, <strong>{formData.name}</strong>. Our student branch organizing team will get back to you shortly.
+                    Thank you, <strong>{formData.name}</strong>. Our organizing team will get back to you shortly.
                   </p>
                   <button
                     onClick={() => {
