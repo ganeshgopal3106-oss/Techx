@@ -206,18 +206,51 @@ export const Hero: React.FC = () => {
               transform: transformStyle
             }}
           >
-            {/* SVG Circuit Schematic Graphic */}
-            <svg width="240" height="240" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ opacity: 0.9, marginBottom: '16px' }}>
-              <rect x="20" y="20" width="160" height="160" stroke="#CF8326" strokeWidth="1" strokeDasharray="4 4"/>
-              <circle cx="100" cy="100" r="54" stroke="#111111" strokeWidth="1"/>
-              <circle cx="100" cy="100" r="32" stroke="#CF8326" strokeWidth="1.5"/>
+            {/* Motion.ed-Inspired Kinetic Motion Graphic SVG */}
+            <svg width="248" height="248" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="hero-kinetic-svg" style={{ marginBottom: '16px' }}>
+              {/* Static Grid & Target Coordinates */}
+              <rect x="20" y="20" width="160" height="160" stroke="#CF8326" strokeWidth="1" strokeDasharray="4 4" opacity="0.6"/>
+              
+              {/* Corner target brackets */}
+              <path d="M20 32V20H32" stroke="#CF8326" strokeWidth="1.5" />
+              <path d="M180 32V20H168" stroke="#CF8326" strokeWidth="1.5" />
+              <path d="M20 168V180H32" stroke="#CF8326" strokeWidth="1.5" />
+              <path d="M180 168V180H168" stroke="#CF8326" strokeWidth="1.5" />
+
+              {/* Outer Clockwise Rotating Orbital Ring */}
+              <g className="svg-orbit-outer">
+                <circle cx="100" cy="100" r="64" stroke="#111111" strokeWidth="1" strokeDasharray="3 9" opacity="0.8"/>
+                <circle cx="100" cy="36" r="3" fill="#CF8326" />
+                <circle cx="100" cy="164" r="2.5" fill="#111111" />
+              </g>
+
+              {/* Inner Counter-Clockwise Rotating Compass Ring */}
+              <g className="svg-orbit-inner">
+                <circle cx="100" cy="100" r="44" stroke="#CF8326" strokeWidth="1.2" strokeDasharray="8 6"/>
+                <line x1="100" y1="56" x2="100" y2="62" stroke="#CF8326" strokeWidth="1.5"/>
+                <line x1="100" y1="138" x2="100" y2="144" stroke="#CF8326" strokeWidth="1.5"/>
+                <line x1="56" y1="100" x2="62" y2="100" stroke="#CF8326" strokeWidth="1.5"/>
+                <line x1="138" y1="100" x2="144" y2="100" stroke="#CF8326" strokeWidth="1.5"/>
+              </g>
+
+              {/* Rotating Radar Scanner Sweep Line */}
+              <g className="svg-radar-sweep">
+                <line x1="100" y1="100" x2="100" y2="38" stroke="url(#scannerGradient)" strokeWidth="1.5"/>
+              </g>
+
+              {/* Pulsing Core Waves */}
+              <circle cx="100" cy="100" r="12" stroke="#CF8326" fill="none" className="svg-pulse-wave-1" />
+              <circle cx="100" cy="100" r="12" stroke="#CF8326" fill="none" className="svg-pulse-wave-2" />
+
+              {/* Glowing Center Core */}
               <circle cx="100" cy="100" r="6" fill="#CF8326"/>
+              <circle cx="100" cy="100" r="2.5" fill="#FFFCF1"/>
+
+              {/* Animated Circuit Data Lines */}
+              <path d="M20 100H46M154 100H180" stroke="#CF8326" strokeWidth="1.5" className="svg-data-line"/>
+              <path d="M100 20V46M100 154V180" stroke="#CF8326" strokeWidth="1.5" className="svg-data-line"/>
               
-              {/* Circuit Bus lines */}
-              <path d="M20 100H46M154 100H180" stroke="#CF8326" strokeWidth="1.5"/>
-              <path d="M100 20V46M100 154V180" stroke="#CF8326" strokeWidth="1.5"/>
-              
-              {/* Trace routes */}
+              {/* Circuit Traces */}
               <path d="M46 54H74V74" stroke="#111111" strokeWidth="1"/>
               <circle cx="46" cy="54" r="3" fill="#111111"/>
               <circle cx="74" cy="74" r="3" fill="#CF8326"/>
@@ -226,8 +259,16 @@ export const Hero: React.FC = () => {
               <circle cx="154" cy="146" r="3" fill="#111111"/>
               <circle cx="126" cy="126" r="3" fill="#CF8326"/>
 
-              <text x="28" y="36" fill="#CF8326" fontSize="7.5" fontFamily="JetBrains Mono" letterSpacing="0.1em">[SCHEMATIC // 01]</text>
-              <text x="96" y="172" fill="#7D6A5B" fontSize="6.5" fontFamily="JetBrains Mono">COORD: 8.5241°N 76.9366°E</text>
+              {/* Technical Text / Coordinates */}
+              <text x="28" y="36" fill="#CF8326" fontSize="7.5" fontFamily="JetBrains Mono" letterSpacing="0.1em">[SCHEMATIC // KINETIC 01]</text>
+              <text x="96" y="172" fill="#7D6A5B" fontSize="6.5" fontFamily="JetBrains Mono">FREQ: 2.40GHz • 8.5241°N</text>
+
+              <defs>
+                <linearGradient id="scannerGradient" x1="100" y1="100" x2="100" y2="38" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#CF8326" stopOpacity="0.9"/>
+                  <stop offset="100%" stopColor="#CF8326" stopOpacity="0"/>
+                </linearGradient>
+              </defs>
             </svg>
 
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', letterSpacing: '0.12em', color: 'var(--text-primary)', fontWeight: 700, textTransform: 'uppercase' }}>

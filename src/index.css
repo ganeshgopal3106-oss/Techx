@@ -4109,6 +4109,154 @@ a:focus-visible {
   margin-top: 2px;
 }
 
+/* ==========================================================================
+   Motion.ed Kinetic Motion Graphics Keyframes & Animations
+   ========================================================================== */
+
+/* 1. Continuous Rotations & Pulsing Waves */
+@keyframes kineticRotateCW {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes kineticRotateCCW {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes kineticRadarPulse {
+  0% {
+    r: 8px;
+    opacity: 0.85;
+    stroke-width: 2px;
+  }
+  50% {
+    opacity: 0.45;
+  }
+  100% {
+    r: 46px;
+    opacity: 0;
+    stroke-width: 0.5px;
+  }
+}
+
+@keyframes kineticRadarSweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes kineticCircuitFlow {
+  0% {
+    stroke-dashoffset: 40;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* 2. SVG Kinetic Motion Elements */
+.hero-kinetic-svg {
+  filter: drop-shadow(0 4px 16px rgba(207, 131, 38, 0.12));
+}
+
+.svg-orbit-outer {
+  transform-origin: 100px 100px;
+  animation: kineticRotateCW 26s linear infinite;
+}
+
+.svg-orbit-inner {
+  transform-origin: 100px 100px;
+  animation: kineticRotateCCW 18s linear infinite;
+}
+
+.svg-radar-sweep {
+  transform-origin: 100px 100px;
+  animation: kineticRadarSweep 6.5s linear infinite;
+}
+
+.svg-pulse-wave-1 {
+  transform-origin: 100px 100px;
+  animation: kineticRadarPulse 3.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.svg-pulse-wave-2 {
+  transform-origin: 100px 100px;
+  animation: kineticRadarPulse 3.2s cubic-bezier(0.22, 1, 0.36, 1) 1.6s infinite;
+}
+
+.svg-data-line {
+  stroke-dasharray: 6 6;
+  animation: kineticCircuitFlow 2.2s linear infinite;
+}
+
+/* 3. Kinetic Marquee Ribbon (Motion.ed Ticker) */
+@keyframes marqueeScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.kinetic-marquee-container {
+  width: 100%;
+  overflow: hidden;
+  background-color: #111111;
+  color: #FFFCF1;
+  border-top: 1px solid rgba(207, 131, 38, 0.3);
+  border-bottom: 1px solid rgba(207, 131, 38, 0.3);
+  padding: 13px 0;
+  position: relative;
+  user-select: none;
+}
+
+.kinetic-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 32s linear infinite;
+  will-change: transform;
+}
+
+.kinetic-marquee-container:hover .kinetic-marquee-track {
+  animation-play-state: paused;
+}
+
+.kinetic-marquee-content {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.kinetic-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding-right: 20px;
+  color: #FFFCF1;
+}
+
+.kinetic-star {
+  display: inline-block;
+  color: var(--accent);
+  font-size: 1.1rem;
+  animation: kineticRotateCW 8s linear infinite;
+  transform-origin: center;
+}
+
+/* 4. Interactive Rotating Badges in UI */
+.rotating-star-badge {
+  display: inline-block;
+  color: var(--accent);
+  animation: kineticRotateCW 10s linear infinite;
+  transform-origin: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-delay: -1ms !important;

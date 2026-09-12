@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { EventInfo } from './components/EventInfo';
+import { MarqueeTicker } from './components/MarqueeTicker';
 import { AboutSection } from './components/AboutSection';
 import { TechTrainSection } from './components/TechTrainSection';
 import { TracksSection } from './components/TracksSection';
@@ -82,6 +83,9 @@ function App() {
 
         {/* METADATA STRIP */}
         <EventInfo />
+
+        {/* KINETIC MARQUEE RIBBON (Motion.ed Ticker) */}
+        <MarqueeTicker />
 
         {/* 02 / ABOUT TECHX */}
         <AboutSection />
