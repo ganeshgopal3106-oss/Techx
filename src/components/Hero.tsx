@@ -16,6 +16,10 @@ export const Hero: React.FC = () => {
   const visualRef = useRef<HTMLDivElement>(null);
   const [transformStyle, setTransformStyle] = useState('');
 
+  // Magnetic CTA state
+  const btnRef = useRef<HTMLAnchorElement>(null);
+  const [btnTransform, setBtnTransform] = useState('');
+
   useEffect(() => {
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -37,20 +41,41 @@ export const Hero: React.FC = () => {
   }, [targetDate]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (typeof window !== 'undefined' && (window.matchMedia('(hover: none)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      return;
+    }
     if (!visualRef.current) return;
     const rect = visualRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
     
-    // Subtle physical displacement (max 4px) and subtle perspective rotation
-    const moveX = (x / rect.width) * 7;
-    const moveY = (y / rect.height) * 7;
+    // Subtle physical displacement (max 4-5px)
+    const moveX = (x / rect.width) * 6;
+    const moveY = (y / rect.height) * 6;
     
     setTransformStyle(`translate3d(${moveX}px, ${moveY}px, 0)`);
   };
 
   const handleMouseLeave = () => {
     setTransformStyle('translate3d(0, 0, 0)');
+  };
+
+  // Subtle magnetic attraction for primary CTA
+  const handleBtnMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (typeof window !== 'undefined' && (window.matchMedia('(hover: none)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      return;
+    }
+    if (!btnRef.current) return;
+    const rect = btnRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    const moveX = Math.max(-5, Math.min(5, x * 0.22));
+    const moveY = Math.max(-5, Math.min(5, y * 0.22));
+    setBtnTransform(`translate3d(${moveX}px, ${moveY}px, 0)`);
+  };
+
+  const handleBtnMouseLeave = () => {
+    setBtnTransform('translate3d(0, 0, 0)');
   };
 
   return (
@@ -125,9 +150,17 @@ export const Hero: React.FC = () => {
           {/* 6. Action CTAs */}
           <div className="hero-actions hero-anim-actions" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             <a 
+              ref={btnRef}
               href="#tracks" 
               className="btn btn-primary hero-primary-cta"
-              style={{ padding: '12px 30px', fontSize: '0.85rem' }}
+              style={{ 
+                padding: '12px 30px', 
+                fontSize: '0.85rem',
+                transform: btnTransform,
+                transition: btnTransform === 'translate3d(0, 0, 0)' ? 'transform 350ms var(--ease-out-expo)' : 'transform 100ms ease-out'
+              }}
+              onMouseMove={handleBtnMouseMove}
+              onMouseLeave={handleBtnMouseLeave}
               onClick={(e) => {
                 e.preventDefault();
                 const el = document.getElementById('tracks');
