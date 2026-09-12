@@ -13,7 +13,7 @@ export const RegistrationCTA: React.FC = () => {
         </ScrollReveal>
 
         {/* Ticket Tiers Grid */}
-        <ScrollReveal className="ticket-grid" delayMs={150}>
+        <ScrollReveal className="ticket-grid" variant="stagger" staggerDelay={80} delayMs={100}>
           {/* Card 1 */}
           <div className="card ticket-card">
             <div className="ticket-badge">IEEE CS Member</div>

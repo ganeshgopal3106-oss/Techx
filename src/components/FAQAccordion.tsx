@@ -42,7 +42,7 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({ allowMultipleOpen = 
           </div>
         </ScrollReveal>
 
-        <ScrollReveal className="faq-list">
+        <ScrollReveal className="faq-list" variant="stagger" staggerDelay={60}>
           {faqData.map((item) => {
             const isOpen = isItemOpen(item.id);
             return (

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { eventData } from '../data/event';
-import { ScrollReveal } from './ScrollReveal';
 
 export const Hero: React.FC = () => {
   // Target date: September 13, 2026 09:00:00 AM IST
@@ -12,6 +11,10 @@ export const Hero: React.FC = () => {
     minutes: 0,
     seconds: 0
   });
+
+  // Mouse parallax state for schematic graphic
+  const visualRef = useRef<HTMLDivElement>(null);
+  const [transformStyle, setTransformStyle] = useState('');
 
   useEffect(() => {
     const updateCountdown = () => {
@@ -33,8 +36,31 @@ export const Hero: React.FC = () => {
     return () => clearInterval(interval);
   }, [targetDate]);
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!visualRef.current) return;
+    const rect = visualRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    
+    // Subtle physical displacement (max 4px) and subtle perspective rotation
+    const moveX = (x / rect.width) * 7;
+    const moveY = (y / rect.height) * 7;
+    
+    setTransformStyle(`translate3d(${moveX}px, ${moveY}px, 0)`);
+  };
+
+  const handleMouseLeave = () => {
+    setTransformStyle('translate3d(0, 0, 0)');
+  };
+
   return (
-    <section id="hero" className="hero-section section-padding blueprint-circuit-bg" style={{ minHeight: '92vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
+    <section 
+      id="hero" 
+      className="hero-section section-padding blueprint-circuit-bg" 
+      style={{ minHeight: '92vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
       {/* Subtle blueprint decorative markers */}
       <span className="blueprint-marker-plus" style={{ top: '24px', left: '32px' }}>+</span>
       <span className="blueprint-marker-plus" style={{ top: '24px', right: '32px' }}>+</span>
@@ -42,19 +68,24 @@ export const Hero: React.FC = () => {
       <span className="blueprint-marker-plus" style={{ bottom: '24px', right: '32px' }}>+</span>
 
       <div className="container hero-container" style={{ position: 'relative', zIndex: 1 }}>
-        <ScrollReveal className="hero-content">
-          <div className="hero-logo-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="hero-content">
+          {/* 1. Tagline / System identifier */}
+          <div className="hero-logo-wrapper hero-anim-tag" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span className="blueprint-tag">[ SYS // 2026.09 ]</span>
             <span className="hero-logo-text" style={{ letterSpacing: '0.15em', color: 'var(--accent)', fontWeight: 700, fontSize: '0.85rem' }}>
               TECHX REIGNITE
             </span>
           </div>
 
-          <h1 className="hero-headline" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.6rem)', lineHeight: 1.02, textTransform: 'uppercase', margin: '18px 0', letterSpacing: '-0.02em' }}>
-            Powering Minds,<br />One Spark At A Time.
-          </h1>
+          {/* 2. Masked Headline Reveal */}
+          <div style={{ overflow: 'hidden' }}>
+            <h1 className="hero-headline hero-anim-headline" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.6rem)', lineHeight: 1.02, textTransform: 'uppercase', margin: '18px 0', letterSpacing: '-0.02em' }}>
+              Powering Minds,<br />One Spark At A Time.
+            </h1>
+          </div>
           
-          <div className="hero-meta" style={{ margin: '16px 0 20px' }}>
+          {/* 3. Event Meta Info */}
+          <div className="hero-meta hero-anim-meta" style={{ margin: '16px 0 20px' }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', flexWrap: 'wrap' }}>
               <span className="hero-meta-date" style={{ color: 'var(--accent)', fontWeight: 800, fontSize: '1.2rem', letterSpacing: '0.05em' }}>
                 13–27 September 2026
@@ -66,12 +97,13 @@ export const Hero: React.FC = () => {
             </div>
           </div>
 
-          <p className="hero-description" style={{ fontSize: '1.1rem', maxWidth: '580px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '24px' }}>
+          {/* 4. Description */}
+          <p className="hero-description hero-anim-desc" style={{ fontSize: '1.1rem', maxWidth: '580px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '24px' }}>
             A global technical upskilling initiative hosted by IEEE CS SCT SBC bridging academic fundamentals and battle-tested industry readiness.
           </p>
 
-          {/* Live Countdown Timer */}
-          <div className="hero-countdown-container" aria-label="Event Countdown">
+          {/* 5. Live Staggered Countdown Timer */}
+          <div className="hero-countdown-container hero-anim-countdown" aria-label="Event Countdown">
             <div className="countdown-box">
               <span className="countdown-num">{String(timeLeft.days).padStart(2, '0')}</span>
               <span className="countdown-label">DAYS</span>
@@ -90,7 +122,8 @@ export const Hero: React.FC = () => {
             </div>
           </div>
 
-          <div className="hero-actions" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          {/* 6. Action CTAs */}
+          <div className="hero-actions hero-anim-actions" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             <a 
               href="#tracks" 
               className="btn btn-primary hero-primary-cta"
@@ -122,11 +155,24 @@ export const Hero: React.FC = () => {
               View Schedule <span className="arrow">↓</span>
             </a>
           </div>
-        </ScrollReveal>
+        </div>
 
-        {/* Editorial Visual Technical Blueprint Schematic Area */}
-        <ScrollReveal className="hero-visual-area" delayMs={200}>
-          <div className="image-placeholder blueprint-grid-bg" style={{ minHeight: '400px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px', position: 'relative' }}>
+        {/* 7. Editorial Visual Technical Schematic Area with Micro-Parallax */}
+        <div className="hero-visual-area hero-anim-visual" ref={visualRef}>
+          <div 
+            className="image-placeholder blueprint-grid-bg hero-schematic-interactive" 
+            style={{ 
+              minHeight: '400px', 
+              border: '1px solid var(--border-color)', 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              padding: '32px', 
+              position: 'relative',
+              transform: transformStyle
+            }}
+          >
             {/* SVG Circuit Schematic Graphic */}
             <svg width="240" height="240" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ opacity: 0.9, marginBottom: '16px' }}>
               <rect x="20" y="20" width="160" height="160" stroke="#CF8326" strokeWidth="1" strokeDasharray="4 4"/>
@@ -158,7 +204,7 @@ export const Hero: React.FC = () => {
               IEEE CS SCT SBC • SCTCE TRIVANDRUM
             </span>
           </div>
-        </ScrollReveal>
+        </div>
       </div>
     </section>
   );

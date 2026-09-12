@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { tracksData } from '../data/tracks';
 import type { Track } from '../data/tracks';
 import { SectionHeader } from './SectionHeader';
@@ -6,12 +6,25 @@ import { ScrollReveal } from './ScrollReveal';
 
 export const TracksSection: React.FC = () => {
   const [selectedTrack, setSelectedTrack] = useState<Track | null>(null);
+  const [isModalMounted, setIsModalMounted] = useState(false);
+
+  const closeModal = useCallback(() => {
+    setIsModalMounted(false);
+    setTimeout(() => {
+      setSelectedTrack(null);
+    }, 200);
+  }, []);
+
+  const openTrackModal = (track: Track) => {
+    setSelectedTrack(track);
+    setIsModalMounted(true);
+  };
 
   // Close modal on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setSelectedTrack(null);
+        closeModal();
       }
     };
     if (selectedTrack) {
@@ -24,7 +37,7 @@ export const TracksSection: React.FC = () => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
     };
-  }, [selectedTrack]);
+  }, [selectedTrack, closeModal]);
 
   return (
     <section id="tracks" className="tracks-section section-padding blueprint-grid-bg" style={{ position: 'relative' }}>
@@ -38,14 +51,14 @@ export const TracksSection: React.FC = () => {
             const isComingSoon = track.status === 'COMING_SOON';
 
             return (
-              <ScrollReveal key={track.id} className={`track-showcase-row ${isReversed ? 'reversed' : ''}`}>
+              <ScrollReveal key={track.id} variant="fade-up" className={`track-showcase-row ${isReversed ? 'reversed' : ''}`}>
                 {/* Large Visual Block (Blurred with Centered Coming Soon Overlay) */}
                 <div 
                   className="track-showcase-image-wrap"
-                  onClick={() => setSelectedTrack(track)}
+                  onClick={() => openTrackModal(track)}
                   role="button"
                   tabIndex={0}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedTrack(track); } }}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openTrackModal(track); } }}
                   aria-label={`View track details for ${track.title}`}
                 >
                   <img 
@@ -78,7 +91,7 @@ export const TracksSection: React.FC = () => {
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                     <button
-                      onClick={() => setSelectedTrack(track)}
+                      onClick={() => openTrackModal(track)}
                       className="btn btn-secondary"
                       style={{ height: '40px', padding: '0 20px', fontSize: '0.85rem', fontWeight: 700 }}
                     >
@@ -93,11 +106,11 @@ export const TracksSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Expanded Track Detail Modal */}
+      {/* Expanded Track Detail Modal with Smooth Morph Transition */}
       {selectedTrack && (
         <div 
-          className="track-modal-overlay" 
-          onClick={(e) => { if (e.target === e.currentTarget) setSelectedTrack(null); }}
+          className={`track-modal-overlay ${isModalMounted ? 'active' : ''}`} 
+          onClick={(e) => { if (e.target === e.currentTarget) closeModal(); }}
           role="dialog"
           aria-modal="true"
           aria-labelledby="track-modal-title"
@@ -112,7 +125,7 @@ export const TracksSection: React.FC = () => {
               </div>
               <button 
                 className="track-modal-close" 
-                onClick={() => setSelectedTrack(null)}
+                onClick={closeModal}
                 aria-label="Close track details"
               >
                 ✕
@@ -155,7 +168,7 @@ export const TracksSection: React.FC = () => {
             <div style={{ display: 'flex', justifyContent: 'flex-end', borderTop: '1px solid var(--border-color)', paddingTop: 'var(--space-md)' }}>
               <button 
                 className="btn btn-secondary" 
-                onClick={() => setSelectedTrack(null)}
+                onClick={closeModal}
                 style={{ height: '36px', padding: '0 20px', fontSize: '0.8rem' }}
               >
                 Close

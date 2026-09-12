@@ -12,28 +12,32 @@ export const MainEventSection: React.FC = () => {
 
         {/* Date Selector Tabs */}
         <ScrollReveal>
-          <div className="main-event-dates-tabs">
+          <div className="main-event-dates-tabs" role="tablist" aria-label="Summit Schedule Days">
             <button
               className={`main-event-date-tab ${activeDay === '26' ? 'active' : ''}`}
               onClick={() => setActiveDay('26')}
+              role="tab"
+              aria-selected={activeDay === '26'}
             >
               DAY 01 // 26 SEPTEMBER (Workshops & Talks)
             </button>
             <button
               className={`main-event-date-tab ${activeDay === '27' ? 'active' : ''}`}
               onClick={() => setActiveDay('27')}
+              role="tab"
+              aria-selected={activeDay === '27'}
             >
               DAY 02 // 27 SEPTEMBER (Sprints & Mentoring)
             </button>
           </div>
         </ScrollReveal>
 
-        {/* Day Itinerary */}
+        {/* Day Itinerary with Staggered Cascading Items */}
         <ScrollReveal className="main-event-day-pane">
           {activeDay === '26' ? (
             /* Day 01: 26 September */
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div className="timeline-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+            <div key="day-26-itinerary" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>09:30 AM – 10:30 AM</span>
                   <span className="badge">SEMINAR HALL</span>
@@ -42,7 +46,7 @@ export const MainEventSection: React.FC = () => {
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Welcome address by college leadership and senior IEEE Computer Society dignitaries.</p>
               </div>
 
-              <div className="timeline-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>10:30 AM – 01:00 PM</span>
                   <span className="badge">COMPUTER LABS 2 & 3</span>
@@ -51,12 +55,12 @@ export const MainEventSection: React.FC = () => {
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Parallel hands-on sprints: Full-stack Development & Advanced IoT Systems.</p>
               </div>
 
-              <div className="timeline-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>01:00 PM – 02:00 PM</span>
                 <div style={{ fontWeight: 700, fontSize: '1.05rem', margin: '4px 0' }}>Lunch Break & Networking</div>
               </div>
 
-              <div className="timeline-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>02:00 PM – 03:30 PM</span>
                   <span className="badge">LAB SPRINTS</span>
@@ -65,7 +69,7 @@ export const MainEventSection: React.FC = () => {
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Project implementation, debugging labs, and preparation for tomorrow's competition.</p>
               </div>
 
-              <div className="timeline-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>03:30 PM – 04:30 PM</span>
                   <span className="badge">AUDITORIUM ANNEX</span>
@@ -74,12 +78,12 @@ export const MainEventSection: React.FC = () => {
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Interview strategies, resume polishing, and placement communication keys.</p>
               </div>
 
-              <div className="timeline-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>04:30 PM – 05:00 PM</span>
                 <div style={{ fontWeight: 700, fontSize: '1.05rem', margin: '4px 0' }}>Tea Break & Interaction</div>
               </div>
 
-              <div className="timeline-item">
+              <div className="timeline-item tab-animated-item">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>05:00 PM – 06:30 PM</span>
                   <span className="badge">LOBBY</span>
@@ -90,8 +94,8 @@ export const MainEventSection: React.FC = () => {
             </div>
           ) : (
             /* Day 02: 27 September with Parallel Split Circuit */
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div className="timeline-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+            <div key="day-27-itinerary" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>09:30 AM – 01:00 PM</span>
                   <span className="badge">MAIN LABS</span>
@@ -100,13 +104,13 @@ export const MainEventSection: React.FC = () => {
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Capstone hackathon evaluation where teams build solutions judged by industry experts.</p>
               </div>
 
-              <div className="timeline-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>01:00 PM – 02:00 PM</span>
                 <div style={{ fontWeight: 700, fontSize: '1.05rem', margin: '4px 0' }}>Lunch Break</div>
               </div>
 
               {/* PARALLEL CIRCUIT BRANCH (2:00 PM – 4:00 PM) */}
-              <div style={{ margin: 'var(--space-sm) 0', padding: 'var(--space-lg)', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
+              <div className="tab-animated-item" style={{ margin: 'var(--space-sm) 0', padding: 'var(--space-lg)', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                   <span className="blueprint-tag">[ SCHEMATIC // PARALLEL BRANCH ]</span>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', fontWeight: 800, color: 'var(--accent)' }}>02:00 PM – 04:00 PM</span>
@@ -143,12 +147,12 @@ export const MainEventSection: React.FC = () => {
                 </div>
               </div>
 
-              <div className="timeline-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>04:00 PM – 04:30 PM</span>
                 <div style={{ fontWeight: 700, fontSize: '1.05rem', margin: '4px 0' }}>Break & Refreshments</div>
               </div>
 
-              <div className="timeline-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>04:30 PM – 05:30 PM</span>
                   <span className="badge">AUDITORIUM</span>
@@ -157,7 +161,7 @@ export const MainEventSection: React.FC = () => {
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Live performances and student showcases to celebrate the summit conclusion.</p>
               </div>
 
-              <div className="timeline-item">
+              <div className="timeline-item tab-animated-item">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>05:30 PM – 06:30 PM</span>
                   <span className="badge">MAIN HALL</span>

@@ -42,7 +42,7 @@ export const UniqueSection: React.FC = () => {
         <SectionHeader num="07 / COMMUNITY & IMPACT" title="The TechX Advantage" />
         
         {/* Editorial Numbered Benefits Grid */}
-        <ScrollReveal>
+        <ScrollReveal variant="stagger" staggerDelay={70}>
           <div className="community-editorial-grid">
             {benefits.map((b) => (
               <div key={b.num} className="community-benefit-item">

@@ -16,7 +16,7 @@ export const AboutSection: React.FC = () => {
         </div>
 
         {/* Right Column / Primary Product Story */}
-        <ScrollReveal className="about-right-col">
+        <ScrollReveal variant="clip-reveal" className="about-right-col">
           {/* Story Headline & Lead */}
           <div className="about-block" style={{ marginBottom: '44px' }}>
             <h2 className="about-heading" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.1, textTransform: 'uppercase', marginBottom: '18px' }}>
@@ -76,7 +76,7 @@ export const AboutSection: React.FC = () => {
         </ScrollReveal>
 
         {/* Supporting Visual / Architectural Block */}
-        <ScrollReveal className="about-image-area" delayMs={200}>
+        <ScrollReveal variant="scale-subtle" className="about-image-area" delayMs={150}>
           <div className="image-placeholder blueprint-grid-bg" style={{ minHeight: '380px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)', padding: '32px' }}>
             <span className="blueprint-tag">[ ARCHITECTURE // SUMMIT ]</span>
             <div style={{ fontSize: '2rem', fontWeight: 900, color: 'var(--accent)', marginTop: '12px', letterSpacing: '-0.02em' }}>

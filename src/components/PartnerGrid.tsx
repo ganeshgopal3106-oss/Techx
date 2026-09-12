@@ -9,7 +9,7 @@ export const PartnerGrid: React.FC = () => {
       <div className="container">
         <SectionHeader num="04 / PARTNERS" title="In Collaboration With" />
         
-        <ScrollReveal className="partners-grid">
+        <ScrollReveal className="partners-grid" variant="stagger" staggerDelay={50}>
           {partnersData.map((partner, idx) => {
             const hasLink = !!partner.websiteUrl;
             

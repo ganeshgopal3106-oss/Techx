@@ -11,7 +11,9 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({ num, title }) => {
     <ScrollReveal>
       <div className="section-header">
         <div className="section-header-num">{num}</div>
-        <h2 className="section-header-title">{title}</h2>
+        <div className="masked-text-wrapper">
+          <h2 className="section-header-title masked-text-inner">{title}</h2>
+        </div>
       </div>
     </ScrollReveal>
   );

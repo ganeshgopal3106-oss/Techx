@@ -60,10 +60,10 @@ export const GallerySection: React.FC = () => {
       <div className="container">
         <SectionHeader num="08 / EVENT MOMENTS" title="Chapter Life & Experience Gallery" />
 
-        <ScrollReveal>
+        <ScrollReveal variant="scale-subtle">
           {/* Main Carousel Wrapper */}
           <div className="gallery-carousel-wrapper">
-            <div className="gallery-slide">
+            <div key={currentItem.id} className="gallery-slide tab-animated-item">
               <img
                 src={currentItem.image}
                 alt={currentItem.title}

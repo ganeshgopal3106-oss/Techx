@@ -32,12 +32,12 @@ export const TechTrainSection: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        {/* Dynamic Editorial Content Panel */}
+        {/* Dynamic Editorial Content Panel with Staggered Motion */}
         <ScrollReveal>
           {activeCategory === 'TECH' ? (
-            <div className="tech-train-grid">
+            <div key="tech-panel" className="tech-train-grid">
               {/* Tech Pillar 1: Hands-on Workshops */}
-              <div className="tech-train-block">
+              <div className="tech-train-block tab-animated-item">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span className="blueprint-tag">PILLAR 01 // LAB SPRINTS</span>
                   <span className="badge">OFFLINE WORKSHOPS</span>
@@ -55,7 +55,7 @@ export const TechTrainSection: React.FC = () => {
               </div>
 
               {/* Tech Pillar 2: Talk Sessions */}
-              <div className="tech-train-block">
+              <div className="tech-train-block tab-animated-item">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span className="blueprint-tag">PILLAR 02 // KEYNOTES</span>
                   <span className="badge">INTERDISCIPLINARY</span>
@@ -73,9 +73,9 @@ export const TechTrainSection: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div className="tech-train-grid">
+            <div key="train-panel" className="tech-train-grid">
               {/* Train Pillar 1: Soft Skills */}
-              <div className="tech-train-block">
+              <div className="tech-train-block tab-animated-item">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span className="blueprint-tag">PILLAR 03 // CAREER READINESS</span>
                   <span className="badge">PLACEMENT SKILLS</span>
@@ -93,7 +93,7 @@ export const TechTrainSection: React.FC = () => {
               </div>
 
               {/* Train Pillar 2: Nano-Mentoring */}
-              <div className="tech-train-block">
+              <div className="tech-train-block tab-animated-item">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span className="blueprint-tag">PILLAR 04 // DIRECT GUIDANCE</span>
                   <span className="badge">1-ON-1 SESSIONS</span>
