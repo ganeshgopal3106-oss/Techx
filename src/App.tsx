@@ -16,9 +16,18 @@ import { FAQAccordion } from './components/FAQAccordion';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { RegisterPage } from './components/RegisterPage';
+import { PageLoader } from './components/PageLoader';
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname + window.location.search);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 450);
+    return () => clearTimeout(timer);
+  }, []);
 
   function navigateTo(path: string) {
     window.history.pushState({}, '', path);
@@ -74,6 +83,9 @@ function App() {
 
   return (
     <div className="app-wrapper">
+      {/* Short Non-Blocking Page Entrance Loader */}
+      <PageLoader isLoading={isLoading} />
+
       {/* Floating Navigation Capsule */}
       <Navbar />
 

@@ -1,178 +1,150 @@
 import React, { useState } from 'react';
+import { daysScheduleData } from '../data/schedule';
+import type { ScheduleDay, ScheduleItem, ScheduleSession } from '../data/schedule';
 import { SectionHeader } from './SectionHeader';
 import { ScrollReveal } from './ScrollReveal';
 
 export const MainEventSection: React.FC = () => {
-  const [activeDay, setActiveDay] = useState<'26' | '27'>('26');
+  const [activeDayId, setActiveDayId] = useState<'day-1' | 'day-2' | 'day-3'>('day-1');
+
+  const currentDay: ScheduleDay = daysScheduleData.find(d => d.id === activeDayId) || daysScheduleData[0];
+
+  const isParallelGroup = (item: ScheduleItem): item is { id: string; time: string; isParallel: true; category?: string; sessions: ScheduleSession[] } => {
+    return 'isParallel' in item && item.isParallel === true;
+  };
 
   return (
     <section id="schedule" className="main-event-section section-padding blueprint-circuit-bg" style={{ position: 'relative' }}>
       <div className="container">
-        <SectionHeader num="06 / MAIN EVENT" title="The Flagship Summit (26 — 27 September 2026)" />
+        <SectionHeader num="06 / EVENT ITINERARY" title="Summit & Pre-Event Schedule" />
 
-        {/* Date Selector Tabs */}
+        {/* Day Selector Tabs (DAY 1, DAY 2, DAY 3) */}
         <ScrollReveal>
-          <div className="main-event-dates-tabs" role="tablist" aria-label="Summit Schedule Days">
-            <button
-              className={`main-event-date-tab ${activeDay === '26' ? 'active' : ''}`}
-              onClick={() => setActiveDay('26')}
-              role="tab"
-              aria-selected={activeDay === '26'}
-            >
-              DAY 01 // 26 SEPTEMBER (Workshops & Talks)
-            </button>
-            <button
-              className={`main-event-date-tab ${activeDay === '27' ? 'active' : ''}`}
-              onClick={() => setActiveDay('27')}
-              role="tab"
-              aria-selected={activeDay === '27'}
-            >
-              DAY 02 // 27 SEPTEMBER (Sprints & Mentoring)
-            </button>
+          <div className="schedule-day-selector" role="tablist" aria-label="Event Days">
+            {daysScheduleData.map((day) => {
+              const isActive = activeDayId === day.id;
+              return (
+                <button
+                  key={day.id}
+                  className={`schedule-day-tab ${isActive ? 'active' : ''}`}
+                  onClick={() => setActiveDayId(day.id)}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`schedule-pane-${day.id}`}
+                >
+                  <div className="schedule-tab-top">
+                    <span className="schedule-day-badge">{day.dayNumber}</span>
+                    <span className="schedule-tab-date">{day.date}</span>
+                  </div>
+                  <div className="schedule-tab-sub">{day.subtitle}</div>
+                </button>
+              );
+            })}
           </div>
         </ScrollReveal>
 
-        {/* Day Itinerary with Staggered Cascading Items */}
-        <ScrollReveal className="main-event-day-pane">
-          {activeDay === '26' ? (
-            /* Day 01: 26 September */
-            <div key="day-26-itinerary" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>09:30 AM – 10:30 AM</span>
-                  <span className="badge">SEMINAR HALL</span>
-                </div>
-                <div style={{ fontWeight: 800, fontSize: '1.15rem', margin: '4px 0', color: 'var(--text-primary)' }}>Inauguration Ceremony</div>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Welcome address by college leadership and senior IEEE Computer Society dignitaries.</p>
-              </div>
-
-              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>10:30 AM – 01:00 PM</span>
-                  <span className="badge">COMPUTER LABS 2 & 3</span>
-                </div>
-                <div style={{ fontWeight: 800, fontSize: '1.15rem', margin: '4px 0', color: 'var(--text-primary)' }}>Workshop Session I (2 Tracks)</div>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Parallel hands-on sprints: Full-stack Development & Advanced IoT Systems.</p>
-              </div>
-
-              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>01:00 PM – 02:00 PM</span>
-                <div style={{ fontWeight: 700, fontSize: '1.05rem', margin: '4px 0' }}>Lunch Break & Networking</div>
-              </div>
-
-              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>02:00 PM – 03:30 PM</span>
-                  <span className="badge">LAB SPRINTS</span>
-                </div>
-                <div style={{ fontWeight: 800, fontSize: '1.15rem', margin: '4px 0', color: 'var(--text-primary)' }}>Workshop Session II</div>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Project implementation, debugging labs, and preparation for tomorrow's competition.</p>
-              </div>
-
-              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>03:30 PM – 04:30 PM</span>
-                  <span className="badge">AUDITORIUM ANNEX</span>
-                </div>
-                <div style={{ fontWeight: 800, fontSize: '1.15rem', margin: '4px 0', color: 'var(--text-primary)' }}>Soft Skills Talk Session</div>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Interview strategies, resume polishing, and placement communication keys.</p>
-              </div>
-
-              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>04:30 PM – 05:00 PM</span>
-                <div style={{ fontWeight: 700, fontSize: '1.05rem', margin: '4px 0' }}>Tea Break & Interaction</div>
-              </div>
-
-              <div className="timeline-item tab-animated-item">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>05:00 PM – 06:30 PM</span>
-                  <span className="badge">LOBBY</span>
-                </div>
-                <div style={{ fontWeight: 800, fontSize: '1.15rem', margin: '4px 0', color: 'var(--text-primary)' }}>Tech Games & Icebreakers</div>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Interactive quizzes, lightning challenges, and exclusive goodies.</p>
-              </div>
+        {/* Active Day Header Meta Banner */}
+        <ScrollReveal className="schedule-day-header-banner">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+            <div>
+              <span className="blueprint-tag">[ TIMELINE // {currentDay.dayNumber} ]</span>
+              <h3 style={{ fontSize: '1.35rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-primary)', marginTop: '4px' }}>
+                {currentDay.date} — {currentDay.subtitle}
+              </h3>
             </div>
-          ) : (
-            /* Day 02: 27 September with Parallel Split Circuit */
-            <div key="day-27-itinerary" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>09:30 AM – 01:00 PM</span>
-                  <span className="badge">MAIN LABS</span>
-                </div>
-                <div style={{ fontWeight: 800, fontSize: '1.15rem', margin: '4px 0', color: 'var(--text-primary)' }}>Competition (Based on Workshop)</div>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Capstone hackathon evaluation where teams build solutions judged by industry experts.</p>
-              </div>
-
-              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>01:00 PM – 02:00 PM</span>
-                <div style={{ fontWeight: 700, fontSize: '1.05rem', margin: '4px 0' }}>Lunch Break</div>
-              </div>
-
-              {/* PARALLEL CIRCUIT BRANCH (2:00 PM – 4:00 PM) */}
-              <div className="tab-animated-item" style={{ margin: 'var(--space-sm) 0', padding: 'var(--space-lg)', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                  <span className="blueprint-tag">[ SCHEMATIC // PARALLEL BRANCH ]</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', fontWeight: 800, color: 'var(--accent)' }}>02:00 PM – 04:00 PM</span>
-                </div>
-
-                <div className="circuit-branch-container">
-                  {/* Branch A: Nano Mentoring */}
-                  <div style={{ background: 'var(--bg-primary)', padding: 'var(--space-md)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
-                    <span className="blueprint-tag">BRANCH 01 // MENTORSHIP</span>
-                    <div style={{ fontWeight: 800, fontSize: '1.2rem', marginTop: '6px', color: 'var(--text-primary)' }}>
-                      Nano Mentoring
-                    </div>
-                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '6px', lineHeight: '1.5' }}>
-                      Personalized 1-on-1 counseling pods with distinguished industry mentors for portfolio reviews and career roadmapping.
-                    </p>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginTop: '10px' }}>
-                      VENUE: Classrooms 101–104
-                    </div>
-                  </div>
-
-                  {/* Branch B: Vibe Check */}
-                  <div style={{ background: 'var(--bg-primary)', padding: 'var(--space-md)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
-                    <span className="blueprint-tag">BRANCH 02 // CS MD SESSION</span>
-                    <div style={{ fontWeight: 800, fontSize: '1.2rem', marginTop: '6px', color: 'var(--text-primary)' }}>
-                      Vibe Check / CS MD Session
-                    </div>
-                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '6px', lineHeight: '1.5' }}>
-                      Interactive Computer Society Membership Development networking session with open mic talks and community activities.
-                    </p>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginTop: '10px' }}>
-                      VENUE: CS Lounge
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>04:00 PM – 04:30 PM</span>
-                <div style={{ fontWeight: 700, fontSize: '1.05rem', margin: '4px 0' }}>Break & Refreshments</div>
-              </div>
-
-              <div className="timeline-item tab-animated-item" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>04:30 PM – 05:30 PM</span>
-                  <span className="badge">AUDITORIUM</span>
-                </div>
-                <div style={{ fontWeight: 800, fontSize: '1.15rem', margin: '4px 0', color: 'var(--text-primary)' }}>Culturals</div>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Live performances and student showcases to celebrate the summit conclusion.</p>
-              </div>
-
-              <div className="timeline-item tab-animated-item">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent)' }}>05:30 PM – 06:30 PM</span>
-                  <span className="badge">MAIN HALL</span>
-                </div>
-                <div style={{ fontWeight: 800, fontSize: '1.15rem', margin: '4px 0', color: 'var(--text-primary)' }}>Closing Ceremony & Awards</div>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Presentation of winner awards, participation certs, and valedictory address.</p>
-              </div>
-            </div>
-          )}
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--accent)', fontWeight: 700 }}>
+              SCTCE CAMPUS & VIRTUAL
+            </span>
+          </div>
         </ScrollReveal>
+
+        {/* Day Itinerary Table with Staggered Cascading Items and Aligned Venue Column */}
+        <div id={`schedule-pane-${currentDay.id}`} role="tabpanel" className="schedule-itinerary-container">
+          <div key={currentDay.id} className="schedule-rows-stack tab-animated-item">
+            {currentDay.items.map((item) => {
+              if (isParallelGroup(item)) {
+                return (
+                  /* Parallel Circuit Branch with Aligned Parallel Cards */
+                  <div key={item.id} className="schedule-parallel-group">
+                    <div className="schedule-parallel-header">
+                      <div className="schedule-row-time" style={{ color: 'var(--accent)' }}>{item.time}</div>
+                      <span className="blueprint-tag">[ SCHEMATIC // PARALLEL TRACKS ]</span>
+                    </div>
+
+                    <div className="schedule-parallel-grid">
+                      {item.sessions.map((sess, idx) => (
+                        <div key={sess.id} className="schedule-parallel-card">
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
+                            <span className="blueprint-tag">BRANCH 0{idx + 1} // {sess.category || 'TRACK'}</span>
+                            {sess.venue && (
+                              <div className="schedule-location-aligned">
+                                <span className="schedule-location-label">VENUE:</span>
+                                <span className="schedule-location-value">{sess.venue}</span>
+                              </div>
+                            )}
+                          </div>
+                          <h4 className="schedule-session-title" style={{ fontSize: '1.15rem' }}>{sess.title}</h4>
+                          <p className="schedule-session-desc">{sess.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
+              const isBreak = item.isBreak;
+
+              return (
+                /* Standard Aligned Schedule Row (Desktop: Time | Session Details | Location Column) */
+                <div 
+                  key={item.id} 
+                  className={`schedule-row-item ${isBreak ? 'is-break-row' : ''}`}
+                >
+                  {/* Column 1: Monospace Aligned Time */}
+                  <div className="schedule-row-time">
+                    {item.time}
+                  </div>
+
+                  {/* Column 2: Session Content & Description */}
+                  <div className="schedule-row-content">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                      {item.category && <span className="blueprint-tag">{item.category}</span>}
+                      {item.organizer && (
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--accent)', fontWeight: 700 }}>
+                          {item.organizer}
+                        </span>
+                      )}
+                    </div>
+                    <h4 className="schedule-session-title">{item.title}</h4>
+                    {item.description && <p className="schedule-session-desc">{item.description}</p>}
+                    
+                    {/* Mobile Only Location Meta */}
+                    {item.venue && (
+                      <div className="schedule-location-mobile">
+                        <span className="schedule-location-label">VENUE:</span>
+                        <span className="schedule-location-value">{item.venue}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Column 3: Desktop Aligned Location Column (No AI pill badge look!) */}
+                  <div className="schedule-row-location-col">
+                    {item.venue ? (
+                      <div className="schedule-location-aligned">
+                        <span className="schedule-location-label">LOCATION // VENUE</span>
+                        <span className="schedule-location-value">{item.venue}</span>
+                      </div>
+                    ) : (
+                      <span className="schedule-location-empty">—</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </section>
   );
 };
+

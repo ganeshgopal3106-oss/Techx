@@ -49,7 +49,12 @@ export const ContactSection: React.FC = () => {
               {/* Official Branch Contact Info */}
               <div className="contact-info-block">
                 <div className="contact-info-row">
-                  <span className="contact-icon">✉</span>
+                  <span className="contact-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                      <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                  </span>
                   <div>
                     <div style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>OFFICIAL EMAIL</div>
                     <a href="mailto:mailtoieeesctsb@gmail.com" style={{ color: 'var(--accent)', fontWeight: 700, fontSize: '0.9rem' }}>
@@ -59,7 +64,13 @@ export const ContactSection: React.FC = () => {
                 </div>
 
                 <div className="contact-info-row">
-                  <span className="contact-icon">🌐</span>
+                  <span className="contact-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="2" y1="12" x2="22" y2="12" />
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                  </span>
                   <div>
                     <div style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>STUDENT BRANCH CHAPTER</div>
                     <a href="https://ieeesctsb.org/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', fontWeight: 700, fontSize: '0.9rem' }}>
@@ -79,7 +90,11 @@ export const ContactSection: React.FC = () => {
 
               {isSubmitted ? (
                 <div style={{ textAlign: 'center', padding: 'var(--space-xl) 0' }}>
-                  <div style={{ fontSize: '2.5rem', color: 'var(--accent)', marginBottom: '8px' }}>✓</div>
+                  <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: 'var(--bg-secondary)', border: '2px solid var(--accent)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </div>
                   <h4 style={{ fontSize: '1.2rem', fontWeight: 800, textTransform: 'uppercase' }}>Message Received</h4>
                   <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '8px' }}>
                     Thank you, <strong>{formData.name}</strong>. Our organizing team will get back to you shortly.
