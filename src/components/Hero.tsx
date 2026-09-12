@@ -1,10 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { eventData } from '../data/event';
 import { ScrollReveal } from './ScrollReveal';
 
 export const Hero: React.FC = () => {
+  // Target date: September 13, 2026 09:00:00 AM IST
+  const targetDate = new Date('2026-09-13T09:00:00+05:30').getTime();
+
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+
+  useEffect(() => {
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance > 0) {
+        setTimeLeft({
+          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((distance % (1000 * 60)) / 1000)
+        });
+      }
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, [targetDate]);
+
   return (
-    <section id="hero" className="hero-section section-padding blueprint-circuit-bg" style={{ minHeight: '90vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
+    <section id="hero" className="hero-section section-padding blueprint-circuit-bg" style={{ minHeight: '92vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
       {/* Subtle blueprint decorative markers */}
       <span className="blueprint-marker-plus" style={{ top: '24px', left: '32px' }}>+</span>
       <span className="blueprint-marker-plus" style={{ top: '24px', right: '32px' }}>+</span>
@@ -20,39 +50,76 @@ export const Hero: React.FC = () => {
             </span>
           </div>
 
-          <h1 className="hero-headline" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.8rem)', lineHeight: 1.02, textTransform: 'uppercase', margin: '20px 0', letterSpacing: '-0.02em' }}>
+          <h1 className="hero-headline" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.6rem)', lineHeight: 1.02, textTransform: 'uppercase', margin: '18px 0', letterSpacing: '-0.02em' }}>
             Powering Minds,<br />One Spark At A Time.
           </h1>
           
-          <div className="hero-meta" style={{ margin: '20px 0 24px' }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
-              <span className="hero-meta-date" style={{ color: 'var(--accent)', fontWeight: 800, fontSize: '1.25rem', letterSpacing: '0.05em' }}>
-                13 — 27 SEPTEMBER 2026
+          <div className="hero-meta" style={{ margin: '16px 0 20px' }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', flexWrap: 'wrap' }}>
+              <span className="hero-meta-date" style={{ color: 'var(--accent)', fontWeight: 800, fontSize: '1.2rem', letterSpacing: '0.05em' }}>
+                13–27 September 2026
               </span>
               <span className="hero-meta-divider">|</span>
-              <span className="hero-meta-location" style={{ fontSize: '0.95rem' }}>{eventData.locationShort}</span>
+              <span className="hero-meta-location" style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
+                {eventData.location}
+              </span>
             </div>
           </div>
 
-          <p className="hero-description" style={{ fontSize: '1.15rem', maxWidth: '580px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '36px' }}>
-            A global technical upskilling initiative bridging academic learning and industry readiness.
+          <p className="hero-description" style={{ fontSize: '1.1rem', maxWidth: '580px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '24px' }}>
+            A global technical upskilling initiative hosted by IEEE CS SCT SBC bridging academic fundamentals and battle-tested industry readiness.
           </p>
 
-          <div className="hero-actions">
+          {/* Live Countdown Timer */}
+          <div className="hero-countdown-container" aria-label="Event Countdown">
+            <div className="countdown-box">
+              <span className="countdown-num">{String(timeLeft.days).padStart(2, '0')}</span>
+              <span className="countdown-label">DAYS</span>
+            </div>
+            <div className="countdown-box">
+              <span className="countdown-num">{String(timeLeft.hours).padStart(2, '0')}</span>
+              <span className="countdown-label">HOURS</span>
+            </div>
+            <div className="countdown-box">
+              <span className="countdown-num">{String(timeLeft.minutes).padStart(2, '0')}</span>
+              <span className="countdown-label">MINUTES</span>
+            </div>
+            <div className="countdown-box">
+              <span className="countdown-num">{String(timeLeft.seconds).padStart(2, '0')}</span>
+              <span className="countdown-label">SECONDS</span>
+            </div>
+          </div>
+
+          <div className="hero-actions" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             <a 
-              href="#about" 
+              href="#tracks" 
               className="btn btn-primary hero-primary-cta"
-              style={{ padding: '14px 36px', fontSize: '0.9rem' }}
+              style={{ padding: '12px 30px', fontSize: '0.85rem' }}
               onClick={(e) => {
                 e.preventDefault();
-                const el = document.getElementById('about');
+                const el = document.getElementById('tracks');
                 if (el) {
                   el.scrollIntoView({ behavior: 'smooth' });
-                  window.history.pushState(null, '', '#about');
+                  window.history.pushState(null, '', '#tracks');
                 }
               }}
             >
-              Explore TechX <span className="arrow">↓</span>
+              Explore Tracks <span className="arrow">↓</span>
+            </a>
+            <a 
+              href="#schedule" 
+              className="btn btn-secondary hero-secondary-cta"
+              style={{ padding: '12px 28px', fontSize: '0.85rem' }}
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById('schedule');
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth' });
+                  window.history.pushState(null, '', '#schedule');
+                }
+              }}
+            >
+              View Schedule <span className="arrow">↓</span>
             </a>
           </div>
         </ScrollReveal>

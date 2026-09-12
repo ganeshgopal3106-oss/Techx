@@ -3573,6 +3573,181 @@ a:focus-visible {
   line-height: 1.6;
 }
 
+/* Hero Countdown Timer */
+.hero-countdown-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: var(--space-md) 0 var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.countdown-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 8px 14px;
+  min-width: 62px;
+  border-radius: var(--radius-sm);
+}
+
+.countdown-num {
+  font-family: var(--font-mono);
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.countdown-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-top: 4px;
+  letter-spacing: 0.1em;
+}
+
+/* Event Moments Gallery */
+.gallery-carousel-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+}
+
+.gallery-slide {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 320px;
+  max-height: 480px;
+}
+
+.gallery-slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-caption-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(17, 17, 17, 0.88), transparent);
+  color: #FFFCF1;
+  padding: var(--space-lg) var(--space-md) var(--space-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.gallery-btn-prev,
+.gallery-btn-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(17, 17, 17, 0.65);
+  color: #FFFCF1;
+  border: 1px solid rgba(255, 252, 241, 0.2);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 200ms ease;
+  font-size: 1.1rem;
+}
+
+.gallery-btn-prev { left: 16px; }
+.gallery-btn-next { right: 16px; }
+
+.gallery-btn-prev:hover,
+.gallery-btn-next:hover {
+  background-color: var(--accent);
+  color: #FFFCF1;
+}
+
+.gallery-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: var(--space-md);
+}
+
+.gallery-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: var(--border-color);
+  border: none;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.gallery-dot.active {
+  width: 24px;
+  background-color: var(--accent);
+}
+
+/* Contact & Venue Section */
+.contact-section-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+}
+
+@media (max-width: 900px) {
+  .contact-section-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.venue-card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.venue-map-iframe {
+  width: 100%;
+  height: 220px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+}
+
+.contact-info-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.contact-info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.contact-icon {
+  font-size: 1.1rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-delay: -1ms !important;

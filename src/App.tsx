@@ -8,9 +8,11 @@ import { TracksSection } from './components/TracksSection';
 import { Timeline } from './components/Timeline';
 import { MainEventSection } from './components/MainEventSection';
 import { UniqueSection } from './components/UniqueSection';
+import { GallerySection } from './components/GallerySection';
 import { PeopleSection } from './components/PeopleSection';
 import { PartnerGrid } from './components/PartnerGrid';
 import { FAQAccordion } from './components/FAQAccordion';
+import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { RegisterPage } from './components/RegisterPage';
 
@@ -35,7 +37,7 @@ function App() {
     window.addEventListener('popstate', handleLocationChange);
     window.addEventListener('navigate', handleLocationChange);
 
-    // Global Link Interceptor to route register clicks to specific track registration
+    // Global Link Interceptor to route track register clicks smoothly
     const handleLinkClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const anchor = target.closest('a');
@@ -75,7 +77,7 @@ function App() {
       <Navbar />
 
       <main>
-        {/* 01 / HERO */}
+        {/* 01 / HERO with Live Countdown */}
         <Hero />
 
         {/* METADATA STRIP */}
@@ -99,17 +101,23 @@ function App() {
         {/* 07 / COMMUNITY & IMPACT */}
         <UniqueSection />
 
+        {/* 08 / EVENT MOMENTS GALLERY */}
+        <GallerySection />
+
         {/* DISTINGUISHED MENTORS & GUESTS */}
         <PeopleSection />
 
         {/* COLLABORATING PARTNERS */}
         <PartnerGrid />
 
-        {/* 08 / FREQUENTLY ASKED QUESTIONS */}
+        {/* 09 / FREQUENTLY ASKED QUESTIONS */}
         <FAQAccordion allowMultipleOpen={false} />
+
+        {/* 10 / CONTACT & CAMPUS VENUE */}
+        <ContactSection />
       </main>
 
-      {/* 09 / FOOTER */}
+      {/* 11 / MINIMAL EDITORIAL FOOTER */}
       <Footer />
     </div>
   );

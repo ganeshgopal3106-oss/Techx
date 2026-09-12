@@ -8,7 +8,7 @@ export const Navbar: React.FC = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      const sections = ['about', 'pillars', 'tracks', 'journey', 'schedule', 'community', 'faq'];
+      const sections = ['about', 'tracks', 'journey', 'schedule', 'gallery', 'faq', 'contact'];
       let currentSection = 'hero';
 
       for (const sectionId of sections) {
@@ -48,7 +48,7 @@ export const Navbar: React.FC = () => {
   return (
     <header className={`navbar-container ${isScrolled ? 'scrolled' : ''}`}>
       <div className="navbar-capsule">
-        {/* Left: Brand Logo */}
+        {/* Left: Official Brand Logo */}
         <a 
           href="#hero" 
           className="navbar-logo" 
@@ -59,7 +59,7 @@ export const Navbar: React.FC = () => {
           <img src="/logo.png" alt="IEEE CS SYP TECHX" style={{ height: '32px', width: 'auto', objectFit: 'contain' }} />
         </a>
 
-        {/* Center: Navigation Links */}
+        {/* Center: Primary Navigation Links */}
         <nav className="navbar-links">
           <a 
             href="#about" 
@@ -76,25 +76,18 @@ export const Navbar: React.FC = () => {
             Tracks
           </a>
           <a 
-            href="#journey" 
-            className={`nav-link ${activeSection === 'journey' ? 'active' : ''}`}
-            onClick={(e) => handleNavClick(e, 'journey')}
-          >
-            Journey
-          </a>
-          <a 
             href="#schedule" 
             className={`nav-link ${activeSection === 'schedule' ? 'active' : ''}`}
             onClick={(e) => handleNavClick(e, 'schedule')}
           >
-            Main Event
+            Schedule
           </a>
           <a 
-            href="#community" 
-            className={`nav-link ${activeSection === 'community' ? 'active' : ''}`}
-            onClick={(e) => handleNavClick(e, 'community')}
+            href="#gallery" 
+            className={`nav-link ${activeSection === 'gallery' ? 'active' : ''}`}
+            onClick={(e) => handleNavClick(e, 'gallery')}
           >
-            Community
+            Gallery
           </a>
           <a 
             href="#faq" 
@@ -102,6 +95,13 @@ export const Navbar: React.FC = () => {
             onClick={(e) => handleNavClick(e, 'faq')}
           >
             FAQ
+          </a>
+          <a 
+            href="#contact" 
+            className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`}
+            onClick={(e) => handleNavClick(e, 'contact')}
+          >
+            Contact
           </a>
         </nav>
       </div>
