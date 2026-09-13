@@ -78,9 +78,22 @@ export const Timeline: React.FC = () => {
                   aria-selected={isActive}
                   aria-label={pe.date}
                 >
-                  <div className="circuit-node-point" />
+                  <div className="circuit-node-point" style={{ position: 'relative' }}>
+                    {isActive && (
+                      <span 
+                        style={{ 
+                          position: 'absolute', 
+                          inset: '-4px', 
+                          borderRadius: '50%', 
+                          backgroundColor: 'var(--accent)', 
+                          opacity: 0.5, 
+                          animation: 'status-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite' 
+                        }} 
+                      />
+                    )}
+                  </div>
                   <span className="circuit-node-date">{dateLabel}</span>
-                  <span style={{ fontSize: '0.65rem', color: isActive ? 'var(--accent)' : 'var(--text-muted)', textTransform: 'uppercase', marginTop: '2px' }}>
+                  <span style={{ fontSize: '0.65rem', color: isActive ? 'var(--accent)' : 'var(--text-muted)', textTransform: 'uppercase', marginTop: '2px', fontWeight: isActive ? 700 : 500 }}>
                     Online
                   </span>
                 </button>
@@ -91,39 +104,62 @@ export const Timeline: React.FC = () => {
 
         {/* Selected Pre-Event Connected Content Panel */}
         <ScrollReveal className="circuit-details-panel">
-          <div key={selectedPreEventDate} className="tab-animated-item">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-md)', borderBottom: '1px solid var(--border-color)', paddingBottom: 'var(--space-sm)' }}>
+          <div 
+            key={selectedPreEventDate} 
+            className="tab-animated-item" 
+            style={{ 
+              background: 'var(--card-bg)', 
+              border: '1px solid var(--border-color)', 
+              borderRadius: 'var(--radius-md)', 
+              padding: 'var(--space-xl)', 
+              boxShadow: 'var(--shadow-card)' 
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-md)', borderBottom: '1px solid var(--border-color)', paddingBottom: 'var(--space-sm)', flexWrap: 'wrap', gap: '8px' }}>
               <div>
                 <span className="blueprint-tag">PRE-EVENT // {selectedEvent.date}</span>
-                <h3 style={{ fontSize: '1.6rem', textTransform: 'uppercase', fontWeight: 800, color: 'var(--text-primary)', marginTop: '4px' }}>
+                <h3 style={{ fontSize: '1.65rem', textTransform: 'uppercase', fontWeight: 850, color: 'var(--text-primary)', marginTop: '4px' }}>
                   {selectedEvent.title}
                 </h3>
               </div>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', padding: '4px 10px', backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '2px', color: 'var(--accent)', fontWeight: 700 }}>
-                ONLINE PRE-EVENT
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', padding: '6px 14px', backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', color: 'var(--accent)', fontWeight: 800 }}>
+                ● ONLINE LIVE SESSION
               </span>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 'var(--space-md)', margin: 'var(--space-md) 0' }}>
               <div style={{ background: 'var(--bg-secondary)', padding: 'var(--space-md)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
-                <div className="blueprint-tag">ORGANIZING CHAPTER</div>
-                <div style={{ fontWeight: 700, marginTop: '4px', color: 'var(--text-primary)' }}>{selectedEvent.organizer}</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--accent)' }} aria-hidden="true">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                  </svg>
+                  <span className="blueprint-tag">ORGANIZING CHAPTER</span>
+                </div>
+                <div style={{ fontWeight: 700, marginTop: '6px', color: 'var(--text-primary)', fontSize: '0.95rem' }}>{selectedEvent.organizer}</div>
               </div>
+
               <div style={{ background: 'var(--bg-secondary)', padding: 'var(--space-md)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
-                <div className="blueprint-tag">SESSION PLATFORM</div>
-                <div style={{ fontWeight: 700, marginTop: '4px', color: 'var(--text-primary)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--accent)' }} aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                  </svg>
+                  <span className="blueprint-tag">SESSION PLATFORM</span>
+                </div>
+                <div style={{ fontWeight: 700, marginTop: '6px', color: 'var(--text-primary)', fontSize: '0.95rem' }}>
                   {details?.venue || 'Online Virtual Meeting'}
                 </div>
               </div>
             </div>
 
-            <p style={{ marginTop: 'var(--space-md)', color: 'var(--text-secondary)', lineHeight: '1.6', fontSize: '1rem' }}>
+            <p style={{ marginTop: 'var(--space-md)', color: 'var(--text-secondary)', lineHeight: '1.65', fontSize: '1rem' }}>
               {details?.description}
             </p>
 
             {details?.requirements && (
-              <div style={{ marginTop: 'var(--space-sm)', fontSize: '0.85rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                REQUIREMENT: {details.requirements}
+              <div style={{ marginTop: 'var(--space-md)', padding: '10px 14px', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-sm)', borderLeft: '3px solid var(--accent)', fontSize: '0.85rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                ⚡ PREREQUISITE: {details.requirements}
               </div>
             )}
           </div>

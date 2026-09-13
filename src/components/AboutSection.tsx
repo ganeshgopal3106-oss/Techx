@@ -75,20 +75,134 @@ export const AboutSection: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        {/* Supporting Visual / Architectural Block */}
+        {/* Supporting Visual / Architectural Bento Block */}
         <ScrollReveal variant="scale-subtle" className="about-image-area" delayMs={150}>
-          <div className="image-placeholder blueprint-grid-bg" style={{ minHeight: '380px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)', padding: '32px' }}>
-            <span className="blueprint-tag">[ ARCHITECTURE // SUMMIT ]</span>
-            <div style={{ fontSize: '2rem', fontWeight: 900, color: 'var(--accent)', marginTop: '12px', letterSpacing: '-0.02em' }}>
-              TECHX
+          <div
+            className="blueprint-grid-bg"
+            style={{
+              height: '100%',
+              minHeight: '380px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-sm)',
+              padding: '24px',
+              backgroundColor: 'var(--bg-card)',
+              boxShadow: 'var(--shadow-card)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+          >
+            {/* Top Bar */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+              <span className="blueprint-tag">[ CHAPTER // RECORD & HONORS ]</span>
+              <span style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--accent)', fontWeight: 700 }}>
+                SCTCE • KERALA
+              </span>
             </div>
-            <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-              REIGNITE 2026
+
+            {/* 2x2 Bento Accolade Cards */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '12px',
+              margin: '16px 0'
+            }}>
+              <div style={{
+                padding: '12px',
+                background: 'var(--bg-glass)',
+                border: '1px solid var(--border-color)',
+                borderRadius: 'var(--radius-sm)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent)', marginBottom: '4px' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="7" /><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" /></svg>
+                  <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono)', fontWeight: 800 }}>AWARD 2024</span>
+                </div>
+                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.3 }}>
+                  Best Student Branch Chapter
+                </div>
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                  IEEE SCT SB Annual Honor
+                </div>
+              </div>
+
+              <div style={{
+                padding: '12px',
+                background: 'var(--bg-glass)',
+                border: '1px solid var(--border-color)',
+                borderRadius: 'var(--radius-sm)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent)', marginBottom: '4px' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" /><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" /><path d="M4 22h16" /><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" /><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" /><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" /></svg>
+                  <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono)', fontWeight: 800 }}>AWARD 2022</span>
+                </div>
+                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.3 }}>
+                  Outstanding SBC Award
+                </div>
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                  Kerala Section Recognition
+                </div>
+              </div>
+
+              <div style={{
+                padding: '12px',
+                background: 'var(--bg-glass)',
+                border: '1px solid var(--border-color)',
+                borderRadius: 'var(--radius-sm)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent)', marginBottom: '4px' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
+                  <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono)', fontWeight: 800 }}>VELOCITY</span>
+                </div>
+                <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--accent)', lineHeight: 1.1 }}>
+                  180+ in 24h
+                </div>
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                  Record signups during Dhyuthi
+                </div>
+              </div>
+
+              <div style={{
+                padding: '12px',
+                background: 'var(--bg-glass)',
+                border: '1px solid var(--border-color)',
+                borderRadius: 'var(--radius-sm)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent)', marginBottom: '4px' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+                  <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono)', fontWeight: 800 }}>SUPPORT</span>
+                </div>
+                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.3 }}>
+                  Official IEEE Grant
+                </div>
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                  Endorsed Technical Sprint
+                </div>
+              </div>
             </div>
-            <div style={{ width: '40px', height: '2px', backgroundColor: 'var(--accent)', margin: '16px 0' }} />
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textAlign: 'center', lineHeight: '1.4' }}>
-              SCTCE CAMPUS • TRIVANDRUM<br />IEEE CS SCT SBC CHAPTER
-            </span>
+
+            {/* Bottom Footer Details */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingTop: '12px',
+              borderTop: '1px solid var(--border-color)',
+              fontSize: '0.74rem',
+              fontFamily: 'var(--font-mono)',
+              color: 'var(--text-muted)'
+            }}>
+              <span>IEEE COMPUTER SOCIETY</span>
+              <a
+                href="https://ieeesctsb.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}
+              >
+                VISIT CHAPTER ↗
+              </a>
+            </div>
           </div>
         </ScrollReveal>
       </div>
