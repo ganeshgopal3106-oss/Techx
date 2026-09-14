@@ -21,8 +21,8 @@ export interface ParallelSessionGroup {
 export type ScheduleItem = ScheduleSession | ParallelSessionGroup;
 
 export interface ScheduleDay {
-  id: 'day-1' | 'day-2' | 'day-3';
-  dayNumber: 'DAY 1' | 'DAY 2' | 'DAY 3';
+  id: 'day-1' | 'day-2';
+  dayNumber: 'DAY 1' | 'DAY 2';
   date: string;
   subtitle: string;
   items: ScheduleItem[];
@@ -170,68 +170,6 @@ export const daysScheduleData: ScheduleDay[] = [
         description: 'Prize distribution for hackathon winners, distribution of certificates, and official valedictory address.',
         venue: 'Main Hall',
         category: 'CEREMONY'
-      }
-    ]
-  },
-  {
-    id: 'day-3',
-    dayNumber: 'DAY 3',
-    date: '13–19 September 2026',
-    subtitle: 'Pre-Summit Online Masterclasses & Technical Sprints',
-    items: [
-      {
-        id: 'd3-workshop-online',
-        time: '13 September • 07:00 PM',
-        title: 'Online Workshop',
-        description: 'Introductory bootcamp familiarizing delegates with developer tools, SDK prerequisites, and starter codebases.',
-        venue: 'Online (Google Meet)',
-        organizer: 'IEEE CS CEAL SBC',
-        category: 'ONLINE BOOTCAMP'
-      },
-      {
-        id: 'd3-blindscript',
-        time: '14 September • 07:00 PM',
-        title: 'BlindScript',
-        description: 'High-speed algorithmic challenge where coders write syntax with their screens blanked to test memory and accuracy.',
-        venue: 'Online (HackerRank)',
-        organizer: 'IEEE CS SCT SBC',
-        category: 'CODING SPRINT'
-      },
-      {
-        id: 'd3-ai-healthcare',
-        time: '15 September • 07:00 PM',
-        title: 'AI in HealthCare',
-        description: 'Deep-dive keynote on neural networks in diagnostics, medical imaging classification, and clinical decision support.',
-        venue: 'Online (Virtual)',
-        organizer: 'IEEE EMBS SCT SBC',
-        category: 'TECH TALK'
-      },
-      {
-        id: 'd3-competition-gecbh',
-        time: '16 September • 07:00 PM',
-        title: 'Algorithmic Problem Sprint',
-        description: 'Online problem-solving competition testing data structures and dynamic programming under time constraints.',
-        venue: 'Online Portal',
-        organizer: 'IEEE CS GECBH SBC',
-        category: 'COMPETITION'
-      },
-      {
-        id: 'd3-cypherx',
-        time: '17 September • 07:00 PM',
-        title: 'CypherX CTF',
-        description: 'Cryptography and network forensics puzzle hunt. Decrypt ciphertext and extract hidden security flags.',
-        venue: 'Online (CTF Portal)',
-        organizer: 'IEEE COMSOC SCT SBC',
-        category: 'SECURITY CTF'
-      },
-      {
-        id: 'd3-adas',
-        time: '19 September • 07:00 PM',
-        title: 'ADAS — The Future of Driving',
-        description: 'Keynote exploring Advanced Driver Assistance Systems, camera-radar sensor fusion, and autonomous vehicle telemetry.',
-        venue: 'Online (Google Meet)',
-        organizer: 'IEEE IAS SCT SBC',
-        category: 'KEYNOTE'
       }
     ]
   }

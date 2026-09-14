@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollReveal } from './ScrollReveal';
+import posterImg from '../assets/poster.jpeg';
 
 export const AboutSection: React.FC = () => {
   const [showFullSbcText, setShowFullSbcText] = useState(false);
@@ -75,21 +76,14 @@ export const AboutSection: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        {/* Supporting Visual / Architectural Block */}
-        <ScrollReveal variant="scale-subtle" className="about-image-area" delayMs={150}>
-          <div className="image-placeholder blueprint-grid-bg" style={{ minHeight: '380px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)', padding: '32px' }}>
-            <span className="blueprint-tag">[ ARCHITECTURE // SUMMIT ]</span>
-            <div style={{ fontSize: '2rem', fontWeight: 900, color: 'var(--accent)', marginTop: '12px', letterSpacing: '-0.02em' }}>
-              TECHX
-            </div>
-            <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-              REIGNITE 2026
-            </div>
-            <div style={{ width: '40px', height: '2px', backgroundColor: 'var(--accent)', margin: '16px 0' }} />
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textAlign: 'center', lineHeight: '1.4' }}>
-              SCTCE CAMPUS • TRIVANDRUM<br />IEEE CS SCT SBC CHAPTER
-            </span>
-          </div>
+        {/* Supporting Visual / Official Poster */}
+        <ScrollReveal variant="scale-subtle" className="about-poster-wrap" delayMs={150}>
+          <img 
+            src={posterImg} 
+            alt="TechX Reignite 2026 Summit Poster" 
+            className="about-poster-img" 
+            loading="lazy"
+          />
         </ScrollReveal>
       </div>
     </section>

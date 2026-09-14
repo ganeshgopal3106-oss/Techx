@@ -5,7 +5,7 @@ import { SectionHeader } from './SectionHeader';
 import { ScrollReveal } from './ScrollReveal';
 
 export const MainEventSection: React.FC = () => {
-  const [activeDayId, setActiveDayId] = useState<'day-1' | 'day-2' | 'day-3'>('day-1');
+  const [activeDayId, setActiveDayId] = useState<'day-1' | 'day-2'>('day-1');
 
   const currentDay: ScheduleDay = daysScheduleData.find(d => d.id === activeDayId) || daysScheduleData[0];
 
@@ -16,9 +16,9 @@ export const MainEventSection: React.FC = () => {
   return (
     <section id="schedule" className="main-event-section section-padding blueprint-circuit-bg" style={{ position: 'relative' }}>
       <div className="container">
-        <SectionHeader num="06 / EVENT ITINERARY" title="Summit & Pre-Event Schedule" />
+        <SectionHeader num="06 / EVENT ITINERARY" title="Summit Schedule" />
 
-        {/* Day Selector Tabs (DAY 1, DAY 2, DAY 3) */}
+        {/* Day Selector Tabs (DAY 1, DAY 2) */}
         <ScrollReveal>
           <div className="schedule-day-selector" role="tablist" aria-label="Event Days">
             {daysScheduleData.map((day) => {

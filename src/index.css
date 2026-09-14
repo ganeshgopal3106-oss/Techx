@@ -651,6 +651,13 @@ section[id] {
   flex-wrap: wrap;
 }
 
+.hero-meta-inner {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .hero-meta-divider {
   color: var(--border-color);
 }
@@ -668,27 +675,198 @@ section[id] {
 }
 
 @media (max-width: 768px) {
+  .hero-section {
+    min-height: auto !important;
+    padding-top: calc(var(--nav-height) + 28px) !important;
+    padding-bottom: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .blueprint-marker-plus {
+    display: none !important;
+  }
+
   .hero-container {
-    flex-direction: column;
-    align-items: flex-start;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: auto !important;
+    padding-inline: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
   }
+
   .hero-content {
-    align-items: flex-start;
-    text-align: left;
-    max-width: 100%;
+    width: 100% !important;
+    max-width: 480px !important;
+    margin-inline: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
   }
+
+  .hero-logo-wrapper {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    margin-bottom: 12px !important;
+  }
+
+  .hero-logo-text {
+    text-align: center !important;
+  }
+
   .hero-headline {
-    font-size: 2.5rem;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    margin: 8px 0 16px !important;
   }
+
+  .hero-headline .fold-text {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .hero-headline .fold-text-line {
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  .hero-headline .fold-text-segment {
+    text-align: center !important;
+  }
+
   .hero-meta {
-    justify-content: flex-start;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    margin: 10px auto 16px !important;
   }
+
+  .hero-meta-inner {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    gap: 4px !important;
+    width: 100% !important;
+  }
+
+  .hero-meta-date {
+    text-align: center !important;
+    display: block !important;
+    font-size: 1.15rem !important;
+  }
+
+  .hero-meta-divider {
+    display: none !important;
+  }
+
+  .hero-meta-location {
+    text-align: center !important;
+    display: block !important;
+    font-size: 0.9rem !important;
+  }
+
+  .hero-description {
+    width: 100% !important;
+    max-width: 340px !important;
+    margin-inline: auto !important;
+    margin-bottom: 24px !important;
+    text-align: center !important;
+    font-size: 0.95rem !important;
+    line-height: 1.55 !important;
+    padding-inline: 8px !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero-countdown-container {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin: 0 auto 24px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .countdown-box {
+    min-width: 58px !important;
+    padding: 8px 8px !important;
+    flex: 0 1 auto !important;
+  }
+
+  .countdown-num {
+    font-size: 1.3rem !important;
+  }
+
+  .countdown-label {
+    font-size: 0.55rem !important;
+  }
+
   .hero-actions {
-    justify-content: flex-start;
-    width: 100%;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    margin-inline: auto !important;
   }
+
   .hero-actions .btn {
-    width: auto;
+    width: 100% !important;
+    max-width: 280px !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-countdown-container {
+    gap: 4px !important;
+  }
+
+  .countdown-box {
+    min-width: 50px !important;
+    padding: 6px 4px !important;
+  }
+
+  .countdown-num {
+    font-size: 1.15rem !important;
+  }
+
+  .countdown-label {
+    font-size: 0.5rem !important;
+  }
+
+  .hero-actions .btn {
+    max-width: 260px !important;
   }
 }
 
@@ -814,23 +992,44 @@ section[id] {
   margin-top: var(--space-xs);
 }
 
-.about-image-area {
-  height: 360px;
+.about-poster-wrap {
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.about-image-area .image-placeholder {
-  height: 100%;
-  border-style: solid;
+.about-poster-img {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  display: block;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-secondary);
+  transition: transform var(--duration-normal) var(--ease-out-expo),
+              border-color var(--duration-normal) var(--ease-out-expo),
+              box-shadow var(--duration-normal) var(--ease-out-expo);
+}
+
+.about-poster-img:hover {
+  transform: scale(1.015);
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px rgba(59, 36, 20, 0.08);
 }
 
 @media (max-width: 992px) {
   .about-container {
     grid-template-columns: 0.3fr 1.7fr;
   }
-  .about-image-area {
+  .about-poster-wrap {
     grid-column: 1 / span 2;
-    height: 280px;
+    margin-top: var(--space-md);
+  }
+  .about-poster-img {
+    max-width: 320px;
   }
 }
 
@@ -845,9 +1044,12 @@ section[id] {
   .about-heading {
     font-size: 1.85rem;
   }
-  .about-image-area {
+  .about-poster-wrap {
     grid-column: 1;
-    height: 240px;
+    margin-top: var(--space-md);
+  }
+  .about-poster-img {
+    max-width: 280px;
   }
 }
 
@@ -2563,7 +2765,7 @@ section[id] {
 @keyframes mobileHeroRevealLeftToRight {
   0% {
     opacity: 0;
-    transform: translate3d(-20px, 0, 0);
+    transform: translate3d(-25px, 0, 0);
     clip-path: inset(-12px 100% -12px 0);
   }
   40% {
@@ -2579,7 +2781,7 @@ section[id] {
 @keyframes mobileHeroHeadlineReveal {
   0% {
     opacity: 0;
-    transform: translate3d(-20px, 0, 0);
+    transform: translate3d(-25px, 0, 0);
     clip-path: inset(-25% 100% -25% 0);
   }
   40% {
@@ -2629,20 +2831,22 @@ section[id] {
 
   /* 3. Event Date */
   .hero-anim-date {
-    display: inline-block;
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
     animation: mobileHeroRevealLeftToRight 420ms cubic-bezier(0.16, 1, 0.3, 1) 140ms both;
     will-change: transform, opacity, clip-path;
   }
 
-  /* 4. Event Venue & Divider */
+  /* 4. Event Venue */
   .hero-anim-venue-divider {
-    display: inline-block;
-    animation: mobileHeroRevealLeftToRight 420ms cubic-bezier(0.16, 1, 0.3, 1) 210ms both;
-    will-change: transform, opacity, clip-path;
+    display: none !important;
   }
 
   .hero-anim-venue {
-    display: inline-block;
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
     animation: mobileHeroRevealLeftToRight 420ms cubic-bezier(0.16, 1, 0.3, 1) 210ms both;
     will-change: transform, opacity, clip-path;
   }
@@ -3957,7 +4161,7 @@ a:focus-visible {
 
 .schedule-day-selector {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-md);
   margin-bottom: var(--space-xl);
 }
@@ -4580,6 +4784,271 @@ a:focus-visible {
   }
   .page-loader-overlay {
     display: none !important;
+  }
+}
+
+/* ==========================================================================
+   03 / WHY ATTEND TECHX — Architectural Blueprint Matrix
+   ========================================================================== */
+.why-attend-section {
+  position: relative;
+  background-color: transparent;
+}
+
+.why-attend-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
+  margin-top: var(--space-xl);
+  background-color: transparent;
+}
+
+.why-attend-cell {
+  position: relative;
+  padding: 36px 30px;
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  transition: background-color 200ms ease;
+  background-color: rgba(255, 252, 241, 0.55);
+  backdrop-filter: blur(8px);
+}
+
+.why-attend-cell:hover {
+  background-color: rgba(207, 131, 38, 0.08);
+}
+
+.why-attend-cell-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.why-attend-num {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.why-attend-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.why-attend-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+  line-height: 1.25;
+}
+
+.why-attend-desc {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  flex-grow: 1;
+}
+
+.why-attend-corner-mark {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--border-color);
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (max-width: 992px) {
+  .why-attend-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .why-attend-grid {
+    grid-template-columns: 1fr;
+  }
+  .why-attend-cell {
+    padding: 24px 20px;
+  }
+}
+
+/* ==========================================================================
+   04 / TRACKS & COMPETITIONS Callout Enhancements
+   ========================================================================== */
+.track-competition-box {
+  background-color: rgba(207, 131, 38, 0.06);
+  border: 1px solid rgba(207, 131, 38, 0.28);
+  border-left: 3px solid var(--accent);
+  padding: 12px 16px;
+  border-radius: var(--radius-xs);
+  margin: 10px 0 14px;
+}
+
+.track-competition-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.track-competition-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.track-competition-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.track-open-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background-color: var(--accent);
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 6px 12px;
+  border-radius: var(--radius-xs);
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(207, 131, 38, 0.3);
+}
+
+/* ==========================================================================
+   06 / VENUE — Clean Campus Coordinates & Map Embed
+   ========================================================================== */
+.venue-section {
+  position: relative;
+  background-color: transparent;
+}
+
+.venue-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: var(--space-xl);
+  margin-top: var(--space-xl);
+  align-items: stretch;
+}
+
+.venue-details-card {
+  background-color: rgba(255, 252, 241, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-lg);
+}
+
+.venue-institution-name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin: 8px 0 4px;
+}
+
+.venue-city-state {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+.venue-address {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.venue-transit-matrix {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 18px 0;
+}
+
+.venue-transit-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.venue-transit-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+.venue-transit-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.venue-transit-dist {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+
+.venue-map-wrap {
+  width: 100%;
+  min-height: 420px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background-color: var(--bg-secondary);
+}
+
+.venue-map-iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  border: 0;
+  display: block;
+}
+
+@media (max-width: 992px) {
+  .venue-grid {
+    grid-template-columns: 1fr;
+  }
+  .venue-map-wrap {
+    min-height: 320px;
+  }
+  .venue-map-iframe {
+    min-height: 320px;
   }
 }
 

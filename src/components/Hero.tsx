@@ -104,27 +104,27 @@ export const Hero: React.FC = () => {
               perspective={isMobile ? 550 : 700}
               creaseShading={isMobile ? 0.30 : 0.35}
               delay={isMobile ? 0.07 : 0}
-              fontSize={isMobile ? 'clamp(2.1rem, 8.2vw, 3.2rem)' : 'clamp(3.5rem, 7vw, 7rem)'}
+              fontSize={isMobile ? 'clamp(1.85rem, 7.5vw, 2.7rem)' : 'clamp(3.5rem, 7vw, 7rem)'}
               fontWeight={800}
               color="#111111"
             />
           </h1>
           
           {/* 3. Event Meta Info */}
-          <div className="hero-meta hero-anim-meta" style={{ margin: '16px 0 20px' }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', flexWrap: 'wrap' }}>
-              <span className="hero-meta-date hero-anim-date" style={{ color: 'var(--accent)', fontWeight: 800, fontSize: '1.2rem', letterSpacing: '0.05em' }}>
+          <div className="hero-meta hero-anim-meta">
+            <div className="hero-meta-inner">
+              <span className="hero-meta-date hero-anim-date">
                 13–27 September 2026
               </span>
               <span className="hero-meta-divider hero-anim-venue-divider">|</span>
-              <span className="hero-meta-location hero-anim-venue" style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
+              <span className="hero-meta-location hero-anim-venue">
                 {eventData.location}
               </span>
             </div>
           </div>
 
           {/* 4. Description */}
-          <p className="hero-description hero-anim-desc" style={{ fontSize: '1.1rem', maxWidth: '600px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '28px' }}>
+          <p className="hero-description hero-anim-desc">
             A global technical upskilling initiative hosted by IEEE CS SCT SBC bridging academic fundamentals and battle-tested industry readiness.
           </p>
 
@@ -149,7 +149,7 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* 6. Action CTAs */}
-          <div className="hero-actions hero-anim-actions" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          <div className="hero-actions hero-anim-actions">
             <a 
               ref={btnRef}
               href="#tracks" 

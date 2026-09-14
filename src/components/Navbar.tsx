@@ -9,7 +9,7 @@ export const Navbar: React.FC = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      const sections = ['about', 'tracks', 'journey', 'schedule', 'faq', 'contact'];
+      const sections = ['about', 'why-attend', 'tracks', 'schedule', 'venue'];
       let currentSection = 'hero';
 
       for (const sectionId of sections) {
@@ -43,6 +43,12 @@ export const Navbar: React.FC = () => {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
     setIsMobileMenuOpen(false);
+    if (targetId === 'hero') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.history.pushState(null, '', '#hero');
+      setActiveSection('hero');
+      return;
+    }
     const el = document.getElementById(targetId);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
@@ -81,11 +87,25 @@ export const Navbar: React.FC = () => {
         {/* Center Column: Primary Navigation Links (Mathematically Centered) */}
         <nav className="navbar-col-center navbar-desktop-links" aria-label="Main Navigation">
           <a 
+            href="#hero" 
+            className={`nav-link ${activeSection === 'hero' ? 'active' : ''}`}
+            onClick={(e) => handleNavClick(e, 'hero')}
+          >
+            Home
+          </a>
+          <a 
             href="#about" 
             className={`nav-link ${activeSection === 'about' ? 'active' : ''}`}
             onClick={(e) => handleNavClick(e, 'about')}
           >
             About
+          </a>
+          <a 
+            href="#why-attend" 
+            className={`nav-link ${activeSection === 'why-attend' ? 'active' : ''}`}
+            onClick={(e) => handleNavClick(e, 'why-attend')}
+          >
+            Why Attend
           </a>
           <a 
             href="#tracks" 
@@ -102,18 +122,11 @@ export const Navbar: React.FC = () => {
             Schedule
           </a>
           <a 
-            href="#faq" 
-            className={`nav-link ${activeSection === 'faq' ? 'active' : ''}`}
-            onClick={(e) => handleNavClick(e, 'faq')}
+            href="#venue" 
+            className={`nav-link ${activeSection === 'venue' ? 'active' : ''}`}
+            onClick={(e) => handleNavClick(e, 'venue')}
           >
-            FAQ
-          </a>
-          <a 
-            href="#contact" 
-            className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`}
-            onClick={(e) => handleNavClick(e, 'contact')}
-          >
-            Contact
+            Venue
           </a>
         </nav>
 
@@ -142,11 +155,25 @@ export const Navbar: React.FC = () => {
         <div className="navbar-mobile-drawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
           <nav className="mobile-drawer-nav">
             <a 
+              href="#hero" 
+              className={`mobile-nav-link ${activeSection === 'hero' ? 'active' : ''}`}
+              onClick={(e) => handleNavClick(e, 'hero')}
+            >
+              Home
+            </a>
+            <a 
               href="#about" 
               className={`mobile-nav-link ${activeSection === 'about' ? 'active' : ''}`}
               onClick={(e) => handleNavClick(e, 'about')}
             >
               About
+            </a>
+            <a 
+              href="#why-attend" 
+              className={`mobile-nav-link ${activeSection === 'why-attend' ? 'active' : ''}`}
+              onClick={(e) => handleNavClick(e, 'why-attend')}
+            >
+              Why Attend
             </a>
             <a 
               href="#tracks" 
@@ -163,18 +190,11 @@ export const Navbar: React.FC = () => {
               Schedule
             </a>
             <a 
-              href="#faq" 
-              className={`mobile-nav-link ${activeSection === 'faq' ? 'active' : ''}`}
-              onClick={(e) => handleNavClick(e, 'faq')}
+              href="#venue" 
+              className={`mobile-nav-link ${activeSection === 'venue' ? 'active' : ''}`}
+              onClick={(e) => handleNavClick(e, 'venue')}
             >
-              FAQ
-            </a>
-            <a 
-              href="#contact" 
-              className={`mobile-nav-link ${activeSection === 'contact' ? 'active' : ''}`}
-              onClick={(e) => handleNavClick(e, 'contact')}
-            >
-              Contact
+              Venue
             </a>
             <div className="mobile-drawer-cta">
               <a 

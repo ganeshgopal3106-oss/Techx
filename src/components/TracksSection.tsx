@@ -42,13 +42,14 @@ export const TracksSection: React.FC = () => {
   return (
     <section id="tracks" className="tracks-section section-padding blueprint-grid-bg" style={{ position: 'relative' }}>
       <div className="container">
-        <SectionHeader num="04 / TRACKS SHOWCASE" title="Explore The Upcoming Tracks" />
+        <SectionHeader num="04 / TRACKS & COMPETITIONS" title="Workshop Tracks & Associated Competitions" />
         
         {/* Alternating Tracks Showcase List */}
         <div className="tracks-showcase-list">
           {tracksData.map((track, index) => {
             const isReversed = index % 2 === 1;
             const isComingSoon = track.status === 'COMING_SOON';
+            const isOpen = track.status === 'OPEN';
 
             return (
               <ScrollReveal key={track.id} variant="fade-up" className={`track-showcase-row ${isReversed ? 'reversed' : ''}`}>
@@ -72,11 +73,16 @@ export const TracksSection: React.FC = () => {
                       COMING SOON
                     </div>
                   )}
+                  {isOpen && (
+                    <div className="track-open-badge">
+                      REGISTRATIONS OPEN
+                    </div>
+                  )}
                 </div>
 
                 {/* Information Column */}
                 <div className="track-showcase-info">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                     <span className="blueprint-tag">TRACK {track.num} // {track.category}</span>
                     <span className="badge">{track.badge}</span>
                   </div>
@@ -85,19 +91,44 @@ export const TracksSection: React.FC = () => {
                     {track.title}
                   </h3>
 
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.6', margin: '8px 0 16px' }}>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.6', margin: '4px 0 12px' }}>
                     {track.description}
                   </p>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <button
-                      onClick={() => openTrackModal(track)}
-                      className="btn btn-secondary"
-                      style={{ height: '40px', padding: '0 20px', fontSize: '0.85rem', fontWeight: 700 }}
-                    >
-                      Explore Track Details <span className="arrow">→</span>
-                    </button>
-                    <span className="blueprint-tag">STATUS: {track.status}</span>
+                  {/* Associated Competition Highlight */}
+                  {track.competition && (
+                    <div className="track-competition-box">
+                      <div className="track-competition-header">
+                        <span className="blueprint-tag" style={{ color: 'var(--accent)', borderColor: 'var(--accent)' }}>
+                          DAY 2 // COMPETITION
+                        </span>
+                        <strong className="track-competition-title">{track.competition}</strong>
+                      </div>
+                      {track.competitionDescription && (
+                        <p className="track-competition-desc">{track.competitionDescription}</p>
+                      )}
+                    </div>
+                  )}
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginTop: '8px', flexWrap: 'wrap' }}>
+                    {isOpen ? (
+                      <a 
+                        href={track.registrationLink} 
+                        className="btn btn-primary"
+                        style={{ height: '42px', padding: '0 24px', fontSize: '0.85rem', fontWeight: 700 }}
+                      >
+                        REGISTER FOR THIS TRACK →
+                      </a>
+                    ) : (
+                      <button
+                        onClick={() => openTrackModal(track)}
+                        className="btn btn-secondary"
+                        style={{ height: '40px', padding: '0 20px', fontSize: '0.85rem', fontWeight: 700 }}
+                      >
+                        Explore Track Details <span className="arrow">→</span>
+                      </button>
+                    )}
+                    <span className="blueprint-tag">STATUS: {track.status.replace('_', ' ')}</span>
                   </div>
                 </div>
               </ScrollReveal>
@@ -133,6 +164,24 @@ export const TracksSection: React.FC = () => {
             </div>
 
             <div style={{ margin: 'var(--space-md) 0' }}>
+              <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', marginBottom: 'var(--space-md)' }}>
+                {selectedTrack.description}
+              </p>
+
+              {selectedTrack.competition && (
+                <div className="track-competition-box" style={{ marginBottom: 'var(--space-md)' }}>
+                  <div className="track-competition-header">
+                    <span className="blueprint-tag" style={{ color: 'var(--accent)', borderColor: 'var(--accent)' }}>
+                      DAY 2 // COMPETITION
+                    </span>
+                    <strong className="track-competition-title">{selectedTrack.competition}</strong>
+                  </div>
+                  {selectedTrack.competitionDescription && (
+                    <p className="track-competition-desc">{selectedTrack.competitionDescription}</p>
+                  )}
+                </div>
+              )}
+
               {selectedTrack.status === 'COMING_SOON' ? (
                 <div style={{ backgroundColor: 'var(--bg-secondary)', padding: 'var(--space-lg)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', textAlign: 'center' }}>
                   <div style={{ color: 'var(--accent)', fontWeight: 800, fontSize: '1.1rem', letterSpacing: '0.1em', marginBottom: '8px' }}>
@@ -145,11 +194,8 @@ export const TracksSection: React.FC = () => {
                     Stay tuned for syllabus updates and track registration announcements.
                   </p>
                 </div>
-              ) : selectedTrack.registrationEnabled ? (
+              ) : selectedTrack.status === 'OPEN' || selectedTrack.registrationEnabled ? (
                 <div>
-                  <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', marginBottom: 'var(--space-md)' }}>
-                    {selectedTrack.description}
-                  </p>
                   <a 
                     href={selectedTrack.registrationLink} 
                     className="btn btn-primary"

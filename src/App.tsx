@@ -1,18 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
-import { GlobalBackground } from './components/GlobalBackground';
+import Grainient from './components/Grainient';
 import { Hero } from './components/Hero';
-import { EventInfo } from './components/EventInfo';
 import { AboutSection } from './components/AboutSection';
-import { TechTrainSection } from './components/TechTrainSection';
+import { WhyAttendSection } from './components/WhyAttendSection';
 import { TracksSection } from './components/TracksSection';
-import { Timeline } from './components/Timeline';
 import { MainEventSection } from './components/MainEventSection';
-import { UniqueSection } from './components/UniqueSection';
-import { PeopleSection } from './components/PeopleSection';
-import { PartnerGrid } from './components/PartnerGrid';
-import { FAQAccordion } from './components/FAQAccordion';
-import { ContactSection } from './components/ContactSection';
+import { VenueSection } from './components/VenueSection';
 import { Footer } from './components/Footer';
 import { RegisterPage } from './components/RegisterPage';
 import { PageLoader } from './components/PageLoader';
@@ -81,9 +75,44 @@ function App() {
   }
 
   return (
-    <div className="app-wrapper" style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#FFFCF1' }}>
-      {/* Global GradientWaves WebGL Layer */}
-      <GlobalBackground />
+    <div className="app-wrapper" style={{ position: 'relative', minHeight: '100vh', backgroundColor: 'transparent' }}>
+      {/* Global Grainient WebGL Background Layer */}
+      <div
+        className="grainient-background"
+        style={{
+          width: '100%',
+          height: '100%',
+          position: 'fixed',
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      >
+        <Grainient
+          color1="#CF8326"
+          color2="#FFFCF1"
+          color3="#CF8326"
+          timeSpeed={0.25}
+          colorBalance={0}
+          warpStrength={1}
+          warpFrequency={5}
+          warpSpeed={2}
+          warpAmplitude={50}
+          blendAngle={0}
+          blendSoftness={0.05}
+          rotationAmount={500}
+          noiseScale={2}
+          grainAmount={0.1}
+          grainScale={2}
+          grainAnimated={false}
+          contrast={1.5}
+          gamma={1}
+          saturation={1}
+          centerX={0}
+          centerY={0}
+          zoom={0.9}
+        />
+      </div>
 
       {/* Short Non-Blocking Page Entrance Loader */}
       <PageLoader isLoading={isLoading} />
@@ -92,44 +121,26 @@ function App() {
       <Navbar />
 
       <main style={{ position: 'relative', zIndex: 1 }}>
-        {/* 01 / HERO with Live Countdown */}
+        {/* 01 / HOME / HERO */}
         <Hero />
-
-        {/* METADATA STRIP */}
-        <EventInfo />
 
         {/* 02 / ABOUT TECHX */}
         <AboutSection />
 
-        {/* 03 / DUAL PILLARS: TECH & TRAIN */}
-        <TechTrainSection />
+        {/* 03 / WHY ATTEND TECHX (NEW) */}
+        <WhyAttendSection />
 
-        {/* 04 / TRACKS SHOWCASE (Alternating Layout) */}
+        {/* 04 / TRACKS & COMPETITIONS */}
         <TracksSection />
 
-        {/* 05 / EVENT JOURNEY (Pre-Events Circuit) */}
-        <Timeline />
-
-        {/* 06 / MAIN EVENT SHOWCASE (26-27 September & Parallel Branch) */}
+        {/* 05 / EVENT SCHEDULE */}
         <MainEventSection />
 
-        {/* 07 / COMMUNITY & IMPACT */}
-        <UniqueSection />
-
-        {/* DISTINGUISHED MENTORS & GUESTS */}
-        <PeopleSection />
-
-        {/* COLLABORATING PARTNERS */}
-        <PartnerGrid />
-
-        {/* 09 / FREQUENTLY ASKED QUESTIONS */}
-        <FAQAccordion allowMultipleOpen={false} />
-
-        {/* 10 / CONTACT & CAMPUS VENUE */}
-        <ContactSection />
+        {/* 06 / VENUE (NEW) */}
+        <VenueSection />
       </main>
 
-      {/* 11 / MINIMAL EDITORIAL FOOTER */}
+      {/* 07 / MINIMAL EDITORIAL FOOTER */}
       <Footer />
     </div>
   );
