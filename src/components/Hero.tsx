@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { eventData } from '../data/event';
-import AeroShards from './AeroShards';
+import GradientWaves from './GradientWaves';
 
 export const Hero: React.FC = () => {
   // Target date: September 13, 2026 09:00:00 AM IST
@@ -12,10 +12,6 @@ export const Hero: React.FC = () => {
     minutes: 0,
     seconds: 0
   });
-
-  // Mouse parallax state for schematic graphic
-  const visualRef = useRef<HTMLDivElement>(null);
-  const [transformStyle, setTransformStyle] = useState('');
 
   // Magnetic CTA state
   const btnRef = useRef<HTMLAnchorElement>(null);
@@ -41,26 +37,6 @@ export const Hero: React.FC = () => {
     return () => clearInterval(interval);
   }, [targetDate]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (typeof window !== 'undefined' && (window.matchMedia('(hover: none)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
-      return;
-    }
-    if (!visualRef.current) return;
-    const rect = visualRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    
-    // Subtle physical displacement (max 4-5px)
-    const moveX = (x / rect.width) * 6;
-    const moveY = (y / rect.height) * 6;
-    
-    setTransformStyle(`translate3d(${moveX}px, ${moveY}px, 0)`);
-  };
-
-  const handleMouseLeave = () => {
-    setTransformStyle('translate3d(0, 0, 0)');
-  };
-
   // Subtle magnetic attraction for primary CTA
   const handleBtnMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (typeof window !== 'undefined' && (window.matchMedia('(hover: none)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
@@ -84,49 +60,38 @@ export const Hero: React.FC = () => {
       id="hero" 
       className="hero-section section-padding blueprint-circuit-bg" 
       style={{ minHeight: '92vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
     >
-      {/* Background AeroShards Wind Sculpture Canvas */}
+      {/* Background GradientWaves Ambient Canvas */}
       <div 
+        className="absolute inset-0 -z-10"
         style={{ 
           position: 'absolute', 
           inset: 0, 
           width: '100%', 
           height: '100%', 
-          pointerEvents: 'none', 
           zIndex: 0 
         }}
       >
-        <AeroShards
-          backgroundColor="#FFFCF1"
-          shardColor="#CF8326"
-          accentColor="#CF8326"
-          placement="full"
-          flow="stream"
-          material="satin"
-          detail="balanced"
-          effect="none"
-          scale={1}
-          spread={1}
-          depth={1}
-          speed={0.6}
-          spin={0.7}
-          interaction="repel"
-          density={0.8}
-          shardSize={1.0}
-          stretch={1}
-          turbulence={0.7}
-          glow={0.35}
-          edgeSoftness={2}
-          bloom={0.15}
-          grain={0}
-          chromaticAberration={0}
-          transitionDuration={1}
-          interactionRadius={1.5}
-          interactionStrength={0.4}
-          rippleIntensity={0.6}
-          holdToGather={true}
+        <GradientWaves
+          horizonColor="#FFFCF1"
+          waveColor="#CF8326"
+          crestColor="#CF8326"
+          speed={0.28}
+          amplitude={2}
+          waveScale={0.6}
+          waveRatio={0.9}
+          swell={28}
+          turbulence={14}
+          tilt={1.11}
+          zoom={1}
+          height={5.5}
+          fogDepth={18}
+          detail="medium"
+          brightness={0.85}
+          opacity={0.72}
+          mouseInteraction={true}
+          parallaxStrength={0.35}
+          grain={false}
         />
       </div>
 
@@ -138,17 +103,16 @@ export const Hero: React.FC = () => {
 
       <div className="container hero-container" style={{ position: 'relative', zIndex: 1 }}>
         <div className="hero-content">
-          {/* 1. Tagline / System identifier */}
-          <div className="hero-logo-wrapper hero-anim-tag" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span className="blueprint-tag">[ SYS // 2026.09 ]</span>
-            <span className="hero-logo-text" style={{ letterSpacing: '0.15em', color: 'var(--accent)', fontWeight: 700, fontSize: '0.85rem' }}>
+          {/* 1. Clean Identity / Label */}
+          <div className="hero-logo-wrapper hero-anim-tag" style={{ marginBottom: '14px' }}>
+            <span className="hero-logo-text" style={{ letterSpacing: '0.15em', color: 'var(--accent)', fontWeight: 700, fontSize: '0.9rem' }}>
               TECHX REIGNITE
             </span>
           </div>
 
           {/* 2. Masked Headline Reveal */}
           <div style={{ overflow: 'hidden' }}>
-            <h1 className="hero-headline hero-anim-headline" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.6rem)', lineHeight: 1.02, textTransform: 'uppercase', margin: '18px 0', letterSpacing: '-0.02em' }}>
+            <h1 className="hero-headline hero-anim-headline" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.6rem)', lineHeight: 1.02, textTransform: 'uppercase', margin: '14px 0 18px', letterSpacing: '-0.02em' }}>
               Powering Minds,<br />One Spark At A Time.
             </h1>
           </div>
@@ -167,7 +131,7 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* 4. Description */}
-          <p className="hero-description hero-anim-desc" style={{ fontSize: '1.1rem', maxWidth: '580px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '24px' }}>
+          <p className="hero-description hero-anim-desc" style={{ fontSize: '1.1rem', maxWidth: '600px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '28px' }}>
             A global technical upskilling initiative hosted by IEEE CS SCT SBC bridging academic fundamentals and battle-tested industry readiness.
           </p>
 
@@ -231,96 +195,6 @@ export const Hero: React.FC = () => {
             >
               View Schedule <span className="arrow">↓</span>
             </a>
-          </div>
-        </div>
-
-        {/* 7. Editorial Visual Technical Schematic Area with Micro-Parallax */}
-        <div className="hero-visual-area hero-anim-visual" ref={visualRef}>
-          <div 
-            className="image-placeholder blueprint-grid-bg hero-schematic-interactive" 
-            style={{ 
-              minHeight: '400px', 
-              border: '1px solid var(--border-color)', 
-              display: 'flex', 
-              flexDirection: 'column', 
-              alignItems: 'center', 
-              justifyContent: 'center', 
-              padding: '32px', 
-              position: 'relative',
-              transform: transformStyle
-            }}
-          >
-            {/* Motion.ed-Inspired Kinetic Motion Graphic SVG */}
-            <svg width="248" height="248" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="hero-kinetic-svg" style={{ marginBottom: '16px' }}>
-              {/* Static Grid & Target Coordinates */}
-              <rect x="20" y="20" width="160" height="160" stroke="#CF8326" strokeWidth="1" strokeDasharray="4 4" opacity="0.6"/>
-              
-              {/* Corner target brackets */}
-              <path d="M20 32V20H32" stroke="#CF8326" strokeWidth="1.5" />
-              <path d="M180 32V20H168" stroke="#CF8326" strokeWidth="1.5" />
-              <path d="M20 168V180H32" stroke="#CF8326" strokeWidth="1.5" />
-              <path d="M180 168V180H168" stroke="#CF8326" strokeWidth="1.5" />
-
-              {/* Outer Clockwise Rotating Orbital Ring */}
-              <g className="svg-orbit-outer">
-                <circle cx="100" cy="100" r="64" stroke="#111111" strokeWidth="1" strokeDasharray="3 9" opacity="0.8"/>
-                <circle cx="100" cy="36" r="3" fill="#CF8326" />
-                <circle cx="100" cy="164" r="2.5" fill="#111111" />
-              </g>
-
-              {/* Inner Counter-Clockwise Rotating Compass Ring */}
-              <g className="svg-orbit-inner">
-                <circle cx="100" cy="100" r="44" stroke="#CF8326" strokeWidth="1.2" strokeDasharray="8 6"/>
-                <line x1="100" y1="56" x2="100" y2="62" stroke="#CF8326" strokeWidth="1.5"/>
-                <line x1="100" y1="138" x2="100" y2="144" stroke="#CF8326" strokeWidth="1.5"/>
-                <line x1="56" y1="100" x2="62" y2="100" stroke="#CF8326" strokeWidth="1.5"/>
-                <line x1="138" y1="100" x2="144" y2="100" stroke="#CF8326" strokeWidth="1.5"/>
-              </g>
-
-              {/* Rotating Radar Scanner Sweep Line */}
-              <g className="svg-radar-sweep">
-                <line x1="100" y1="100" x2="100" y2="38" stroke="url(#scannerGradient)" strokeWidth="1.5"/>
-              </g>
-
-              {/* Pulsing Core Waves */}
-              <circle cx="100" cy="100" r="12" stroke="#CF8326" fill="none" className="svg-pulse-wave-1" />
-              <circle cx="100" cy="100" r="12" stroke="#CF8326" fill="none" className="svg-pulse-wave-2" />
-
-              {/* Glowing Center Core */}
-              <circle cx="100" cy="100" r="6" fill="#CF8326"/>
-              <circle cx="100" cy="100" r="2.5" fill="#FFFCF1"/>
-
-              {/* Animated Circuit Data Lines */}
-              <path d="M20 100H46M154 100H180" stroke="#CF8326" strokeWidth="1.5" className="svg-data-line"/>
-              <path d="M100 20V46M100 154V180" stroke="#CF8326" strokeWidth="1.5" className="svg-data-line"/>
-              
-              {/* Circuit Traces */}
-              <path d="M46 54H74V74" stroke="#111111" strokeWidth="1"/>
-              <circle cx="46" cy="54" r="3" fill="#111111"/>
-              <circle cx="74" cy="74" r="3" fill="#CF8326"/>
-
-              <path d="M154 146H126V126" stroke="#111111" strokeWidth="1"/>
-              <circle cx="154" cy="146" r="3" fill="#111111"/>
-              <circle cx="126" cy="126" r="3" fill="#CF8326"/>
-
-              {/* Technical Text / Coordinates */}
-              <text x="28" y="36" fill="#CF8326" fontSize="7.5" fontFamily="JetBrains Mono" letterSpacing="0.1em">[SCHEMATIC // KINETIC 01]</text>
-              <text x="96" y="172" fill="#7D6A5B" fontSize="6.5" fontFamily="JetBrains Mono">FREQ: 2.40GHz • 8.5241°N</text>
-
-              <defs>
-                <linearGradient id="scannerGradient" x1="100" y1="100" x2="100" y2="38" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#CF8326" stopOpacity="0.9"/>
-                  <stop offset="100%" stopColor="#CF8326" stopOpacity="0"/>
-                </linearGradient>
-              </defs>
-            </svg>
-
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', letterSpacing: '0.12em', color: 'var(--text-primary)', fontWeight: 700, textTransform: 'uppercase' }}>
-              TECHX REIGNITE 2026
-            </span>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-              IEEE CS SCT SBC • SCTCE TRIVANDRUM
-            </span>
           </div>
         </div>
       </div>
