@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { eventData } from '../data/event';
+import AeroShards from './AeroShards';
 
 export const Hero: React.FC = () => {
   // Target date: September 13, 2026 09:00:00 AM IST
@@ -86,6 +87,49 @@ export const Hero: React.FC = () => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
+      {/* Background AeroShards Wind Sculpture Canvas */}
+      <div 
+        style={{ 
+          position: 'absolute', 
+          inset: 0, 
+          width: '100%', 
+          height: '100%', 
+          pointerEvents: 'none', 
+          zIndex: 0 
+        }}
+      >
+        <AeroShards
+          backgroundColor="#FFFCF1"
+          shardColor="#CF8326"
+          accentColor="#CF8326"
+          placement="full"
+          flow="stream"
+          material="satin"
+          detail="balanced"
+          effect="none"
+          scale={1}
+          spread={1}
+          depth={1}
+          speed={0.6}
+          spin={0.7}
+          interaction="repel"
+          density={0.8}
+          shardSize={1.0}
+          stretch={1}
+          turbulence={0.7}
+          glow={0.35}
+          edgeSoftness={2}
+          bloom={0.15}
+          grain={0}
+          chromaticAberration={0}
+          transitionDuration={1}
+          interactionRadius={1.5}
+          interactionStrength={0.4}
+          rippleIntensity={0.6}
+          holdToGather={true}
+        />
+      </div>
+
       {/* Subtle blueprint decorative markers */}
       <span className="blueprint-marker-plus" style={{ top: '24px', left: '32px' }}>+</span>
       <span className="blueprint-marker-plus" style={{ top: '24px', right: '32px' }}>+</span>
