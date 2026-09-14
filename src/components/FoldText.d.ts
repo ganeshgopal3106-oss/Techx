@@ -10,6 +10,7 @@ export interface FoldTextProps {
   perspective?: number;
   creaseShading?: number;
   trigger?: 'mount' | 'hover' | 'scroll' | 'loop';
+  delay?: number;
   fontSize?: string | number;
   fontWeight?: string | number;
   color?: string;

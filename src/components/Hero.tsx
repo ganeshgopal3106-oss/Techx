@@ -13,6 +13,19 @@ export const Hero: React.FC = () => {
     seconds: 0
   });
 
+  // Mobile detection for responsive FoldText tuning (< 768px)
+  const [isMobile, setIsMobile] = useState<boolean>(() =>
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Magnetic CTA state
   const btnRef = useRef<HTMLAnchorElement>(null);
   const [btnTransform, setBtnTransform] = useState('');
@@ -79,18 +92,19 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* 2. FoldText Kinetic Headline */}
-          <h1 className="hero-headline" style={{ margin: '14px 0 18px', lineHeight: 0.95 }}>
+          <h1 className="hero-headline hero-anim-headline-mobile" style={{ margin: '14px 0 18px', lineHeight: 0.95 }}>
             <FoldText
               text={'POWERING MINDS,\nONE SPARK AT A TIME.'}
               splitBy="line"
               hinge="top"
               trigger="mount"
-              duration={0.7}
-              stagger={0.08}
+              duration={isMobile ? 0.65 : 0.7}
+              stagger={isMobile ? 0.06 : 0.08}
               ease="power3.out"
-              perspective={700}
-              creaseShading={0.35}
-              fontSize="clamp(3.5rem, 7vw, 7rem)"
+              perspective={isMobile ? 550 : 700}
+              creaseShading={isMobile ? 0.30 : 0.35}
+              delay={isMobile ? 0.07 : 0}
+              fontSize={isMobile ? 'clamp(2.1rem, 8.2vw, 3.2rem)' : 'clamp(3.5rem, 7vw, 7rem)'}
               fontWeight={800}
               color="#111111"
             />
@@ -99,11 +113,11 @@ export const Hero: React.FC = () => {
           {/* 3. Event Meta Info */}
           <div className="hero-meta hero-anim-meta" style={{ margin: '16px 0 20px' }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', flexWrap: 'wrap' }}>
-              <span className="hero-meta-date" style={{ color: 'var(--accent)', fontWeight: 800, fontSize: '1.2rem', letterSpacing: '0.05em' }}>
+              <span className="hero-meta-date hero-anim-date" style={{ color: 'var(--accent)', fontWeight: 800, fontSize: '1.2rem', letterSpacing: '0.05em' }}>
                 13–27 September 2026
               </span>
-              <span className="hero-meta-divider">|</span>
-              <span className="hero-meta-location" style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
+              <span className="hero-meta-divider hero-anim-venue-divider">|</span>
+              <span className="hero-meta-location hero-anim-venue" style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
                 {eventData.location}
               </span>
             </div>
@@ -139,7 +153,7 @@ export const Hero: React.FC = () => {
             <a 
               ref={btnRef}
               href="#tracks" 
-              className="btn btn-primary hero-primary-cta"
+              className="btn btn-primary hero-primary-cta hero-anim-cta-1"
               style={{ 
                 padding: '12px 30px', 
                 fontSize: '0.85rem',
@@ -161,7 +175,7 @@ export const Hero: React.FC = () => {
             </a>
             <a 
               href="#schedule" 
-              className="btn btn-secondary hero-secondary-cta"
+              className="btn btn-secondary hero-secondary-cta hero-anim-cta-2"
               style={{ padding: '12px 28px', fontSize: '0.85rem' }}
               onClick={(e) => {
                 e.preventDefault();

@@ -44,6 +44,7 @@ const FoldText = ({
   perspective = 700,
   creaseShading = 0.35,
   trigger = 'mount',
+  delay = 0,
   fontSize = 'clamp(3.5rem, 7vw, 7rem)',
   fontWeight = 800,
   color = '#111111',
@@ -218,7 +219,8 @@ const FoldText = ({
 
       timelineRef.current = gsap.timeline({
         repeat: repeat ? -1 : 0,
-        repeatDelay: repeat ? 0.75 : 0
+        repeatDelay: repeat ? 0.75 : 0,
+        delay: reduceMotion ? 0 : delay
       });
 
       timelineRef.current.fromTo(
@@ -276,6 +278,7 @@ const FoldText = ({
     perspective,
     safeCrease,
     trigger,
+    delay,
     hingeConfig.origin,
     hingeConfig.rotateX,
     hingeConfig.rotateY

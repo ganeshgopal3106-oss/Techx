@@ -2556,6 +2556,139 @@ section[id] {
   animation: heroFadeUp 900ms var(--ease-out-quint) 280ms both;
 }
 
+/* ==================================================
+   MOBILE HERO ENTRANCE ANIMATION (< 768px)
+   Sequential Left-to-Right Swipe & Clip Reveal
+   ================================================== */
+@keyframes mobileHeroRevealLeftToRight {
+  0% {
+    opacity: 0;
+    transform: translate3d(-20px, 0, 0);
+    clip-path: inset(-12px 100% -12px 0);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    clip-path: inset(-12px -24px -12px 0);
+  }
+}
+
+@keyframes mobileHeroHeadlineReveal {
+  0% {
+    opacity: 0;
+    transform: translate3d(-20px, 0, 0);
+    clip-path: inset(-25% 100% -25% 0);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    clip-path: inset(-25% -20% -25% 0);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-section {
+    overflow-x: hidden !important;
+  }
+
+  .hero-content {
+    overflow-x: hidden !important;
+    max-width: 100%;
+  }
+
+  /* Reset container-level desktop animations that would conflict with child sequence */
+  .hero-anim-meta {
+    animation: none;
+  }
+
+  .hero-anim-actions {
+    animation: none;
+  }
+
+  .countdown-box {
+    animation: none;
+  }
+
+  /* 1. Hero Label / Badge */
+  .hero-anim-tag {
+    animation: mobileHeroRevealLeftToRight 420ms cubic-bezier(0.16, 1, 0.3, 1) 0ms both;
+    will-change: transform, opacity, clip-path;
+  }
+
+  /* 2. FoldText Headline */
+  .hero-anim-headline-mobile {
+    animation: mobileHeroHeadlineReveal 450ms cubic-bezier(0.16, 1, 0.3, 1) 70ms both;
+    will-change: transform, opacity, clip-path;
+  }
+
+  /* 3. Event Date */
+  .hero-anim-date {
+    display: inline-block;
+    animation: mobileHeroRevealLeftToRight 420ms cubic-bezier(0.16, 1, 0.3, 1) 140ms both;
+    will-change: transform, opacity, clip-path;
+  }
+
+  /* 4. Event Venue & Divider */
+  .hero-anim-venue-divider {
+    display: inline-block;
+    animation: mobileHeroRevealLeftToRight 420ms cubic-bezier(0.16, 1, 0.3, 1) 210ms both;
+    will-change: transform, opacity, clip-path;
+  }
+
+  .hero-anim-venue {
+    display: inline-block;
+    animation: mobileHeroRevealLeftToRight 420ms cubic-bezier(0.16, 1, 0.3, 1) 210ms both;
+    will-change: transform, opacity, clip-path;
+  }
+
+  /* 5. Description */
+  .hero-anim-desc {
+    animation: mobileHeroRevealLeftToRight 440ms cubic-bezier(0.16, 1, 0.3, 1) 280ms both;
+    will-change: transform, opacity, clip-path;
+  }
+
+  /* 6. Countdown Container */
+  .hero-anim-countdown {
+    animation: mobileHeroRevealLeftToRight 440ms cubic-bezier(0.16, 1, 0.3, 1) 350ms both;
+    will-change: transform, opacity, clip-path;
+  }
+
+  /* 7. Primary CTA */
+  .hero-anim-cta-1 {
+    animation: mobileHeroRevealLeftToRight 420ms cubic-bezier(0.16, 1, 0.3, 1) 420ms both !important;
+    will-change: transform, opacity, clip-path;
+  }
+
+  /* 8. Secondary CTA */
+  .hero-anim-cta-2 {
+    animation: mobileHeroRevealLeftToRight 420ms cubic-bezier(0.16, 1, 0.3, 1) 490ms both !important;
+    will-change: transform, opacity, clip-path;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim-tag,
+  .hero-anim-headline-mobile,
+  .hero-anim-date,
+  .hero-anim-venue-divider,
+  .hero-anim-venue,
+  .hero-anim-desc,
+  .hero-anim-countdown,
+  .hero-anim-cta-1,
+  .hero-anim-cta-2 {
+    animation: none !important;
+    transform: none !important;
+    clip-path: none !important;
+    opacity: 1 !important;
+  }
+}
+
 /* Subtle mouse parallax on hero schematic card */
 .hero-schematic-interactive {
   transition: transform 300ms var(--ease-out-expo);
