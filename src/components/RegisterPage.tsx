@@ -248,48 +248,18 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
 
           {/* 4-Step Progress Indicator */}
           <div className="form-step-tracker" role="tablist">
-            <button
-              type="button"
-              onClick={() => { if (currentStep > 1) setCurrentStep(1); }}
-              className={`step-tracker-item ${currentStep === 1 ? 'active' : currentStep > 1 ? 'completed' : ''}`}
-              style={{ background: 'none', border: 'none', cursor: currentStep > 1 ? 'pointer' : 'default', textAlign: 'left' }}
-              aria-label="Step 1: Personal Details"
-            >
-              <div className="step-tracker-num">
-                {currentStep > 1 ? (
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                ) : '01'}
-              </div>
+            <div className={`step-tracker-item ${currentStep === 1 ? 'active' : currentStep > 1 ? 'completed' : ''}`}>
+              <div className="step-tracker-num">{currentStep > 1 ? '✓' : '01'}</div>
               <span>Personal</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => { if (currentStep > 2) setCurrentStep(2); }}
-              className={`step-tracker-item ${currentStep === 2 ? 'active' : currentStep > 2 ? 'completed' : ''}`}
-              style={{ background: 'none', border: 'none', cursor: currentStep > 2 ? 'pointer' : 'default', textAlign: 'left' }}
-              aria-label="Step 2: Membership"
-            >
-              <div className="step-tracker-num">
-                {currentStep > 2 ? (
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                ) : '02'}
-              </div>
+            </div>
+            <div className={`step-tracker-item ${currentStep === 2 ? 'active' : currentStep > 2 ? 'completed' : ''}`}>
+              <div className="step-tracker-num">{currentStep > 2 ? '✓' : '02'}</div>
               <span>Membership</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => { if (currentStep > 3) setCurrentStep(3); }}
-              className={`step-tracker-item ${currentStep === 3 ? 'active' : currentStep > 3 ? 'completed' : ''}`}
-              style={{ background: 'none', border: 'none', cursor: currentStep > 3 ? 'pointer' : 'default', textAlign: 'left' }}
-              aria-label="Step 3: Payment"
-            >
-              <div className="step-tracker-num">
-                {currentStep > 3 ? (
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                ) : '03'}
-              </div>
+            </div>
+            <div className={`step-tracker-item ${currentStep === 3 ? 'active' : currentStep > 3 ? 'completed' : ''}`}>
+              <div className="step-tracker-num">{currentStep > 3 ? '✓' : '03'}</div>
               <span>Payment</span>
-            </button>
+            </div>
             <div className={`step-tracker-item ${currentStep === 4 ? 'active' : ''}`}>
               <div className="step-tracker-num">04</div>
               <span>Review</span>
@@ -314,7 +284,6 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                     placeholder="Jane Doe"
                     value={formData.fullName}
                     onChange={(e) => handleInputChange('fullName', e.target.value)}
-                    style={{ background: 'var(--bg-glass)' }}
                   />
                   {errors.fullName && <span className="field-error-msg">{errors.fullName}</span>}
                 </div>
@@ -328,7 +297,6 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                     placeholder="jane.doe@university.edu"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    style={{ background: 'var(--bg-glass)' }}
                   />
                   {errors.email && <span className="field-error-msg">{errors.email}</span>}
                 </div>
@@ -342,7 +310,6 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                     placeholder="+91 9876543210"
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                    style={{ background: 'var(--bg-glass)' }}
                   />
                   {errors.phone && <span className="field-error-msg">{errors.phone}</span>}
                 </div>
@@ -356,7 +323,6 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                     placeholder="Sree Chitra Thirunal College of Engineering"
                     value={formData.college}
                     onChange={(e) => handleInputChange('college', e.target.value)}
-                    style={{ background: 'var(--bg-glass)' }}
                   />
                   {errors.college && <span className="field-error-msg">{errors.college}</span>}
                 </div>
@@ -368,7 +334,6 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                     className={`form-input ${errors.year ? 'has-error' : ''}`}
                     value={formData.year}
                     onChange={(e) => handleInputChange('year', e.target.value)}
-                    style={{ background: 'var(--bg-glass)' }}
                   >
                     <option value="">Select current year / semester</option>
                     <option value="1st Year">1st Year (Semester 1 / 2)</option>
@@ -390,14 +355,13 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                     placeholder="Computer Science & Engineering"
                     value={formData.department}
                     onChange={(e) => handleInputChange('department', e.target.value)}
-                    style={{ background: 'var(--bg-glass)' }}
                   />
                   {errors.department && <span className="field-error-msg">{errors.department}</span>}
                 </div>
               </div>
 
               <div style={{ marginTop: 'var(--space-xl)', display: 'flex', justifyContent: 'flex-end' }}>
-                <button type="button" onClick={handleNext} className="btn btn-primary btn-shimmer">
+                <button type="button" onClick={handleNext} className="btn btn-primary">
                   Continue to Membership →
                 </button>
               </div>
@@ -412,80 +376,35 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>IEEE members receive subsidized delegate pricing (₹300 instead of ₹400).</p>
               </div>
 
-              {/* Bento Card Selection for Membership */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px', marginBottom: 'var(--space-lg)' }}>
-                {/* Option 1: IEEE Member */}
-                <div
-                  onClick={() => handleInputChange('ieeeMember', 'yes')}
-                  style={{
-                    padding: '18px',
-                    borderRadius: 'var(--radius-sm)',
-                    border: formData.ieeeMember === 'yes' ? '2px solid var(--accent)' : '1px solid var(--border-color)',
-                    background: formData.ieeeMember === 'yes' ? 'var(--bg-secondary)' : 'var(--bg-glass)',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                    position: 'relative'
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <span className="blueprint-tag" style={{ margin: 0 }}>SUBSIDIZED TICKET</span>
-                    <div style={{
-                      width: '18px',
-                      height: '18px',
-                      borderRadius: '50%',
-                      border: formData.ieeeMember === 'yes' ? '5px solid var(--accent)' : '2px solid var(--border-color)',
-                      backgroundColor: 'transparent'
-                    }} />
-                  </div>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--accent)', margin: '4px 0' }}>
-                    ₹ 300
-                  </div>
-                  <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' }}>
-                    IEEE Member Delegate
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                    Requires a valid IEEE Membership Number for verification.
-                  </div>
+              <div className="form-group" style={{ marginBottom: 'var(--space-lg)' }}>
+                <label className="form-label">Are you an active IEEE Member? *</label>
+                <div style={{ display: 'flex', gap: 'var(--space-md)', marginTop: '8px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                    <input
+                      type="radio"
+                      name="ieeeMember"
+                      value="yes"
+                      checked={formData.ieeeMember === 'yes'}
+                      onChange={() => handleInputChange('ieeeMember', 'yes')}
+                    />
+                    <span style={{ fontWeight: 600 }}>YES (I am an IEEE Member)</span>
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                    <input
+                      type="radio"
+                      name="ieeeMember"
+                      value="no"
+                      checked={formData.ieeeMember === 'no'}
+                      onChange={() => {
+                        handleInputChange('ieeeMember', 'no');
+                        handleInputChange('ieeeMembershipId', '');
+                      }}
+                    />
+                    <span style={{ fontWeight: 600 }}>NO (Non-IEEE Member)</span>
+                  </label>
                 </div>
-
-                {/* Option 2: Non-IEEE Member */}
-                <div
-                  onClick={() => {
-                    handleInputChange('ieeeMember', 'no');
-                    handleInputChange('ieeeMembershipId', '');
-                  }}
-                  style={{
-                    padding: '18px',
-                    borderRadius: 'var(--radius-sm)',
-                    border: formData.ieeeMember === 'no' ? '2px solid var(--accent)' : '1px solid var(--border-color)',
-                    background: formData.ieeeMember === 'no' ? 'var(--bg-secondary)' : 'var(--bg-glass)',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                    position: 'relative'
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <span className="blueprint-tag" style={{ margin: 0 }}>STANDARD PASS</span>
-                    <div style={{
-                      width: '18px',
-                      height: '18px',
-                      borderRadius: '50%',
-                      border: formData.ieeeMember === 'no' ? '5px solid var(--accent)' : '2px solid var(--border-color)',
-                      backgroundColor: 'transparent'
-                    }} />
-                  </div>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-primary)', margin: '4px 0' }}>
-                    ₹ 400
-                  </div>
-                  <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' }}>
-                    General Delegate
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                    Open to all engineering students, alumni, and developers.
-                  </div>
-                </div>
+                {errors.ieeeMember && <span className="field-error-msg">{errors.ieeeMember}</span>}
               </div>
-              {errors.ieeeMember && <div className="field-error-msg" style={{ marginBottom: '16px' }}>{errors.ieeeMember}</div>}
 
               {formData.ieeeMember === 'yes' && (
                 <div className="form-group" style={{ animation: 'modalFadeIn 200ms ease' }}>
@@ -497,7 +416,6 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                     placeholder="e.g. 98765432"
                     value={formData.ieeeMembershipId}
                     onChange={(e) => handleInputChange('ieeeMembershipId', e.target.value)}
-                    style={{ background: 'var(--bg-glass)' }}
                   />
                   {errors.ieeeMembershipId && <span className="field-error-msg">{errors.ieeeMembershipId}</span>}
                 </div>
@@ -507,7 +425,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                 <button type="button" onClick={handleBack} className="btn btn-secondary">
                   ← Back
                 </button>
-                <button type="button" onClick={handleNext} className="btn btn-primary btn-shimmer">
+                <button type="button" onClick={handleNext} className="btn btn-primary">
                   Continue to Payment →
                 </button>
               </div>
@@ -523,16 +441,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
               </div>
 
               {/* Payment Box */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                gap: 'var(--space-lg)',
-                background: 'var(--bg-glass)',
-                padding: 'var(--space-lg)',
-                borderRadius: 'var(--radius-sm)',
-                border: '1px solid var(--border-color)',
-                marginBottom: 'var(--space-lg)'
-              }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-lg)', background: 'var(--bg-secondary)', padding: 'var(--space-lg)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', marginBottom: 'var(--space-lg)' }}>
                 <div style={{ textAlign: 'center' }}>
                   <div style={{ display: 'inline-block', padding: '12px', background: '#FFFFFF', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
                     <img
@@ -541,30 +450,9 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                       style={{ width: '180px', height: '180px', objectFit: 'contain' }}
                     />
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '10px' }}>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--text-primary)', fontWeight: 600 }}>
-                      ieeesctsb@oksbi
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        navigator.clipboard.writeText('ieeesctsb@oksbi');
-                        alert('UPI ID copied to clipboard!');
-                      }}
-                      style={{
-                        background: 'none',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: '3px',
-                        fontSize: '0.7rem',
-                        fontFamily: 'var(--font-mono)',
-                        padding: '2px 6px',
-                        color: 'var(--accent)',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      COPY
-                    </button>
-                  </div>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '8px' }}>
+                    UPI ID: ieeesctsb@oksbi
+                  </p>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -576,7 +464,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                     {formData.ieeeMember === 'yes' ? 'IEEE Member Subsidized Pass' : 'Standard Non-Member Pass'}
                   </span>
                   <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '12px', lineHeight: '1.4' }}>
-                    Please add your full name in the payment description / remarks when transferring to facilitate rapid verification.
+                    Please include your name in the payment description / remarks when transferring.
                   </p>
                 </div>
               </div>
@@ -594,7 +482,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                       padding: 'var(--space-xl) var(--space-md)',
                       textAlign: 'center',
                       cursor: 'pointer',
-                      background: 'var(--bg-glass)',
+                      background: 'var(--bg-primary)',
                       transition: 'border-color 200ms ease'
                     }}
                   >
@@ -651,7 +539,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                 <button type="button" onClick={handleBack} className="btn btn-secondary">
                   ← Back
                 </button>
-                <button type="button" onClick={handleNext} className="btn btn-primary btn-shimmer">
+                <button type="button" onClick={handleNext} className="btn btn-primary">
                   Review & Confirm →
                 </button>
               </div>
@@ -666,7 +554,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Review all details before finalizing your submission.</p>
               </div>
 
-              <div className="reg-review-block" style={{ background: 'var(--bg-glass)' }}>
+              <div className="reg-review-block">
                 <div className="review-section-row">
                   <div className="review-label">SELECTED TRACK</div>
                   <div className="review-value" style={{ fontWeight: 800, color: 'var(--accent)' }}>
@@ -724,9 +612,8 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                 <button type="button" onClick={() => setCurrentStep(1)} className="btn btn-secondary">
                   Edit Details
                 </button>
-                <button type="submit" onClick={handleSubmit} className="btn btn-primary btn-shimmer" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                  <span>Submit Registration</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                <button type="button" onClick={handleSubmit} className="btn btn-primary">
+                  Submit Registration →
                 </button>
               </div>
             </div>

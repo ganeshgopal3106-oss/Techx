@@ -44,19 +44,6 @@ const galleryItems: GalleryItem[] = [
 
 export const GallerySection: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-
-  // Auto-advance carousel when playing
-  React.useEffect(() => {
-    if (!isPlaying) return;
-    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      return;
-    }
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev === galleryItems.length - 1 ? 0 : prev + 1));
-    }, 4500);
-    return () => clearInterval(interval);
-  }, [isPlaying]);
 
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev === 0 ? galleryItems.length - 1 : prev - 1));
@@ -71,30 +58,11 @@ export const GallerySection: React.FC = () => {
   return (
     <section id="gallery" className="gallery-section section-padding blueprint-grid-bg" style={{ position: 'relative' }}>
       <div className="container">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px', marginBottom: 'var(--space-md)' }}>
-          <SectionHeader num="08 / EVENT MOMENTS" title="Chapter Life & Experience Gallery" />
-          
-          {/* Controls: Slide Counter & Play/Pause */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: 'var(--space-xl)' }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: 'var(--accent)', fontWeight: 800 }}>
-              {String(currentIndex + 1).padStart(2, '0')} / {String(galleryItems.length).padStart(2, '0')}
-            </span>
-
-            <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="btn btn-secondary"
-              style={{ padding: '6px 12px', fontSize: '0.75rem', height: '32px' }}
-              aria-label={isPlaying ? 'Pause slideshow' : 'Play slideshow'}
-              title={isPlaying ? 'Pause slideshow' : 'Play slideshow'}
-            >
-              {isPlaying ? '❚❚ PAUSE' : '▶ PLAY'}
-            </button>
-          </div>
-        </div>
+        <SectionHeader num="08 / EVENT MOMENTS" title="Chapter Life & Experience Gallery" />
 
         <ScrollReveal variant="scale-subtle">
           {/* Main Carousel Wrapper */}
-          <div className="gallery-carousel-wrapper" onMouseEnter={() => setIsPlaying(false)} onMouseLeave={() => setIsPlaying(true)}>
+          <div className="gallery-carousel-wrapper">
             <div key={currentItem.id} className="gallery-slide tab-animated-item">
               <img
                 src={currentItem.image}
@@ -137,24 +105,15 @@ export const GallerySection: React.FC = () => {
             </button>
           </div>
 
-          {/* 21st.dev Thumbnails Preview Navigation Strip */}
-          <div className="gallery-thumbs-strip" role="tablist" aria-label="Gallery slides preview">
+          {/* Indicator Dots */}
+          <div className="gallery-dots">
             {galleryItems.map((item, idx) => (
               <button
                 key={item.id}
-                className={`gallery-thumb-btn ${currentIndex === idx ? 'active' : ''}`}
+                className={`gallery-dot ${currentIndex === idx ? 'active' : ''}`}
                 onClick={() => setCurrentIndex(idx)}
-                role="tab"
-                aria-selected={currentIndex === idx}
-                aria-label={`Jump to ${item.title}`}
-              >
-                <img
-                  src={item.image}
-                  alt=""
-                  className="gallery-thumb-img"
-                  loading="lazy"
-                />
-              </button>
+                aria-label={`Go to slide ${idx + 1}`}
+              />
             ))}
           </div>
         </ScrollReveal>

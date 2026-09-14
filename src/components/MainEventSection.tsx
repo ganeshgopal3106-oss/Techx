@@ -6,30 +6,12 @@ import { ScrollReveal } from './ScrollReveal';
 
 export const MainEventSection: React.FC = () => {
   const [activeDayId, setActiveDayId] = useState<'day-1' | 'day-2' | 'day-3'>('day-1');
-  const [sessionFilter, setSessionFilter] = useState<'ALL' | 'WORKSHOP' | 'KEYNOTE' | 'OTHER'>('ALL');
 
   const currentDay: ScheduleDay = daysScheduleData.find(d => d.id === activeDayId) || daysScheduleData[0];
 
   const isParallelGroup = (item: ScheduleItem): item is { id: string; time: string; isParallel: true; category?: string; sessions: ScheduleSession[] } => {
     return 'isParallel' in item && item.isParallel === true;
   };
-
-  const filteredItems = currentDay.items.filter(item => {
-    if (sessionFilter === 'ALL') return true;
-    if (sessionFilter === 'WORKSHOP') {
-      if (isParallelGroup(item)) {
-        return item.sessions.some(s => s.category?.toLowerCase().includes('workshop') || s.title.toLowerCase().includes('workshop'));
-      }
-      return item.category?.toLowerCase().includes('workshop') || item.title.toLowerCase().includes('workshop');
-    }
-    if (sessionFilter === 'KEYNOTE') {
-      if (isParallelGroup(item)) {
-        return item.sessions.some(s => s.category?.toLowerCase().includes('talk') || s.title.toLowerCase().includes('keynote') || s.title.toLowerCase().includes('talk'));
-      }
-      return item.category?.toLowerCase().includes('talk') || item.title.toLowerCase().includes('keynote') || item.title.toLowerCase().includes('talk') || item.title.toLowerCase().includes('panel');
-    }
-    return true;
-  });
 
   return (
     <section id="schedule" className="main-event-section section-padding blueprint-circuit-bg" style={{ position: 'relative' }}>
@@ -61,30 +43,6 @@ export const MainEventSection: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        {/* 21st.dev Session Filter Chips */}
-        <ScrollReveal>
-          <div className="filter-pills-bar" style={{ marginTop: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
-            <button
-              className={`filter-pill ${sessionFilter === 'ALL' ? 'active' : ''}`}
-              onClick={() => setSessionFilter('ALL')}
-            >
-              ALL SESSIONS
-            </button>
-            <button
-              className={`filter-pill ${sessionFilter === 'WORKSHOP' ? 'active' : ''}`}
-              onClick={() => setSessionFilter('WORKSHOP')}
-            >
-              🛠 WORKSHOPS & LABS
-            </button>
-            <button
-              className={`filter-pill ${sessionFilter === 'KEYNOTE' ? 'active' : ''}`}
-              onClick={() => setSessionFilter('KEYNOTE')}
-            >
-              🎤 KEYNOTES & TALKS
-            </button>
-          </div>
-        </ScrollReveal>
-
         {/* Active Day Header Meta Banner */}
         <ScrollReveal className="schedule-day-header-banner">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
@@ -103,7 +61,7 @@ export const MainEventSection: React.FC = () => {
         {/* Day Itinerary Table with Staggered Cascading Items and Aligned Venue Column */}
         <div id={`schedule-pane-${currentDay.id}`} role="tabpanel" className="schedule-itinerary-container">
           <div key={currentDay.id} className="schedule-rows-stack tab-animated-item">
-            {filteredItems.map((item) => {
+            {currentDay.items.map((item) => {
               if (isParallelGroup(item)) {
                 return (
                   /* Parallel Circuit Branch with Aligned Parallel Cards */

@@ -39,45 +39,14 @@ export const TracksSection: React.FC = () => {
     };
   }, [selectedTrack, closeModal]);
 
-  const [categoryFilter, setCategoryFilter] = useState<'ALL' | 'TECH' | 'TRAIN'>('ALL');
-
-  const filteredTracks = tracksData.filter(t => {
-    if (categoryFilter === 'ALL') return true;
-    return t.category === categoryFilter;
-  });
-
   return (
     <section id="tracks" className="tracks-section section-padding blueprint-grid-bg" style={{ position: 'relative' }}>
       <div className="container">
         <SectionHeader num="04 / TRACKS SHOWCASE" title="Explore The Upcoming Tracks" />
         
-        {/* 21st.dev Filter Pills Bar */}
-        <ScrollReveal>
-          <div className="filter-pills-bar">
-            <button
-              className={`filter-pill ${categoryFilter === 'ALL' ? 'active' : ''}`}
-              onClick={() => setCategoryFilter('ALL')}
-            >
-              ALL TRACKS ({tracksData.length})
-            </button>
-            <button
-              className={`filter-pill ${categoryFilter === 'TECH' ? 'active' : ''}`}
-              onClick={() => setCategoryFilter('TECH')}
-            >
-              ⚡ TECH TRACKS ({tracksData.filter(t => t.category === 'TECH').length})
-            </button>
-            <button
-              className={`filter-pill ${categoryFilter === 'TRAIN' ? 'active' : ''}`}
-              onClick={() => setCategoryFilter('TRAIN')}
-            >
-              🎯 TRAIN TRACKS ({tracksData.filter(t => t.category === 'TRAIN').length})
-            </button>
-          </div>
-        </ScrollReveal>
-
         {/* Alternating Tracks Showcase List */}
         <div className="tracks-showcase-list">
-          {filteredTracks.map((track, index) => {
+          {tracksData.map((track, index) => {
             const isReversed = index % 2 === 1;
             const isComingSoon = track.status === 'COMING_SOON';
 
@@ -120,21 +89,14 @@ export const TracksSection: React.FC = () => {
                     {track.description}
                   </p>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                     <button
                       onClick={() => openTrackModal(track)}
                       className="btn btn-secondary"
-                      style={{ height: '42px', padding: '0 20px', fontSize: '0.85rem', fontWeight: 700 }}
+                      style={{ height: '40px', padding: '0 20px', fontSize: '0.85rem', fontWeight: 700 }}
                     >
-                      Track Details <span className="arrow">→</span>
+                      Explore Track Details <span className="arrow">→</span>
                     </button>
-                    <a
-                      href={`/register?track=${track.id}`}
-                      className="btn btn-primary"
-                      style={{ height: '42px', padding: '0 20px', fontSize: '0.85rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center' }}
-                    >
-                      Enroll in Track
-                    </a>
                     <span className="blueprint-tag">STATUS: {track.status}</span>
                   </div>
                 </div>
