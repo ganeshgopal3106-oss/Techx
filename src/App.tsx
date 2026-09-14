@@ -89,14 +89,14 @@ function App() {
         }}
       >
         <Grainient
-          color1="#CF8326"
-          color2="#FFFCF1"
-          color3="#CF8326"
-          timeSpeed={0.25}
+          color1="#f0a878"
+          color2="#ffffff"
+          color3="#f9954f"
+          timeSpeed={2.45}
           colorBalance={0}
           warpStrength={1}
           warpFrequency={5}
-          warpSpeed={2}
+          warpSpeed={4.1}
           warpAmplitude={50}
           blendAngle={0}
           blendSoftness={0.05}
