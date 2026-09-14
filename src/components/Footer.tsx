@@ -32,7 +32,6 @@ export const Footer: React.FC = () => {
             <li><a href="#tracks" className="footer-link">Tracks (Coming Soon)</a></li>
             <li><a href="#journey" className="footer-link">Pre-Events (13–19 Sep)</a></li>
             <li><a href="#schedule" className="footer-link">Main Summit (26–27 Sep)</a></li>
-            <li><a href="#gallery" className="footer-link">Moments Gallery</a></li>
             <li><a href="#faq" className="footer-link">FAQs</a></li>
           </ul>
         </div>

@@ -9,7 +9,6 @@ import { TracksSection } from './components/TracksSection';
 import { Timeline } from './components/Timeline';
 import { MainEventSection } from './components/MainEventSection';
 import { UniqueSection } from './components/UniqueSection';
-import { GallerySection } from './components/GallerySection';
 import { PeopleSection } from './components/PeopleSection';
 import { PartnerGrid } from './components/PartnerGrid';
 import { FAQAccordion } from './components/FAQAccordion';
@@ -116,9 +115,6 @@ function App() {
 
         {/* 07 / COMMUNITY & IMPACT */}
         <UniqueSection />
-
-        {/* 08 / EVENT MOMENTS GALLERY */}
-        <GallerySection />
 
         {/* DISTINGUISHED MENTORS & GUESTS */}
         <PeopleSection />

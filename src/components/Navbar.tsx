@@ -9,7 +9,7 @@ export const Navbar: React.FC = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      const sections = ['about', 'tracks', 'journey', 'schedule', 'gallery', 'faq', 'contact'];
+      const sections = ['about', 'tracks', 'journey', 'schedule', 'faq', 'contact'];
       let currentSection = 'hero';
 
       for (const sectionId of sections) {
@@ -102,13 +102,6 @@ export const Navbar: React.FC = () => {
             Schedule
           </a>
           <a 
-            href="#gallery" 
-            className={`nav-link ${activeSection === 'gallery' ? 'active' : ''}`}
-            onClick={(e) => handleNavClick(e, 'gallery')}
-          >
-            Gallery
-          </a>
-          <a 
             href="#faq" 
             className={`nav-link ${activeSection === 'faq' ? 'active' : ''}`}
             onClick={(e) => handleNavClick(e, 'faq')}
@@ -168,13 +161,6 @@ export const Navbar: React.FC = () => {
               onClick={(e) => handleNavClick(e, 'schedule')}
             >
               Schedule
-            </a>
-            <a 
-              href="#gallery" 
-              className={`mobile-nav-link ${activeSection === 'gallery' ? 'active' : ''}`}
-              onClick={(e) => handleNavClick(e, 'gallery')}
-            >
-              Gallery
             </a>
             <a 
               href="#faq" 
