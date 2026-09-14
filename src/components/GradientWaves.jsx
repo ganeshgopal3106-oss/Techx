@@ -352,10 +352,15 @@ const GradientWaves = ({
     const currentMouse = [0.5, 0.5];
     const targetMouse = [0.5, 0.5];
 
+    const reduceMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    if (reduceMotion) {
+      program.uniforms.uSpeed.value = 0.03;
+      program.uniforms.uParallax.value = 0.0;
+    }
+
     const onPointerMove = (e) => {
-      const rect = canvas.getBoundingClientRect();
-      targetMouse[0] = (e.clientX - rect.left) / rect.width;
-      targetMouse[1] = 1.0 - (e.clientY - rect.top) / rect.height;
+      targetMouse[0] = e.clientX / Math.max(1, window.innerWidth);
+      targetMouse[1] = 1.0 - e.clientY / Math.max(1, window.innerHeight);
     };
 
     const onPointerLeave = () => {
@@ -363,8 +368,8 @@ const GradientWaves = ({
       targetMouse[1] = 0.5;
     };
 
-    canvas.addEventListener('pointermove', onPointerMove);
-    canvas.addEventListener('pointerleave', onPointerLeave);
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    window.addEventListener('blur', onPointerLeave);
 
     let raf = 0;
     let isVisible = true;
@@ -433,8 +438,8 @@ const GradientWaves = ({
       ro.disconnect();
       io.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
-      canvas.removeEventListener('pointermove', onPointerMove);
-      canvas.removeEventListener('pointerleave', onPointerLeave);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('blur', onPointerLeave);
       ctxMap.delete(container);
       try {
         container.removeChild(canvas);

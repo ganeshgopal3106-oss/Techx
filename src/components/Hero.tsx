@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { eventData } from '../data/event';
-import GradientWaves from './GradientWaves';
+import FoldText from './FoldText';
 
 export const Hero: React.FC = () => {
   // Target date: September 13, 2026 09:00:00 AM IST
@@ -61,39 +61,7 @@ export const Hero: React.FC = () => {
       className="hero-section section-padding blueprint-circuit-bg" 
       style={{ minHeight: '92vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}
     >
-      {/* Background GradientWaves Ambient Canvas */}
-      <div 
-        className="absolute inset-0 -z-10"
-        style={{ 
-          position: 'absolute', 
-          inset: 0, 
-          width: '100%', 
-          height: '100%', 
-          zIndex: 0 
-        }}
-      >
-        <GradientWaves
-          horizonColor="#FFFCF1"
-          waveColor="#CF8326"
-          crestColor="#CF8326"
-          speed={0.28}
-          amplitude={2}
-          waveScale={0.6}
-          waveRatio={0.9}
-          swell={28}
-          turbulence={14}
-          tilt={1.11}
-          zoom={1}
-          height={5.5}
-          fogDepth={18}
-          detail="medium"
-          brightness={0.85}
-          opacity={0.72}
-          mouseInteraction={true}
-          parallaxStrength={0.35}
-          grain={false}
-        />
-      </div>
+
 
       {/* Subtle blueprint decorative markers */}
       <span className="blueprint-marker-plus" style={{ top: '24px', left: '32px' }}>+</span>
@@ -110,12 +78,23 @@ export const Hero: React.FC = () => {
             </span>
           </div>
 
-          {/* 2. Masked Headline Reveal */}
-          <div style={{ overflow: 'hidden' }}>
-            <h1 className="hero-headline hero-anim-headline" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.6rem)', lineHeight: 1.02, textTransform: 'uppercase', margin: '14px 0 18px', letterSpacing: '-0.02em' }}>
-              Powering Minds,<br />One Spark At A Time.
-            </h1>
-          </div>
+          {/* 2. FoldText Kinetic Headline */}
+          <h1 className="hero-headline" style={{ margin: '14px 0 18px', lineHeight: 0.95 }}>
+            <FoldText
+              text={'POWERING MINDS,\nONE SPARK AT A TIME.'}
+              splitBy="line"
+              hinge="top"
+              trigger="mount"
+              duration={0.7}
+              stagger={0.08}
+              ease="power3.out"
+              perspective={700}
+              creaseShading={0.35}
+              fontSize="clamp(3.5rem, 7vw, 7rem)"
+              fontWeight={800}
+              color="#111111"
+            />
+          </h1>
           
           {/* 3. Event Meta Info */}
           <div className="hero-meta hero-anim-meta" style={{ margin: '16px 0 20px' }}>

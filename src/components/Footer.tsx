@@ -7,7 +7,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="footer-container" style={{ borderTop: '1px solid var(--border-color)', backgroundColor: 'var(--bg-primary)', padding: 'var(--space-xxl) 0 var(--space-xl)' }}>
+    <footer className="footer-container" style={{ borderTop: '1px solid var(--border-color)', backgroundColor: 'transparent', padding: 'var(--space-xxl) 0 var(--space-xl)' }}>
       <div className="container footer-content" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1fr', gap: 'var(--space-xl)' }}>
         {/* Brand Column */}
         <div className="footer-brand">

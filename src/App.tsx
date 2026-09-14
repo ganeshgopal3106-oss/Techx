@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
+import { GlobalBackground } from './components/GlobalBackground';
 import { Hero } from './components/Hero';
 import { EventInfo } from './components/EventInfo';
-import { MarqueeTicker } from './components/MarqueeTicker';
 import { AboutSection } from './components/AboutSection';
 import { TechTrainSection } from './components/TechTrainSection';
 import { TracksSection } from './components/TracksSection';
@@ -82,22 +82,22 @@ function App() {
   }
 
   return (
-    <div className="app-wrapper">
+    <div className="app-wrapper" style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#FFFCF1' }}>
+      {/* Global GradientWaves WebGL Layer */}
+      <GlobalBackground />
+
       {/* Short Non-Blocking Page Entrance Loader */}
       <PageLoader isLoading={isLoading} />
 
       {/* Floating Navigation Capsule */}
       <Navbar />
 
-      <main>
+      <main style={{ position: 'relative', zIndex: 1 }}>
         {/* 01 / HERO with Live Countdown */}
         <Hero />
 
         {/* METADATA STRIP */}
         <EventInfo />
-
-        {/* KINETIC MARQUEE RIBBON (Motion.ed Ticker) */}
-        <MarqueeTicker />
 
         {/* 02 / ABOUT TECHX */}
         <AboutSection />
