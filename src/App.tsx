@@ -81,7 +81,7 @@ function App() {
         className="grainient-background"
         style={{
           width: '100%',
-          height: '100%',
+          height: '100dvh',
           position: 'fixed',
           inset: 0,
           zIndex: 0,
