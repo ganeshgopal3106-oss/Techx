@@ -1,13 +1,12 @@
 import React from 'react';
-import { ScrollReveal } from './ScrollReveal';
 import posterImg from '../assets/poster.jpeg';
 
 export const AboutSection: React.FC = () => {
   return (
     <section id="about" className="about-section section-padding" style={{ position: 'relative' }}>
       <div className="container about-container">
-        {/* Left Column: Concise Editorial About Text */}
-        <ScrollReveal variant="clip-reveal" className="about-left-col">
+        {/* Left Side: About Narrative & Compact Highlights */}
+        <div className="about-left-col">
           <div className="about-tag">
             ABOUT THE EVENT
           </div>
@@ -22,38 +21,36 @@ export const AboutSection: React.FC = () => {
               Through hands-on workshops, technical competitions, mentoring, and interactive sessions, TECHX helps participants build practical skills and explore emerging technologies beyond the classroom.
             </p>
 
-            {/* Three short editorial highlight lines */}
-            <div className="about-highlights-list" aria-label="Key Highlights">
-              <div className="about-highlight-row">
-                <span className="about-highlight-key">LEARN</span>
-                <span className="about-highlight-sep">—</span>
-                <span className="about-highlight-val">Hands-on workshops and practical knowledge.</span>
+            {/* Three Compact Highlights */}
+            <div className="about-highlights-stack" aria-label="Core Pillars">
+              <div className="about-highlight-block">
+                <span className="about-highlight-label">LEARN</span>
+                <span className="about-highlight-desc">Hands-on workshops and practical knowledge.</span>
               </div>
-              <div className="about-highlight-row">
-                <span className="about-highlight-key">BUILD</span>
-                <span className="about-highlight-sep">—</span>
-                <span className="about-highlight-val">Apply concepts through challenges and competitions.</span>
+              <div className="about-highlight-block">
+                <span className="about-highlight-label">BUILD</span>
+                <span className="about-highlight-desc">Apply concepts through challenges and competitions.</span>
               </div>
-              <div className="about-highlight-row">
-                <span className="about-highlight-key">CONNECT</span>
-                <span className="about-highlight-sep">—</span>
-                <span className="about-highlight-val">Meet mentors, peers, and the wider tech community.</span>
+              <div className="about-highlight-block">
+                <span className="about-highlight-label">CONNECT</span>
+                <span className="about-highlight-desc">Meet mentors, peers, and the wider tech community.</span>
               </div>
             </div>
           </div>
-        </ScrollReveal>
+        </div>
 
-        {/* Right Column: Official TECHX REIGNITE Poster */}
-        <ScrollReveal variant="scale-subtle" className="about-poster-wrap" delayMs={150}>
+        {/* Right Side: Existing Official Poster */}
+        <div className="about-poster-wrap">
           <img 
             src={posterImg} 
             alt="TECHX REIGNITE Official Summit Poster" 
             className="about-poster-img" 
-            loading="lazy"
+            loading="eager"
           />
-        </ScrollReveal>
+        </div>
       </div>
     </section>
   );
 };
+
 
