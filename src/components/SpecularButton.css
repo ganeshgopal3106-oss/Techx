@@ -1,0 +1,126 @@
+/* SpecularButton - TECHX REIGNITE Theme */
+.specular-button {
+  --sb-radius: 10px;
+  --sb-tint: #CF8326;
+  --sb-tint-opacity: 0.05;
+  --sb-blur: 0px;
+  --sb-text-color: #FFFCF1;
+  --sb-base-bg: #CF8326;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  margin: 0;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--sb-text-color);
+  background-color: var(--sb-base-bg);
+  border-radius: var(--sb-radius);
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  white-space: nowrap;
+  box-sizing: border-box;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.2s ease;
+  box-shadow: 0 4px 14px rgba(207, 131, 38, 0.25);
+  user-select: none;
+}
+
+.specular-button:hover {
+  transform: translateY(-1px) scale(1.015);
+  box-shadow: 0 6px 20px rgba(207, 131, 38, 0.35);
+}
+
+.specular-button:active {
+  transform: scale(0.98);
+}
+
+.specular-button:focus-visible {
+  outline: 2px solid var(--accent, #CF8326);
+  outline-offset: 3px;
+}
+
+.specular-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Secondary Variant - Lighter/transparent base for secondary CTAs */
+.specular-button--secondary {
+  --sb-text-color: #111111;
+  --sb-base-bg: rgba(207, 131, 38, 0.08);
+  border: 1px solid rgba(207, 131, 38, 0.35);
+  box-shadow: 0 2px 8px rgba(28, 23, 19, 0.04);
+}
+
+.specular-button--secondary:hover {
+  background-color: rgba(207, 131, 38, 0.14);
+  border-color: #CF8326;
+  box-shadow: 0 4px 14px rgba(207, 131, 38, 0.16);
+}
+
+/* Size Variants */
+.specular-button--sm {
+  font-size: 0.75rem;
+  padding: 8px 18px;
+  height: 36px;
+}
+
+.specular-button--md {
+  font-size: 0.85rem;
+  padding: 12px 24px;
+  height: 44px;
+}
+
+.specular-button--lg {
+  font-size: 0.88rem;
+  padding: 14px 28px;
+  height: 48px;
+}
+
+/* Canvas extends past the button so the rim glow can bleed outside the edge */
+.specular-button__fx {
+  position: absolute;
+  inset: -20px;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+}
+
+.specular-button__fx canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.specular-button__label {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .specular-button {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .specular-button--lg {
+    font-size: 0.82rem;
+    padding: 12px 22px;
+    height: 44px;
+  }
+}

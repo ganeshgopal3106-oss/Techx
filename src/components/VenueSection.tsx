@@ -1,6 +1,7 @@
 import React from 'react';
 import { SectionHeader } from './SectionHeader';
 import { ScrollReveal } from './ScrollReveal';
+import { SpecularButton } from './SpecularButton';
 
 export const VenueSection: React.FC = () => {
   return (
@@ -26,16 +27,16 @@ export const VenueSection: React.FC = () => {
 
               {/* External Maps Action Button */}
               <div style={{ marginTop: 'var(--space-md)' }}>
-                <a 
+                <SpecularButton 
                   href="https://maps.google.com/?q=Sree+Chitra+Thirunal+College+of+Engineering+Thiruvananthapuram" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="btn btn-secondary"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                  variant="secondary"
+                  size="md"
                 >
                   <span>Open In Google Maps</span>
                   <span aria-hidden="true">↗</span>
-                </a>
+                </SpecularButton>
               </div>
             </div>
 

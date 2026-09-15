@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { eventData } from '../data/event';
 import FoldText from './FoldText';
+import { SpecularButton } from './SpecularButton';
 
 export const Hero: React.FC = () => {
   // Target date: September 13, 2026 09:00:00 AM IST
@@ -26,10 +27,6 @@ export const Hero: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Magnetic CTA state
-  const btnRef = useRef<HTMLAnchorElement>(null);
-  const [btnTransform, setBtnTransform] = useState('');
-
   useEffect(() => {
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -49,24 +46,6 @@ export const Hero: React.FC = () => {
     const interval = setInterval(updateCountdown, 1000);
     return () => clearInterval(interval);
   }, [targetDate]);
-
-  // Subtle magnetic attraction for primary CTA
-  const handleBtnMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (typeof window !== 'undefined' && (window.matchMedia('(hover: none)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
-      return;
-    }
-    if (!btnRef.current) return;
-    const rect = btnRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    const moveX = Math.max(-5, Math.min(5, x * 0.22));
-    const moveY = Math.max(-5, Math.min(5, y * 0.22));
-    setBtnTransform(`translate3d(${moveX}px, ${moveY}px, 0)`);
-  };
-
-  const handleBtnMouseLeave = () => {
-    setBtnTransform('translate3d(0, 0, 0)');
-  };
 
   return (
     <section 
@@ -140,24 +119,36 @@ export const Hero: React.FC = () => {
             </div>
           </div>
 
-          {/* 6. Main CTA */}
-          <div className="hero-actions hero-anim-actions">
-            <a 
-              ref={btnRef}
-              href="/register" 
-              className="btn btn-primary hero-primary-cta hero-anim-cta-1"
-              style={{ 
-                padding: '12px 34px', 
-                fontSize: '0.85rem',
-                fontWeight: 700,
-                transform: btnTransform,
-                transition: btnTransform === 'translate3d(0, 0, 0)' ? 'transform 350ms var(--ease-out-expo)' : 'transform 100ms ease-out'
+          {/* 6. Hero Buttons */}
+          <div className="hero-actions hero-anim-actions" style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <SpecularButton 
+              href="#tracks" 
+              size="lg"
+              className="hero-primary-cta hero-anim-cta-1"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById('tracks');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              onMouseMove={handleBtnMouseMove}
-              onMouseLeave={handleBtnMouseLeave}
             >
-              Claim Summit Pass <span className="arrow">→</span>
-            </a>
+              <span>EXPLORE TRACKS</span>
+              <span aria-hidden="true">↓</span>
+            </SpecularButton>
+
+            <SpecularButton 
+              href="#schedule" 
+              size="lg"
+              variant="secondary"
+              className="hero-secondary-cta hero-anim-cta-2"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById('schedule');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              <span>VIEW SCHEDULE</span>
+              <span aria-hidden="true">↓</span>
+            </SpecularButton>
           </div>
         </div>
       </div>

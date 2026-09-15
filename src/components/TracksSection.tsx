@@ -3,6 +3,7 @@ import { tracksData } from '../data/tracks';
 import type { Track } from '../data/tracks';
 import { SectionHeader } from './SectionHeader';
 import { ScrollReveal } from './ScrollReveal';
+import { SpecularButton } from './SpecularButton';
 
 export const TracksSection: React.FC = () => {
   const [selectedTrack, setSelectedTrack] = useState<Track | null>(null);
@@ -100,21 +101,20 @@ export const TracksSection: React.FC = () => {
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                     {isOpen ? (
-                      <a 
+                      <SpecularButton 
                         href={track.registrationLink} 
-                        className="btn btn-primary"
-                        style={{ height: '40px', padding: '0 22px', fontSize: '0.8rem', fontWeight: 700 }}
+                        size="md"
                       >
                         REGISTER FOR THIS TRACK →
-                      </a>
+                      </SpecularButton>
                     ) : (
-                      <button
+                      <SpecularButton
+                        variant="secondary"
+                        size="sm"
                         onClick={() => openTrackModal(track)}
-                        className="btn btn-secondary"
-                        style={{ height: '38px', padding: '0 18px', fontSize: '0.8rem', fontWeight: 700 }}
                       >
-                        Track Details <span className="arrow">→</span>
-                      </button>
+                        Track Details →
+                      </SpecularButton>
                     )}
                     <span className="badge">STATUS: {track.status.replace('_', ' ')}</span>
                   </div>
@@ -176,13 +176,13 @@ export const TracksSection: React.FC = () => {
                 </div>
               ) : selectedTrack.status === 'OPEN' || selectedTrack.registrationEnabled ? (
                 <div>
-                  <a 
+                  <SpecularButton 
                     href={selectedTrack.registrationLink} 
-                    className="btn btn-primary"
-                    style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+                    size="lg"
+                    style={{ width: '100%' }}
                   >
                     REGISTER FOR THIS TRACK →
-                  </a>
+                  </SpecularButton>
                 </div>
               ) : (
                 <div style={{ backgroundColor: 'var(--bg-secondary)', padding: 'var(--space-md)', textAlign: 'center' }}>
@@ -192,13 +192,13 @@ export const TracksSection: React.FC = () => {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', borderTop: '1px solid var(--border-color)', paddingTop: 'var(--space-sm)' }}>
-              <button 
-                className="btn btn-secondary" 
+              <SpecularButton 
+                variant="secondary" 
+                size="sm" 
                 onClick={closeModal}
-                style={{ height: '34px', padding: '0 16px', fontSize: '0.75rem' }}
               >
                 Close
-              </button>
+              </SpecularButton>
             </div>
           </div>
         </div>

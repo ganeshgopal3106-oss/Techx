@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { SpecularButton } from './SpecularButton';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -105,7 +106,7 @@ export const Navbar: React.FC = () => {
             className={`nav-link ${activeSection === 'why-attend' ? 'active' : ''}`}
             onClick={(e) => handleNavClick(e, 'why-attend')}
           >
-            Why Attend
+            Features
           </a>
           <a 
             href="#tracks" 
@@ -132,10 +133,16 @@ export const Navbar: React.FC = () => {
 
         {/* Right Column: CTA & Mobile Menu Toggle */}
         <div className="navbar-col-right">
-          <a href="/register" className="nav-register-btn" aria-label="Register Pass">
+          <SpecularButton 
+            href="/register" 
+            size="sm" 
+            radius={18}
+            className="nav-register-btn"
+            aria-label="Register Pass"
+          >
             <span>Register</span>
             <span className="arrow" style={{ fontSize: '0.85rem' }}>→</span>
-          </a>
+          </SpecularButton>
 
           <button 
             className={`nav-mobile-toggle ${isMobileMenuOpen ? 'open' : ''}`}
@@ -173,7 +180,7 @@ export const Navbar: React.FC = () => {
               className={`mobile-nav-link ${activeSection === 'why-attend' ? 'active' : ''}`}
               onClick={(e) => handleNavClick(e, 'why-attend')}
             >
-              Why Attend
+              Features
             </a>
             <a 
               href="#tracks" 
