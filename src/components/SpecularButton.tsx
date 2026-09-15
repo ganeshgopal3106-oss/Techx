@@ -3,10 +3,11 @@ import { Renderer, Program, Mesh, Triangle, Color } from 'ogl';
 import './SpecularButton.css';
 
 type ButtonSize = 'sm' | 'md' | 'lg';
-type ButtonVariant = 'primary' | 'secondary';
+type ButtonVariant = 'primary' | 'secondary' | 'panel';
 
 export interface SpecularButtonProps {
   children?: ReactNode;
+  as?: 'button' | 'a' | 'div';
   size?: ButtonSize;
   variant?: ButtonVariant;
   radius?: number;
@@ -33,6 +34,7 @@ export interface SpecularButtonProps {
   rel?: string;
   style?: CSSProperties;
   'aria-label'?: string;
+  role?: string;
 }
 
 interface ShaderProps {
@@ -115,6 +117,7 @@ void main() {
 
 export const SpecularButton = ({
   children = 'Get Started',
+  as = 'button',
   size = 'lg',
   variant = 'primary',
   radius = 10,
@@ -140,14 +143,16 @@ export const SpecularButton = ({
   target,
   rel,
   style,
-  'aria-label': ariaLabel
+  'aria-label': ariaLabel,
+  role
 }: SpecularButtonProps) => {
   const isSecondary = variant === 'secondary';
+  const isPanel = variant === 'panel';
 
   // Resolved colors according to TECHX brand design system
-  const finalTextColor = textColor ?? (isSecondary ? '#111111' : '#FFFCF1');
-  const finalLineColor = lineColor ?? (isSecondary ? '#CF8326' : '#FFFCF1');
-  const finalBaseColor = baseColor ?? (isSecondary ? '#F5EEDC' : '#CF8326');
+  const finalTextColor = textColor ?? (isPanel ? '#111111' : isSecondary ? '#111111' : '#FFFCF1');
+  const finalLineColor = lineColor ?? (isPanel ? '#CF8326' : isSecondary ? '#CF8326' : '#FFFCF1');
+  const finalBaseColor = baseColor ?? (isPanel ? 'rgba(207, 131, 38, 0.08)' : isSecondary ? '#F5EEDC' : '#CF8326');
   const finalTint = tint ?? '#CF8326';
 
   const btnRef = useRef<HTMLElement>(null);
@@ -217,8 +222,8 @@ export const SpecularButton = ({
       const sizeRef = { w: 1, h: 1 };
       const resize = () => {
         const rect = btn.getBoundingClientRect();
-        const w = rect.width;
-        const h = rect.height;
+        const w = Math.max(rect.width, 1);
+        const h = Math.max(rect.height, 1);
         sizeRef.w = w;
         sizeRef.h = h;
         renderer.setSize(w + PAD * 2, h + PAD * 2);
@@ -316,11 +321,26 @@ export const SpecularButton = ({
     '--sb-tint-opacity': tintOpacity,
     '--sb-blur': `${blur}px`,
     '--sb-text-color': finalTextColor,
-    '--sb-base-bg': isSecondary ? 'rgba(207, 131, 38, 0.08)' : finalBaseColor,
+    '--sb-base-bg': isPanel ? finalBaseColor : isSecondary ? 'rgba(207, 131, 38, 0.08)' : finalBaseColor,
     ...style
   } as CSSProperties;
 
   const combinedClassName = `specular-button specular-button--${size} specular-button--${variant}${className ? ` ${className}` : ''}`;
+
+  if (as === 'div') {
+    return (
+      <div
+        ref={btnRef as React.RefObject<HTMLDivElement>}
+        className={combinedClassName}
+        style={combinedStyles}
+        role={role}
+        aria-label={ariaLabel}
+      >
+        <span ref={fxRef} className="specular-button__fx" aria-hidden="true" />
+        <span className="specular-button__label">{children}</span>
+      </div>
+    );
+  }
 
   if (href) {
     return (
