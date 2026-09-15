@@ -7,26 +7,24 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="footer-container" style={{ borderTop: '1px solid var(--border-color)', backgroundColor: 'transparent', padding: 'var(--space-xxl) 0 var(--space-xl)' }}>
-      <div className="container footer-content" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1fr', gap: 'var(--space-xl)' }}>
+    <footer className="footer-container" style={{ borderTop: 'none', backgroundColor: 'transparent', padding: 'var(--space-xxl) 0 var(--space-xl)' }}>
+      <div className="container footer-content">
         {/* Brand Column */}
         <div className="footer-brand">
           <div className="footer-logo" style={{ display: 'flex', alignItems: 'center', height: '40px', marginBottom: '12px' }}>
             <img src="/logo.png" alt="IEEE CS SYP TECHX" style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
           </div>
-          <span className="blueprint-tag">IEEE CS SCT SBC • FLAGSHIP SUMMIT</span>
-          <p className="footer-description" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.6', marginTop: '8px' }}>
-            Powering Minds, One spark at a time. The premier technical upskilling summit organized by the {eventData.organizedByFull} at Sree Chitra Thirunal College of Engineering.
-          </p>
-          
-          <div style={{ marginTop: '16px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--accent)' }}>
-            #TECHX-REIGNITE-2026
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            Organized by {eventData.organizedByFull}
           </div>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '6px' }}>
+            SCT College of Engineering, Trivandrum
+          </p>
         </div>
 
-        {/* Column 1: Navigation */}
+        {/* Column 1: Essential Navigation */}
         <div className="footer-links-col">
-          <h4 className="footer-col-title" style={{ fontSize: '0.9rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '16px' }}>Event Index</h4>
+          <h4 className="footer-col-title" style={{ fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '16px', letterSpacing: '0.06em' }}>Event Index</h4>
           <ul className="footer-links-list" style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <li><a href="#hero" className="footer-link">Home</a></li>
             <li><a href="#about" className="footer-link">About TechX</a></li>
@@ -37,26 +35,15 @@ export const Footer: React.FC = () => {
           </ul>
         </div>
 
-        {/* Column 2: Event Tracks */}
+        {/* Column 2: Connect & Socials */}
         <div className="footer-links-col">
-          <h4 className="footer-col-title" style={{ fontSize: '0.9rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '16px' }}>Four Tracks</h4>
-          <ul className="footer-links-list" style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <li><a href="#tracks" className="footer-link">Track 01: Hands-on Workshops</a></li>
-            <li><a href="#tracks" className="footer-link">Track 02: Talk Sessions</a></li>
-            <li><a href="#tracks" className="footer-link">Track 03: Soft Skills</a></li>
-            <li><a href="#tracks" className="footer-link">Track 04: Nano-Mentoring</a></li>
-          </ul>
-        </div>
-
-        {/* Column 3: Connect & Socials */}
-        <div className="footer-links-col">
-          <h4 className="footer-col-title" style={{ fontSize: '0.9rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '16px' }}>Connect</h4>
+          <h4 className="footer-col-title" style={{ fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '16px', letterSpacing: '0.06em' }}>Connect</h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <a href="https://ieeesctsb.org/" target="_blank" rel="noopener noreferrer" className="footer-link" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="10" />
                 <line x1="2" y1="12" x2="22" y2="12" />
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z" />
               </svg>
               Official Website
             </a>
@@ -97,18 +84,15 @@ export const Footer: React.FC = () => {
         <div className="footer-copyright" style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
           © {eventData.dates.year} IEEE CS SCT SBC • SCT COLLEGE OF ENGINEERING. ALL RIGHTS RESERVED.
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <span className="blueprint-tag">POWERING MINDS • ONE SPARK AT A TIME</span>
-          <button 
-            className="btn btn-secondary" 
-            onClick={handleScrollToTop} 
-            title="Scroll to top"
-            aria-label="Scroll to top"
-            style={{ width: '36px', height: '36px', padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}
-          >
-            ↑
-          </button>
-        </div>
+        <button 
+          className="btn btn-secondary" 
+          onClick={handleScrollToTop} 
+          title="Scroll to top"
+          aria-label="Scroll to top"
+          style={{ width: '36px', height: '36px', padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}
+        >
+          ↑
+        </button>
       </div>
     </footer>
   );

@@ -371,6 +371,13 @@ section[id] {
   opacity: 0.92;
 }
 
+.navbar-logo-img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
 .navbar-col-center {
   display: flex;
   align-items: center;
@@ -555,8 +562,8 @@ section[id] {
   margin-top: 4px;
 }
 
-/* Responsive Breakpoint for Navbar */
-@media (max-width: 900px) {
+/* Responsive Breakpoint for Navbar (Tablet) */
+@media (min-width: 769px) and (max-width: 900px) {
   .navbar-desktop-links {
     display: none !important;
   }
@@ -575,16 +582,119 @@ section[id] {
   }
 }
 
-@media (max-width: 480px) {
+/* Mobile Navbar Capsule & Menu — Strictly Under 768px */
+@media (max-width: 768px) {
   .navbar-container {
-    top: 10px;
-    padding: 0 12px;
+    position: fixed !important;
+    top: 12px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: calc(100% - 24px) !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+    align-items: stretch !important;
   }
+
+  .navbar-capsule {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    height: 48px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 10px 14px !important;
+    margin: 0 !important;
+    border-radius: 24px !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+  }
+
+  .navbar-col-left {
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+  }
+
+  .navbar-logo {
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .navbar-logo-img {
+    width: 78px !important;
+    max-width: 85px !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+  }
+
+  .navbar-col-center,
+  .navbar-desktop-links {
+    display: none !important;
+  }
+
   .nav-register-btn {
-    display: none;
+    display: none !important;
+  }
+
+  .navbar-col-right {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex: 0 0 auto !important;
+    gap: 0 !important;
+    min-width: 0 !important;
+  }
+
+  .nav-mobile-toggle {
+    display: flex !important;
+    width: 36px !important;
+    height: 36px !important;
+    padding: 6px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .navbar-mobile-drawer {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 8px 0 0 0 !important;
+    padding: 12px 14px !important;
+    border-radius: 16px !important;
+    box-sizing: border-box !important;
+    background-color: rgba(255, 252, 241, 0.98) !important;
+    border: 1px solid rgba(59, 36, 20, 0.12) !important;
+    box-shadow: 0 12px 32px rgba(28, 23, 19, 0.1) !important;
+  }
+
+  .mobile-drawer-nav {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+
+  .mobile-nav-link {
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    color: var(--text-primary) !important;
+    padding: 8px 12px !important;
+    border-radius: var(--radius-sm) !important;
+    text-decoration: none !important;
   }
 }
-
 
 /* Hero Section Styling (Clean Composition) */
 .hero-section {
@@ -592,7 +702,7 @@ section[id] {
   display: flex;
   align-items: center;
   padding-top: calc(var(--nav-height) + var(--space-xl));
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: none;
 }
 
 .hero-container {
@@ -943,7 +1053,7 @@ section[id] {
 /* About Section Styling */
 .about-section {
   background-color: transparent;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: none;
 }
 
 .about-container {
@@ -1034,22 +1144,30 @@ section[id] {
 }
 
 @media (max-width: 768px) {
+  .about-section {
+    padding-top: 36px !important;
+    padding-bottom: 36px !important;
+  }
   .about-container {
     grid-template-columns: 1fr;
-    gap: var(--space-lg);
+    gap: 16px;
   }
   .about-left-col {
     position: static;
   }
   .about-heading {
-    font-size: 1.85rem;
+    font-size: 1.75rem;
+    margin-bottom: 12px;
+  }
+  .about-content {
+    gap: 10px;
   }
   .about-poster-wrap {
     grid-column: 1;
-    margin-top: var(--space-md);
+    margin-top: 10px;
   }
   .about-poster-img {
-    max-width: 280px;
+    max-width: 260px;
   }
 }
 
@@ -1187,7 +1305,7 @@ section[id] {
 /* Tracks Section - Refined Horizontal Layout */
 .tracks-section {
   background-color: transparent;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: none;
 }
 
 .tracks-grid {
@@ -1907,16 +2025,16 @@ section[id] {
 /* Footer Styling - Contrast Warm Chocolate background */
 .footer-container {
   background-color: transparent;
-  border-top: 1px solid var(--border-color);
+  border-top: none;
   color: var(--text-primary);
 }
 
 .footer-content {
   display: grid;
-  grid-template-columns: 1.2fr 2fr 0.3fr;
+  grid-template-columns: 1.4fr 1fr 1fr;
   gap: var(--space-xl);
-  padding-top: var(--space-xxl);
-  padding-bottom: var(--space-xl);
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-lg);
   align-items: start;
 }
 
@@ -3709,43 +3827,24 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
-/* Technical Blueprint Static Background Textures */
-.blueprint-grid-bg {
-  background-color: transparent;
-  background-image: 
-    radial-gradient(circle at 1px 1px, rgba(207, 131, 38, 0.12) 1px, transparent 0),
-    linear-gradient(to right, rgba(207, 131, 38, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(207, 131, 38, 0.04) 1px, transparent 1px);
-  background-size: 32px 32px;
-}
-
+/* Technical Blueprint Static Background Textures - Disabled for Clean Minimal Aesthetic */
+.blueprint-grid-bg,
 .blueprint-circuit-bg {
-  position: relative;
+  background-image: none !important;
+  background: transparent !important;
 }
 
-.blueprint-circuit-bg::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    linear-gradient(to right, rgba(207, 131, 38, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(207, 131, 38, 0.035) 1px, transparent 1px);
-  background-size: 48px 48px;
-  pointer-events: none;
-  z-index: 0;
+.blueprint-circuit-bg::before,
+.blueprint-grid-bg::before,
+.blueprint-circuit-bg::after,
+.blueprint-grid-bg::after {
+  display: none !important;
+  content: none !important;
 }
 
 /* Technical Blueprint Markers */
 .blueprint-marker-plus {
-  position: absolute;
-  color: rgba(207, 131, 38, 0.35);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  pointer-events: none;
-  user-select: none;
+  display: none !important;
 }
 
 .blueprint-tag {
@@ -4155,8 +4254,8 @@ a:focus-visible {
 /* Dedicated Summit Schedule Section (Dhyuthi Structure & Motion.ed Physics) */
 .main-event-section {
   background-color: transparent;
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  border-top: none;
+  border-bottom: none;
 }
 
 .schedule-day-selector {
@@ -4793,31 +4892,34 @@ a:focus-visible {
 .why-attend-section {
   position: relative;
   background-color: transparent;
+  border-bottom: none;
 }
 
 .why-attend-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--border-color);
-  border-left: 1px solid var(--border-color);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
   margin-top: var(--space-xl);
   background-color: transparent;
+  border: none;
 }
 
 .why-attend-cell {
   position: relative;
-  padding: 36px 30px;
-  border-right: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  padding: 28px 22px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
   display: flex;
   flex-direction: column;
-  transition: background-color 200ms ease;
-  background-color: rgba(255, 252, 241, 0.55);
+  transition: background-color 200ms ease, border-color 200ms ease, transform 200ms ease;
+  background-color: rgba(255, 252, 241, 0.65);
   backdrop-filter: blur(8px);
 }
 
 .why-attend-cell:hover {
   background-color: rgba(207, 131, 38, 0.08);
+  border-color: var(--accent);
+  transform: translateY(-2px);
 }
 
 .why-attend-cell-header {
@@ -4843,31 +4945,24 @@ a:focus-visible {
 }
 
 .why-attend-title {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 800;
   color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: -0.01em;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   line-height: 1.25;
 }
 
 .why-attend-desc {
-  font-size: 0.92rem;
-  line-height: 1.65;
+  font-size: 0.9rem;
+  line-height: 1.55;
   color: var(--text-secondary);
   flex-grow: 1;
 }
 
 .why-attend-corner-mark {
-  position: absolute;
-  bottom: 8px;
-  right: 10px;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--border-color);
-  pointer-events: none;
-  user-select: none;
+  display: none !important;
 }
 
 @media (max-width: 992px) {
@@ -4879,9 +4974,10 @@ a:focus-visible {
 @media (max-width: 600px) {
   .why-attend-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
   .why-attend-cell {
-    padding: 24px 20px;
+    padding: 22px 18px;
   }
 }
 
@@ -4987,40 +5083,6 @@ a:focus-visible {
   font-size: 0.92rem;
   color: var(--text-secondary);
   line-height: 1.55;
-}
-
-.venue-transit-matrix {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
-  padding: 18px 0;
-}
-
-.venue-transit-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.venue-transit-label {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  letter-spacing: 0.08em;
-}
-
-.venue-transit-value {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.venue-transit-dist {
-  font-size: 0.8rem;
-  font-family: var(--font-mono);
-  color: var(--accent);
 }
 
 .venue-map-wrap {

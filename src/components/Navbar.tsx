@@ -79,12 +79,12 @@ export const Navbar: React.FC = () => {
             <img 
               src="/logo.png" 
               alt="IEEE CS SYP TECHX" 
-              style={{ height: '32px', width: 'auto', objectFit: 'contain' }} 
+              className="navbar-logo-img"
             />
           </a>
         </div>
 
-        {/* Center Column: Primary Navigation Links (Mathematically Centered) */}
+        {/* Center Column: Primary Navigation Links (Desktop) */}
         <nav className="navbar-col-center navbar-desktop-links" aria-label="Main Navigation">
           <a 
             href="#hero" 
@@ -130,7 +130,7 @@ export const Navbar: React.FC = () => {
           </a>
         </nav>
 
-        {/* Right Column: CTA & Mobile Hamburger Toggle */}
+        {/* Right Column: CTA & Mobile Menu Toggle */}
         <div className="navbar-col-right">
           <a href="/register" className="nav-register-btn" aria-label="Register Pass">
             <span>Register</span>
@@ -196,16 +196,6 @@ export const Navbar: React.FC = () => {
             >
               Venue
             </a>
-            <div className="mobile-drawer-cta">
-              <a 
-                href="/register" 
-                className="btn btn-primary" 
-                style={{ width: '100%', justifyContent: 'center' }}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Claim Your Spot →
-              </a>
-            </div>
           </nav>
         </div>
       )}

@@ -14,9 +14,9 @@ export const MainEventSection: React.FC = () => {
   };
 
   return (
-    <section id="schedule" className="main-event-section section-padding blueprint-circuit-bg" style={{ position: 'relative' }}>
+    <section id="schedule" className="main-event-section section-padding" style={{ position: 'relative' }}>
       <div className="container">
-        <SectionHeader num="06 / EVENT ITINERARY" title="Summit Schedule" />
+        <SectionHeader num="05 / SCHEDULE" title="Summit Schedule" />
 
         {/* Day Selector Tabs (DAY 1, DAY 2) */}
         <ScrollReveal>
@@ -47,44 +47,32 @@ export const MainEventSection: React.FC = () => {
         <ScrollReveal className="schedule-day-header-banner">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
             <div>
-              <span className="blueprint-tag">[ TIMELINE // {currentDay.dayNumber} ]</span>
-              <h3 style={{ fontSize: '1.35rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-primary)', marginTop: '4px' }}>
-                {currentDay.date} — {currentDay.subtitle}
+              <span className="blueprint-tag">{currentDay.dayNumber}</span>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-primary)', marginTop: '4px' }}>
+                {currentDay.date}
               </h3>
             </div>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--accent)', fontWeight: 700 }}>
-              SCTCE CAMPUS & VIRTUAL
-            </span>
           </div>
         </ScrollReveal>
 
-        {/* Day Itinerary Table with Staggered Cascading Items and Aligned Venue Column */}
+        {/* Day Itinerary Table with Ultra-Scannable Rows */}
         <div id={`schedule-pane-${currentDay.id}`} role="tabpanel" className="schedule-itinerary-container">
           <div key={currentDay.id} className="schedule-rows-stack tab-animated-item">
             {currentDay.items.map((item) => {
               if (isParallelGroup(item)) {
                 return (
-                  /* Parallel Circuit Branch with Aligned Parallel Cards */
+                  /* Parallel Tracks Row */
                   <div key={item.id} className="schedule-parallel-group">
                     <div className="schedule-parallel-header">
                       <div className="schedule-row-time" style={{ color: 'var(--accent)' }}>{item.time}</div>
-                      <span className="blueprint-tag">[ SCHEMATIC // PARALLEL TRACKS ]</span>
+                      <span className="badge">PARALLEL SESSIONS</span>
                     </div>
 
                     <div className="schedule-parallel-grid">
                       {item.sessions.map((sess, idx) => (
-                        <div key={sess.id} className="schedule-parallel-card">
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
-                            <span className="blueprint-tag">BRANCH 0{idx + 1} // {sess.category || 'TRACK'}</span>
-                            {sess.venue && (
-                              <div className="schedule-location-aligned">
-                                <span className="schedule-location-label">VENUE:</span>
-                                <span className="schedule-location-value">{sess.venue}</span>
-                              </div>
-                            )}
-                          </div>
-                          <h4 className="schedule-session-title" style={{ fontSize: '1.15rem' }}>{sess.title}</h4>
-                          <p className="schedule-session-desc">{sess.description}</p>
+                        <div key={sess.id} className="schedule-parallel-card" style={{ padding: '16px 20px' }}>
+                          <span className="blueprint-tag">TRACK 0{idx + 1}</span>
+                          <h4 className="schedule-session-title" style={{ fontSize: '1.05rem', margin: '4px 0 0' }}>{sess.title}</h4>
                         </div>
                       ))}
                     </div>
@@ -95,48 +83,19 @@ export const MainEventSection: React.FC = () => {
               const isBreak = item.isBreak;
 
               return (
-                /* Standard Aligned Schedule Row (Desktop: Time | Session Details | Location Column) */
+                /* Ultra-scannable TIME — EVENT Row */
                 <div 
                   key={item.id} 
                   className={`schedule-row-item ${isBreak ? 'is-break-row' : ''}`}
+                  style={{ padding: '16px 20px', alignItems: 'center' }}
                 >
-                  {/* Column 1: Monospace Aligned Time */}
-                  <div className="schedule-row-time">
+                  <div className="schedule-row-time" style={{ minWidth: '180px' }}>
                     {item.time}
                   </div>
 
-                  {/* Column 2: Session Content & Description */}
-                  <div className="schedule-row-content">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      {item.category && <span className="blueprint-tag">{item.category}</span>}
-                      {item.organizer && (
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--accent)', fontWeight: 700 }}>
-                          {item.organizer}
-                        </span>
-                      )}
-                    </div>
-                    <h4 className="schedule-session-title">{item.title}</h4>
-                    {item.description && <p className="schedule-session-desc">{item.description}</p>}
-                    
-                    {/* Mobile Only Location Meta */}
-                    {item.venue && (
-                      <div className="schedule-location-mobile">
-                        <span className="schedule-location-label">VENUE:</span>
-                        <span className="schedule-location-value">{item.venue}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Column 3: Desktop Aligned Location Column (No AI pill badge look!) */}
-                  <div className="schedule-row-location-col">
-                    {item.venue ? (
-                      <div className="schedule-location-aligned">
-                        <span className="schedule-location-label">LOCATION // VENUE</span>
-                        <span className="schedule-location-value">{item.venue}</span>
-                      </div>
-                    ) : (
-                      <span className="schedule-location-empty">—</span>
-                    )}
+                  <div className="schedule-row-content" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                    <h4 className="schedule-session-title" style={{ margin: 0, fontSize: '1.05rem' }}>{item.title}</h4>
+                    {isBreak && <span className="badge">BREAK</span>}
                   </div>
                 </div>
               );

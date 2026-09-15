@@ -71,17 +71,9 @@ export const Hero: React.FC = () => {
   return (
     <section 
       id="hero" 
-      className="hero-section section-padding blueprint-circuit-bg" 
+      className="hero-section section-padding" 
       style={{ minHeight: '92vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}
     >
-
-
-      {/* Subtle blueprint decorative markers */}
-      <span className="blueprint-marker-plus" style={{ top: '24px', left: '32px' }}>+</span>
-      <span className="blueprint-marker-plus" style={{ top: '24px', right: '32px' }}>+</span>
-      <span className="blueprint-marker-plus" style={{ bottom: '24px', left: '32px' }}>+</span>
-      <span className="blueprint-marker-plus" style={{ bottom: '24px', right: '32px' }}>+</span>
-
       <div className="container hero-container" style={{ position: 'relative', zIndex: 1 }}>
         <div className="hero-content">
           {/* 1. Clean Identity / Label */}
@@ -125,7 +117,7 @@ export const Hero: React.FC = () => {
 
           {/* 4. Description */}
           <p className="hero-description hero-anim-desc">
-            A global technical upskilling initiative hosted by IEEE CS SCT SBC bridging academic fundamentals and battle-tested industry readiness.
+            The premier technical upskilling summit hosted by IEEE CS SCT SBC at SCTCE Trivandrum.
           </p>
 
           {/* 5. Live Staggered Countdown Timer */}
@@ -148,45 +140,23 @@ export const Hero: React.FC = () => {
             </div>
           </div>
 
-          {/* 6. Action CTAs */}
+          {/* 6. Main CTA */}
           <div className="hero-actions hero-anim-actions">
             <a 
               ref={btnRef}
-              href="#tracks" 
+              href="/register" 
               className="btn btn-primary hero-primary-cta hero-anim-cta-1"
               style={{ 
-                padding: '12px 30px', 
+                padding: '12px 34px', 
                 fontSize: '0.85rem',
+                fontWeight: 700,
                 transform: btnTransform,
                 transition: btnTransform === 'translate3d(0, 0, 0)' ? 'transform 350ms var(--ease-out-expo)' : 'transform 100ms ease-out'
               }}
               onMouseMove={handleBtnMouseMove}
               onMouseLeave={handleBtnMouseLeave}
-              onClick={(e) => {
-                e.preventDefault();
-                const el = document.getElementById('tracks');
-                if (el) {
-                  el.scrollIntoView({ behavior: 'smooth' });
-                  window.history.pushState(null, '', '#tracks');
-                }
-              }}
             >
-              Explore Tracks <span className="arrow">↓</span>
-            </a>
-            <a 
-              href="#schedule" 
-              className="btn btn-secondary hero-secondary-cta hero-anim-cta-2"
-              style={{ padding: '12px 28px', fontSize: '0.85rem' }}
-              onClick={(e) => {
-                e.preventDefault();
-                const el = document.getElementById('schedule');
-                if (el) {
-                  el.scrollIntoView({ behavior: 'smooth' });
-                  window.history.pushState(null, '', '#schedule');
-                }
-              }}
-            >
-              View Schedule <span className="arrow">↓</span>
+              Claim Summit Pass <span className="arrow">→</span>
             </a>
           </div>
         </div>

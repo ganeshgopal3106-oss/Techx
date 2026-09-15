@@ -4,16 +4,15 @@ import { ScrollReveal } from './ScrollReveal';
 
 export const VenueSection: React.FC = () => {
   return (
-    <section id="venue" className="venue-section section-padding blueprint-circuit-bg" style={{ position: 'relative' }}>
+    <section id="venue" className="venue-section section-padding" style={{ position: 'relative' }}>
       <div className="container">
         <SectionHeader num="06 / VENUE" title="SCTCE CAMPUS" />
 
         <ScrollReveal>
           <div className="venue-grid">
-            {/* Left Column: Campus Coordinates & Landmark Data */}
+            {/* Campus Details */}
             <div className="venue-details-card">
               <div>
-                <span className="blueprint-tag">[ LOCATION // COORDINATES ]</span>
                 <h3 className="venue-institution-name">
                   Sree Chitra Thirunal College of Engineering
                 </h3>
@@ -23,27 +22,6 @@ export const VenueSection: React.FC = () => {
                 <p className="venue-address">
                   NH 66, CTO Colony, Pappanamcode, Thiruvananthapuram, Kerala 695018
                 </p>
-              </div>
-
-              {/* Transit & Access Matrix */}
-              <div className="venue-transit-matrix">
-                <div className="venue-transit-item">
-                  <div className="venue-transit-label">TRANSIT // RAILWAY</div>
-                  <div className="venue-transit-value">Thiruvananthapuram Central (TVC)</div>
-                  <div className="venue-transit-dist">~5.2 km via NH 66</div>
-                </div>
-
-                <div className="venue-transit-item">
-                  <div className="venue-transit-label">TRANSIT // AIRPORT</div>
-                  <div className="venue-transit-value">TRV International Airport</div>
-                  <div className="venue-transit-dist">~9.8 km via NH Bypass</div>
-                </div>
-
-                <div className="venue-transit-item">
-                  <div className="venue-transit-label">TRANSIT // BUS TERMINAL</div>
-                  <div className="venue-transit-value">Pappanamcode KSRTC Depot</div>
-                  <div className="venue-transit-dist">~400 m (Walking Distance)</div>
-                </div>
               </div>
 
               {/* External Maps Action Button */}
@@ -61,7 +39,7 @@ export const VenueSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Column: Google Maps Embed */}
+            {/* Google Maps Embed */}
             <div className="venue-map-wrap">
               <iframe
                 title="SCTCE Campus Location Map"
