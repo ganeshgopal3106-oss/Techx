@@ -1,4 +1,5 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import logoImg from '../assets/logo.png';
 
 interface PageLoaderProps {
   isLoading: boolean;
@@ -26,7 +27,7 @@ export const PageLoader: React.FC<PageLoaderProps> = ({ isLoading }) => {
       <div className="page-loader-content">
         <div className="page-loader-logo-wrap">
           <img 
-            src="/logo.png" 
+            src={logoImg} 
             alt="TechX Reignite" 
             className="page-loader-logo-img"
           />

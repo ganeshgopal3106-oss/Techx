@@ -69,7 +69,11 @@ uniform vec3 uColor2;
 uniform vec3 uColor3;
 uniform float uLightMode;
 out vec4 fragColor;
-#define S(a,b,t) smoothstep(a,b,t)
+float safeSmoothstep(float a, float b, float t) {
+  if (a > b) return 1.0 - smoothstep(b, a, t);
+  return smoothstep(a, b, t);
+}
+#define S(a,b,t) safeSmoothstep(a,b,t)
 mat2 Rot(float a){float s=sin(a),c=cos(a);return mat2(c,-s,s,c);} 
 vec2 hash(vec2 p){p=vec2(dot(p,vec2(2127.1,81.17)),dot(p,vec2(1269.5,283.37)));return fract(sin(p)*43758.5453);} 
 float noise(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.0-2.0*f);float n=mix(mix(dot(-1.0+2.0*hash(i+vec2(0.0,0.0)),f-vec2(0.0,0.0)),dot(-1.0+2.0*hash(i+vec2(1.0,0.0)),f-vec2(1.0,0.0)),u.x),mix(dot(-1.0+2.0*hash(i+vec2(0.0,1.0)),f-vec2(0.0,1.0)),dot(-1.0+2.0*hash(i+vec2(1.0,1.0)),f-vec2(1.0,1.0)),u.x),u.y);return 0.5+0.5*n;}\nvoid mainImage(out vec4 o, vec2 C){\n  float t=iTime*uTimeSpeed;\n  vec2 uv=C/iResolution.xy;\n  float ratio=iResolution.x/iResolution.y;\n  vec2 tuv=uv-0.5+uCenterOffset;\n  tuv/=max(uZoom,0.001);\n\n  float degree=noise(vec2(t*0.1,tuv.x*tuv.y)*uNoiseScale);\n  tuv.y*=1.0/ratio;\n  tuv*=Rot(radians((degree-0.5)*uRotationAmount+180.0));\n  tuv.y*=ratio;\n\n  float frequency=uWarpFrequency;\n  float ws=max(uWarpStrength,0.001);\n  float amplitude=uWarpAmplitude/ws;\n  float warpTime=t*uWarpSpeed;\n  tuv.x+=sin(tuv.y*frequency+warpTime)/amplitude;\n  tuv.y+=sin(tuv.x*(frequency*1.5)+warpTime)/(amplitude*0.5);\n\n  vec3 colLav=uColor1;\n  vec3 colOrg=uColor2;\n  vec3 colDark=uColor3;\n  float b=uColorBalance;\n  float s=max(uBlendSoftness,0.0);\n  mat2 blendRot=Rot(radians(uBlendAngle));\n  float blendX=(tuv*blendRot).x;\n  float edge0=-0.3-b-s;\n  float edge1=0.2-b+s;\n  float v0=0.5-b+s;\n  float v1=-0.3-b-s;\n  vec3 layer1=mix(colDark,colOrg,S(edge0,edge1,blendX));\n  vec3 layer2=mix(colOrg,colLav,S(edge0,edge1,blendX));\n  vec3 col=mix(layer1,layer2,S(v0,v1,tuv.y));\n\n  vec2 grainUv=uv*max(uGrainScale,0.001);\n  if(uGrainAnimated>0.5){grainUv+=vec2(iTime*0.05);} \n  float grain=fract(sin(dot(grainUv,vec2(12.9898,78.233)))*43758.5453);\n  col+=(grain-0.5)*uGrainAmount;\n\n  col=(col-0.5)*uContrast+0.5;\n  float luma=dot(col,vec3(0.2126,0.7152,0.0722));\n  col=mix(vec3(luma),col,uSaturation);\n  col=pow(max(col,0.0),vec3(1.0/max(uGamma,0.001)));\n  col=clamp(col,0.0,1.0);\n  if(uLightMode>0.5){\n    float energy=max(max(col.r,col.g),col.b);\n    vec3 hue=col/max(energy,0.001);\n    float chroma=length(col-vec3(dot(col,vec3(0.333333))));\n    float coverage=clamp(0.12+chroma*1.15+energy*0.18,0.0,0.88);\n    col=mix(vec3(1.0),clamp(hue*0.58+col*0.18,0.0,1.0),coverage);\n  }\n\n  o=vec4(col,1.0);\n}\nvoid main(){\n  vec4 o=vec4(0.0);\n  mainImage(o,gl_FragCoord.xy);\n  fragColor=o;\n}\n`;
@@ -120,15 +124,26 @@ export const Grainient: React.FC<GrainientProps> = ({
       webgl: 2,
       alpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2)
+      dpr: Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2)
     });
 
     const gl = renderer.gl;
+    if (!gl) return;
+
     const canvas = gl.canvas as HTMLCanvasElement;
+    canvas.style.position = 'absolute';
+    canvas.style.inset = '0';
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.display = 'block';
+    canvas.style.pointerEvents = 'none';
     container.appendChild(canvas);
+
+    const handleContextLost = (e: Event) => {
+      e.preventDefault();
+      tryStop();
+    };
+    canvas.addEventListener('webglcontextlost', handleContextLost, false);
 
     const geometry = new Triangle(gl);
     const program = new Program(gl, {
@@ -167,8 +182,8 @@ export const Grainient: React.FC<GrainientProps> = ({
 
     const setSize = () => {
       const rect = container.getBoundingClientRect();
-      const w = Math.max(1, Math.floor(rect.width));
-      const h = Math.max(1, Math.floor(rect.height));
+      const w = Math.max(1, Math.floor(rect.width || window.innerWidth));
+      const h = Math.max(1, Math.floor(rect.height || window.innerHeight));
       renderer.setSize(w, h);
       const res = (program.uniforms.iResolution as { value: Float32Array }).value;
       res[0] = gl.drawingBufferWidth;
@@ -178,10 +193,11 @@ export const Grainient: React.FC<GrainientProps> = ({
 
     const ro = new ResizeObserver(setSize);
     ro.observe(container);
+    window.addEventListener('resize', setSize);
+    window.addEventListener('orientationchange', setSize);
     setSize();
 
     let raf = 0;
-    let isVisible = true;
     let isPageVisible = !document.hidden;
     const t0 = performance.now();
 
@@ -192,24 +208,11 @@ export const Grainient: React.FC<GrainientProps> = ({
     };
 
     const tryStart = () => {
-      if (isVisible && isPageVisible && raf === 0) raf = requestAnimationFrame(loop);
+      if (isPageVisible && raf === 0) raf = requestAnimationFrame(loop);
     };
     const tryStop = () => {
       if (raf !== 0) { cancelAnimationFrame(raf); raf = 0; }
     };
-
-    const io = new IntersectionObserver(
-      ([entry]) => { 
-        isVisible = entry.isIntersecting; 
-        if (isVisible) {
-          tryStart();
-        } else {
-          tryStop();
-        }
-      },
-      { threshold: 0 }
-    );
-    io.observe(container);
 
     const onVisibility = () => {
       isPageVisible = !document.hidden;
@@ -226,8 +229,10 @@ export const Grainient: React.FC<GrainientProps> = ({
     return () => {
       tryStop();
       ro.disconnect();
-      io.disconnect();
+      window.removeEventListener('resize', setSize);
+      window.removeEventListener('orientationchange', setSize);
       document.removeEventListener('visibilitychange', onVisibility);
+      canvas.removeEventListener('webglcontextlost', handleContextLost);
       ctxMap.delete(container);
       try { container.removeChild(canvas); } catch { /* ignore */ }
     };
