@@ -77,8 +77,6 @@ uniform vec3 uColor1;
 uniform vec3 uColor2;
 uniform vec3 uColor3;
 uniform float uLightMode;
-;
-
 `;
 const sharedBody = `
 float safeSmoothstep(float a, float b, float t) {
@@ -144,11 +142,10 @@ void mainImage(out vec4 o, vec2 C){
 
   o=vec4(col,1.0);
 }
-;
-
 `;
 const fragment300 = `#version 300 es\n` + sharedUniforms + `out vec4 fragColor;\n` + sharedBody + `\nvoid main(){\n  vec4 o=vec4(0.0);\n  mainImage(o,gl_FragCoord.xy);\n  fragColor=o;\n}\n`;
 const fragment100 = sharedUniforms + sharedBody + `\nvoid main(){\n  vec4 o=vec4(0.0);\n  mainImage(o,gl_FragCoord.xy);\n  gl_FragColor=o;\n}\n`;
+
 type GrainientCtx = {
   renderer: InstanceType<typeof Renderer>;
   program: InstanceType<typeof Program>;
@@ -190,7 +187,6 @@ export const Grainient: React.FC<GrainientProps> = ({
     centerX, centerY, zoom, color1, color2, color3, lightMode
   });
 
-
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -200,58 +196,45 @@ export const Grainient: React.FC<GrainientProps> = ({
     let program: InstanceType<typeof Program> | null = null;
     let geometry: InstanceType<typeof Triangle> | null = null;
     let mesh: InstanceType<typeof Mesh> | null = null;
+    let canvas: HTMLCanvasElement | null = null;
     let isContextLost = false;
     let raf = 0;
     let isPageVisible = !document.hidden;
+    let isInitialized = false;
     const t0 = performance.now();
 
     const safeDpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2);
 
-    try {
-      renderer = new Renderer({
-        webgl: 2,
-        alpha: true,
-        antialias: false,
-        dpr: safeDpr
-      });
-      gl = renderer.gl;
-    } catch {
-      try {
-        renderer = new Renderer({
-          webgl: 1,
-          alpha: true,
-          antialias: false,
-          dpr: safeDpr
-        });
-        gl = renderer.gl;
-      } catch (err2) {
-        console.warn('WebGL context creation failed on device:', err2);
-        return;
+    const tryStart = () => {
+      if (!isContextLost && isPageVisible && raf === 0 && program && renderer && mesh) {
+        raf = requestAnimationFrame(loop);
       }
-    }
+    };
 
-    if (!renderer || !gl) {
-      console.warn('WebGL not available on this device');
-      return;
-    }
+    const tryStop = () => {
+      if (raf !== 0) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    };
 
-    const canvas = gl.canvas as HTMLCanvasElement;
-    canvas.style.position = 'absolute';
-    canvas.style.inset = '0';
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    canvas.style.display = 'block';
-    canvas.style.pointerEvents = 'none';
-    container.appendChild(canvas);
+    const loop = (t: number) => {
+      if (isContextLost || !program || !renderer || !mesh) return;
+      try {
+        (program.uniforms.iTime as { value: number }).value = (t - t0) * 0.001;
+        renderer.render({ scene: mesh });
+      } catch {
+        // Suppress mid-render GPU hiccups
+      }
+      raf = requestAnimationFrame(loop);
+    };
 
-    const isWebgl2 = Boolean((renderer as any).isWebgl2);
-    const activeVertex = isWebgl2 ? vertex300 : vertex100;
-    const activeFragment = isWebgl2 ? fragment300 : fragment100;
+    const createResources = (glContext: InstanceType<typeof Renderer>['gl'], isWebgl2: boolean) => {
+      const activeVertex = isWebgl2 ? vertex300 : vertex100;
+      const activeFragment = isWebgl2 ? fragment300 : fragment100;
 
-    const createResources = () => {
-      if (!gl) return;
-      geometry = new Triangle(gl);
-      program = new Program(gl, {
+      geometry = new Triangle(glContext);
+      program = new Program(glContext, {
         vertex: activeVertex,
         fragment: activeFragment,
         uniforms: {
@@ -281,11 +264,11 @@ export const Grainient: React.FC<GrainientProps> = ({
           uLightMode:      { value: propsRef.current.lightMode ? 1.0 : 0.0 }
         }
       });
-      mesh = new Mesh(gl, { geometry, program });
-      ctxMap.set(container, { renderer: renderer!, program, mesh });
+      mesh = new Mesh(glContext, { geometry, program });
+      if (renderer) {
+        ctxMap.set(container, { renderer, program, mesh });
+      }
     };
-
-    createResources();
 
     const setSize = () => {
       if (!renderer || !gl || !program || !mesh || isContextLost) return;
@@ -319,50 +302,93 @@ export const Grainient: React.FC<GrainientProps> = ({
 
     const handleContextRestored = () => {
       isContextLost = false;
-      createResources();
+      if (gl) {
+        const isWebgl2 = Boolean((renderer as any)?.isWebgl2);
+        createResources(gl, isWebgl2);
+        setSize();
+        tryStart();
+      }
+    };
+
+    const initRenderer = (w: number, h: number) => {
+      if (isInitialized) return;
+      isInitialized = true;
+
+      try {
+        renderer = new Renderer({
+          webgl: 2,
+          alpha: true,
+          antialias: false,
+          dpr: safeDpr,
+          width: w,
+          height: h
+        });
+        gl = renderer.gl;
+      } catch {
+        try {
+          renderer = new Renderer({
+            webgl: 1,
+            alpha: true,
+            antialias: false,
+            dpr: safeDpr,
+            width: w,
+            height: h
+          });
+          gl = renderer.gl;
+        } catch (err2) {
+          console.warn('WebGL context creation failed on device:', err2);
+          return;
+        }
+      }
+
+      if (!renderer || !gl) {
+        console.warn('WebGL not available on this device');
+        return;
+      }
+
+      canvas = gl.canvas as HTMLCanvasElement;
+      canvas.style.position = 'absolute';
+      canvas.style.inset = '0';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.display = 'block';
+      canvas.style.pointerEvents = 'none';
+      container.appendChild(canvas);
+
+      canvas.addEventListener('webglcontextcreationerror', handleContextCreationError);
+      canvas.addEventListener('webglcontextlost', handleContextLost, false);
+      canvas.addEventListener('webglcontextrestored', handleContextRestored, false);
+
+      const isWebgl2 = Boolean((renderer as any).isWebgl2);
+      createResources(gl, isWebgl2);
       setSize();
       tryStart();
     };
 
-    canvas.addEventListener('webglcontextcreationerror', handleContextCreationError);
-    canvas.addEventListener('webglcontextlost', handleContextLost, false);
-    canvas.addEventListener('webglcontextrestored', handleContextRestored, false);
-
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.contentRect.width > 0 && entry.contentRect.height > 0) {
+    const checkAndInit = () => {
+      const rect = container.getBoundingClientRect();
+      const w = Math.floor(rect.width || window.innerWidth || 0);
+      const h = Math.floor(rect.height || window.innerHeight || 0);
+      if (w > 0 && h > 0) {
+        if (!isInitialized) {
+          initRenderer(w, h);
+        } else {
           setSize();
           if (raf === 0) tryStart();
         }
       }
+    };
+
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.contentRect.width > 0 && entry.contentRect.height > 0) {
+          checkAndInit();
+        }
+      }
     });
     ro.observe(container);
-    window.addEventListener('resize', setSize);
-    window.addEventListener('orientationchange', setSize);
-
-    const loop = (t: number) => {
-      if (isContextLost || !program || !renderer || !mesh) return;
-      try {
-        (program.uniforms.iTime as { value: number }).value = (t - t0) * 0.001;
-        renderer.render({ scene: mesh });
-      } catch {
-        // Suppress GPU hiccups
-      }
-      raf = requestAnimationFrame(loop);
-    };
-
-    const tryStart = () => {
-      if (!isContextLost && isPageVisible && raf === 0) {
-        raf = requestAnimationFrame(loop);
-      }
-    };
-
-    const tryStop = () => {
-      if (raf !== 0) {
-        cancelAnimationFrame(raf);
-        raf = 0;
-      }
-    };
+    window.addEventListener('resize', checkAndInit);
+    window.addEventListener('orientationchange', checkAndInit);
 
     const onVisibility = () => {
       isPageVisible = !document.hidden;
@@ -374,20 +400,22 @@ export const Grainient: React.FC<GrainientProps> = ({
     };
     document.addEventListener('visibilitychange', onVisibility);
 
-    setSize();
-    tryStart();
+    // Initial check (only inits if width and height are already > 0)
+    checkAndInit();
 
     return () => {
       tryStop();
       ro.disconnect();
-      window.removeEventListener('resize', setSize);
-      window.removeEventListener('orientationchange', setSize);
+      window.removeEventListener('resize', checkAndInit);
+      window.removeEventListener('orientationchange', checkAndInit);
       document.removeEventListener('visibilitychange', onVisibility);
-      canvas.removeEventListener('webglcontextcreationerror', handleContextCreationError);
-      canvas.removeEventListener('webglcontextlost', handleContextLost);
-      canvas.removeEventListener('webglcontextrestored', handleContextRestored);
+      if (canvas) {
+        canvas.removeEventListener('webglcontextcreationerror', handleContextCreationError);
+        canvas.removeEventListener('webglcontextlost', handleContextLost);
+        canvas.removeEventListener('webglcontextrestored', handleContextRestored);
+        try { container.removeChild(canvas); } catch { /* ignore */ }
+      }
       ctxMap.delete(container);
-      try { container.removeChild(canvas); } catch { /* ignore */ }
     };
   }, []);
 
