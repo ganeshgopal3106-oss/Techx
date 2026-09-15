@@ -642,11 +642,12 @@ section[id] {
   }
 
   .navbar-logo-img {
-    width: 78px !important;
+    width: auto !important;
     max-width: 85px !important;
-    height: auto !important;
+    height: 28px !important;
     object-fit: contain !important;
     display: block !important;
+    border-radius: 3px !important;
   }
 
   .navbar-col-center,
