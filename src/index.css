@@ -15,8 +15,8 @@
   --techx-dark: #1A1410;
   --techx-cream: #FFFCF1;
   --techx-cream-soft: #F7F0DF;
-  --techx-brown: #4A3828;
-  --techx-muted: #756556;
+  --techx-brown: #2B2118;
+  --techx-muted: #594B3D;
   --techx-border: rgba(17, 17, 17, 0.16);
 
   /* Semantic Mappings */
@@ -24,9 +24,9 @@
   --bg-secondary: var(--techx-cream-soft); /* Soft warm sand secondary surface */
   --bg-tertiary: #EFE6D2;                  /* Muted Sand surface */
   
-  --text-primary: var(--techx-black);     /* Deep Black Charcoal (#111111) */
-  --text-secondary: var(--techx-brown);   /* Dark Warm Brown (#4A3828) */
-  --text-muted: var(--techx-muted);       /* Readable Muted Brown (#756556) */
+  --text-primary: #111111;                /* Deep Black Charcoal (#111111) */
+  --text-secondary: #2B2118;              /* Dark Warm Supporting Description (#2B2118) */
+  --text-muted: #594B3D;                  /* Less Important / Muted Text (#594B3D) */
   
   --border-color: var(--techx-border);    /* Subtle Charcoal/Brown Border */
   --border-hover: var(--techx-orange);    /* Primary Orange on hover */
@@ -778,7 +778,7 @@ section[id] {
 .hero-description {
   font-size: 1.15rem;
   font-weight: 500;
-  color: #2A2018;
+  color: #111111;
   margin-bottom: var(--space-md);
   max-width: 520px;
 }
@@ -789,7 +789,7 @@ section[id] {
   gap: var(--space-sm);
   font-family: var(--font-sans);
   font-size: 0.85rem;
-  color: var(--text-primary);
+  color: #111111;
   margin-bottom: var(--space-lg);
   flex-wrap: wrap;
 }
@@ -802,17 +802,17 @@ section[id] {
 }
 
 .hero-meta-date {
-  color: var(--text-primary);
+  color: #111111;
   font-weight: 700;
 }
 
 .hero-meta-location {
-  color: var(--text-secondary);
+  color: #111111;
   font-weight: 600;
 }
 
 .hero-meta-divider {
-  color: rgba(17, 17, 17, 0.3);
+  color: rgba(17, 17, 17, 0.35);
 }
 
 .hero-actions {
@@ -947,6 +947,7 @@ section[id] {
     text-align: center !important;
     display: block !important;
     font-size: 1.15rem !important;
+    color: #111111 !important;
   }
 
   .hero-meta-divider {
@@ -957,6 +958,7 @@ section[id] {
     text-align: center !important;
     display: block !important;
     font-size: 0.9rem !important;
+    color: #111111 !important;
   }
 
   .hero-description {
@@ -969,6 +971,7 @@ section[id] {
     line-height: 1.55 !important;
     padding-inline: 8px !important;
     box-sizing: border-box !important;
+    color: #111111 !important;
   }
 
   .hero-countdown-container {
@@ -989,10 +992,12 @@ section[id] {
 
   .countdown-num {
     font-size: 1.3rem !important;
+    color: #111111 !important;
   }
 
   .countdown-label {
     font-size: 0.55rem !important;
+    color: #594B3D !important;
   }
 
   .hero-actions {
@@ -3184,7 +3189,7 @@ section[id] {
 
 .track-showcase-row:hover .track-showcase-title {
   transform: translateX(4px);
-  color: var(--accent);
+  color: #111111;
 }
 
 .track-showcase-title {
@@ -3626,7 +3631,7 @@ section[id] {
   font-family: var(--font-mono);
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--accent);
+  color: #111111;
   width: 200px;
   flex-shrink: 0;
 }
@@ -3697,7 +3702,7 @@ section[id] {
   font-family: var(--font-mono);
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--accent);
+  color: #111111;
   margin-bottom: var(--space-sm);
 }
 
@@ -4452,7 +4457,7 @@ a:focus-visible {
 }
 
 .schedule-day-tab.active .schedule-day-badge {
-  color: var(--accent);
+  color: #111111;
 }
 
 .schedule-tab-date {
@@ -4515,12 +4520,12 @@ a:focus-visible {
   font-family: var(--font-sans);
   font-size: 0.88rem;
   font-weight: 800;
-  color: var(--accent);
+  color: #111111;
   letter-spacing: 0.04em;
 }
 
 .schedule-row-item.is-break-row .schedule-row-time {
-  color: var(--text-secondary);
+  color: #594B3D;
 }
 
 .schedule-row-content {
@@ -4583,7 +4588,7 @@ a:focus-visible {
   margin-top: 8px;
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: var(--accent);
+  color: #111111;
 }
 
 .schedule-location-mobile .schedule-location-label {
@@ -4762,7 +4767,7 @@ a:focus-visible {
   font-family: var(--font-sans);
   font-size: 0.65rem;
   font-weight: 700;
-  color: var(--text-secondary);
+  color: #594B3D;
   text-transform: uppercase;
   margin-top: 4px;
   letter-spacing: 0.08em;

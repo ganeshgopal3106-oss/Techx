@@ -64,7 +64,7 @@ export const MainEventSection: React.FC = () => {
                   /* Parallel Tracks Row */
                   <div key={item.id} className="schedule-parallel-group">
                     <div className="schedule-parallel-header">
-                      <div className="schedule-row-time" style={{ color: 'var(--accent)' }}>{item.time}</div>
+                      <div className="schedule-row-time">{item.time}</div>
                       <span className="badge">PARALLEL SESSIONS</span>
                     </div>
 
