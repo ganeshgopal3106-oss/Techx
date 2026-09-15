@@ -137,28 +137,28 @@ export const Grainient: React.FC<GrainientProps> = ({
       uniforms: {
         iTime:           { value: 0 },
         iResolution:     { value: new Float32Array([1, 1]) },
-        uTimeSpeed:      { value: timeSpeed },
-        uColorBalance:   { value: colorBalance },
-        uWarpStrength:   { value: warpStrength },
-        uWarpFrequency:  { value: warpFrequency },
-        uWarpSpeed:      { value: warpSpeed },
-        uWarpAmplitude:  { value: warpAmplitude },
-        uBlendAngle:     { value: blendAngle },
-        uBlendSoftness:  { value: blendSoftness },
-        uRotationAmount: { value: rotationAmount },
-        uNoiseScale:     { value: noiseScale },
-        uGrainAmount:    { value: grainAmount },
-        uGrainScale:     { value: grainScale },
-        uGrainAnimated:  { value: grainAnimated ? 1.0 : 0.0 },
-        uContrast:       { value: contrast },
-        uGamma:          { value: gamma },
-        uSaturation:     { value: saturation },
-        uCenterOffset:   { value: new Float32Array([centerX, centerY]) },
-        uZoom:           { value: zoom },
-        uColor1:         { value: new Float32Array(hexToRgb(color1)) },
-        uColor2:         { value: new Float32Array(hexToRgb(color2)) },
-        uColor3:         { value: new Float32Array(hexToRgb(color3)) },
-        uLightMode:      { value: lightMode ? 1.0 : 0.0 }
+        uTimeSpeed:      { value: 0.25 },
+        uColorBalance:   { value: 0.0 },
+        uWarpStrength:   { value: 1.0 },
+        uWarpFrequency:  { value: 5.0 },
+        uWarpSpeed:      { value: 2.0 },
+        uWarpAmplitude:  { value: 50.0 },
+        uBlendAngle:     { value: 0.0 },
+        uBlendSoftness:  { value: 0.05 },
+        uRotationAmount: { value: 500.0 },
+        uNoiseScale:     { value: 2.0 },
+        uGrainAmount:    { value: 0.1 },
+        uGrainScale:     { value: 2.0 },
+        uGrainAnimated:  { value: 0.0 },
+        uContrast:       { value: 1.5 },
+        uGamma:          { value: 1.0 },
+        uSaturation:     { value: 1.0 },
+        uCenterOffset:   { value: new Float32Array([0, 0]) },
+        uZoom:           { value: 0.9 },
+        uColor1:         { value: new Float32Array([1, 1, 1]) },
+        uColor2:         { value: new Float32Array([1, 1, 1]) },
+        uColor3:         { value: new Float32Array([1, 1, 1]) },
+        uLightMode:      { value: 0.0 }
       }
     });
 
@@ -167,8 +167,8 @@ export const Grainient: React.FC<GrainientProps> = ({
 
     const setSize = () => {
       const rect = container.getBoundingClientRect();
-      const w = Math.max(1, Math.floor(rect.width || window.innerWidth));
-      const h = Math.max(1, Math.floor(rect.height || window.innerHeight));
+      const w = Math.max(1, Math.floor(rect.width));
+      const h = Math.max(1, Math.floor(rect.height));
       renderer.setSize(w, h);
       const res = (program.uniforms.iResolution as { value: Float32Array }).value;
       res[0] = gl.drawingBufferWidth;
@@ -178,11 +178,10 @@ export const Grainient: React.FC<GrainientProps> = ({
 
     const ro = new ResizeObserver(setSize);
     ro.observe(container);
-    window.addEventListener('resize', setSize);
-    window.addEventListener('orientationchange', setSize);
     setSize();
 
     let raf = 0;
+    let isVisible = true;
     let isPageVisible = !document.hidden;
     const t0 = performance.now();
 
@@ -193,11 +192,24 @@ export const Grainient: React.FC<GrainientProps> = ({
     };
 
     const tryStart = () => {
-      if (isPageVisible && raf === 0) raf = requestAnimationFrame(loop);
+      if (isVisible && isPageVisible && raf === 0) raf = requestAnimationFrame(loop);
     };
     const tryStop = () => {
       if (raf !== 0) { cancelAnimationFrame(raf); raf = 0; }
     };
+
+    const io = new IntersectionObserver(
+      ([entry]) => { 
+        isVisible = entry.isIntersecting; 
+        if (isVisible) {
+          tryStart();
+        } else {
+          tryStop();
+        }
+      },
+      { threshold: 0 }
+    );
+    io.observe(container);
 
     const onVisibility = () => {
       isPageVisible = !document.hidden;
@@ -214,13 +226,11 @@ export const Grainient: React.FC<GrainientProps> = ({
     return () => {
       tryStop();
       ro.disconnect();
-      window.removeEventListener('resize', setSize);
-      window.removeEventListener('orientationchange', setSize);
+      io.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
       ctxMap.delete(container);
       try { container.removeChild(canvas); } catch { /* ignore */ }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // renderer created once
 
   // Effect 2: sync props to uniforms — zero GPU cost, no teardown
