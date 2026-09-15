@@ -92,11 +92,11 @@ function App() {
           color1="#7c6225"
           color2="#F5A900"
           color3="#6F4700"
-          timeSpeed={1.15}
-          colorBalance={-0.29}
-          warpStrength={1.45}
-          warpFrequency={5}
-          warpSpeed={2.4}
+          timeSpeed={1.4}
+          colorBalance={-0.51}
+          warpStrength={1.05}
+          warpFrequency={2.7}
+          warpSpeed={1.6}
           warpAmplitude={50}
           blendAngle={0}
           blendSoftness={0.05}
