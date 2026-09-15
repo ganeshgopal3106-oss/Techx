@@ -1,7 +1,11 @@
 import React from 'react';
-import posterImg from '../assets/poster.jpeg';
+import { getPosterBySlug } from '../data/posters';
+import { PosterDisplay } from './PosterDisplay';
 
 export const AboutSection: React.FC = () => {
+  // Retrieve poster by slug; ready to be backed by API or dynamic props
+  const mainPoster = getPosterBySlug('techx-reignite-main-poster');
+
   return (
     <section id="about" className="about-section section-padding" style={{ position: 'relative' }}>
       <div className="container about-container">
@@ -18,15 +22,10 @@ export const AboutSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Primary Centered Visual */}
-        <div className="about-poster-wrap">
-          <img 
-            src={posterImg} 
-            alt="TECHX REIGNITE Official Summit Poster" 
-            className="about-poster-img" 
-            loading="eager"
-          />
-        </div>
+        {/* Backend-Ready Centered Poster Visual */}
+        {mainPoster && (
+          <PosterDisplay poster={mainPoster} className="about-poster-wrap" loading="eager" />
+        )}
       </div>
     </section>
   );
