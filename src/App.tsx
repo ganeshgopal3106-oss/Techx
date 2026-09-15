@@ -66,17 +66,9 @@ function App() {
   const searchParams = new URLSearchParams(window.location.search);
   const trackIdParam = searchParams.get('track') || undefined;
 
-  if (isRegisterPage) {
-    return (
-      <div className="app-wrapper">
-        <RegisterPage onBack={handleBackToHome} initialTrackId={trackIdParam} />
-      </div>
-    );
-  }
-
   return (
     <div className="app-wrapper" style={{ position: 'relative', minHeight: '100vh', backgroundColor: 'transparent' }}>
-      {/* Global Grainient WebGL Background Layer */}
+      {/* Global Grainient WebGL Background Layer (Present across entire site & registration) */}
       <div
         className="grainient-background"
         style={{
@@ -117,31 +109,39 @@ function App() {
       {/* Short Non-Blocking Page Entrance Loader */}
       <PageLoader isLoading={isLoading} />
 
-      {/* Floating Navigation Capsule */}
-      <Navbar />
+      {isRegisterPage ? (
+        <main style={{ position: 'relative', zIndex: 1 }}>
+          <RegisterPage onBack={handleBackToHome} initialTrackId={trackIdParam} />
+        </main>
+      ) : (
+        <>
+          {/* Floating Navigation Capsule */}
+          <Navbar />
 
-      <main style={{ position: 'relative', zIndex: 1 }}>
-        {/* 01 / HOME / HERO */}
-        <Hero />
+          <main style={{ position: 'relative', zIndex: 1 }}>
+            {/* 01 / HOME / HERO */}
+            <Hero />
 
-        {/* 02 / ABOUT TECHX */}
-        <AboutSection />
+            {/* 02 / ABOUT TECHX */}
+            <AboutSection />
 
-        {/* 03 / WHY ATTEND TECHX (NEW) */}
-        <WhyAttendSection />
+            {/* 03 / WHY ATTEND TECHX (NEW) */}
+            <WhyAttendSection />
 
-        {/* 04 / TRACKS & COMPETITIONS */}
-        <TracksSection />
+            {/* 04 / TRACKS & COMPETITIONS */}
+            <TracksSection />
 
-        {/* 05 / EVENT SCHEDULE */}
-        <MainEventSection />
+            {/* 05 / EVENT SCHEDULE */}
+            <MainEventSection />
 
-        {/* 06 / VENUE (NEW) */}
-        <VenueSection />
-      </main>
+            {/* 06 / VENUE (NEW) */}
+            <VenueSection />
+          </main>
 
-      {/* 07 / MINIMAL EDITORIAL FOOTER */}
-      <Footer />
+          {/* 07 / MINIMAL EDITORIAL FOOTER */}
+          <Footer />
+        </>
+      )}
     </div>
   );
 }
