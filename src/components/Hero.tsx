@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { eventData } from '../data/event';
 import FoldText from './FoldText';
 import { SpecularButton } from './SpecularButton';
-import logoImg from '../assets/logo.png';
+import heroLogoImg from '../assets/logo.jpeg';
 
 // Target date: 26 September 2026, 09:00:00 AM IST (Thiruvananthapuram UTC+5:30 -> 03:30:00 UTC)
 const targetTime = Date.UTC(2026, 8, 26, 3, 30, 0);
@@ -57,16 +57,13 @@ export const Hero: React.FC = () => {
     >
       <div className="container hero-container" style={{ position: 'relative', zIndex: 1 }}>
         <div className="hero-content">
-          {/* 1. Official TECHX REIGNITE Logo / Label */}
+          {/* 1. Official TECHX REIGNITE Logo */}
           <div className="hero-logo-wrapper hero-anim-tag">
             <img
-              src={logoImg}
+              src={heroLogoImg}
               alt="TECHX REIGNITE"
               className="hero-logo-img"
             />
-            <span className="hero-logo-text hero-logo-desktop-text">
-              TECHX REIGNITE
-            </span>
           </div>
 
           {/* 2. FoldText Kinetic Headline */}
