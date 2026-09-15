@@ -2,17 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { eventData } from '../data/event';
 import FoldText from './FoldText';
 import { SpecularButton } from './SpecularButton';
+import logoImg from '../assets/logo.png';
+
+// Target date: 26 September 2026, 09:00:00 AM IST (Thiruvananthapuram UTC+5:30 -> 03:30:00 UTC)
+const targetTime = Date.UTC(2026, 8, 26, 3, 30, 0);
+
+const calculateTimeLeft = () => {
+  const now = Date.now();
+  const distance = targetTime - now;
+
+  if (distance <= 0) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  }
+
+  return {
+    days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+    minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+    seconds: Math.floor((distance % (1000 * 60)) / 1000)
+  };
+};
 
 export const Hero: React.FC = () => {
-  // Target date: September 13, 2026 09:00:00 AM IST
-  const targetDate = new Date('2026-09-13T09:00:00+05:30').getTime();
-
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft);
 
   // Mobile detection for responsive FoldText tuning (< 768px)
   const [isMobile, setIsMobile] = useState<boolean>(() =>
@@ -29,35 +41,30 @@ export const Hero: React.FC = () => {
 
   useEffect(() => {
     const updateCountdown = () => {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
-
-      if (distance > 0) {
-        setTimeLeft({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000)
-        });
-      }
+      setTimeLeft(calculateTimeLeft());
     };
 
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
     return () => clearInterval(interval);
-  }, [targetDate]);
+  }, []);
 
   return (
     <section 
       id="hero" 
       className="hero-section section-padding" 
-      style={{ minHeight: '92vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}
+      style={{ position: 'relative' }}
     >
       <div className="container hero-container" style={{ position: 'relative', zIndex: 1 }}>
         <div className="hero-content">
-          {/* 1. Clean Identity / Label */}
-          <div className="hero-logo-wrapper hero-anim-tag" style={{ marginBottom: '14px' }}>
-            <span className="hero-logo-text" style={{ letterSpacing: '0.15em', color: 'var(--accent)', fontWeight: 700, fontSize: '0.9rem' }}>
+          {/* 1. Official TECHX REIGNITE Logo / Label */}
+          <div className="hero-logo-wrapper hero-anim-tag">
+            <img
+              src={logoImg}
+              alt="TECHX REIGNITE"
+              className="hero-logo-img"
+            />
+            <span className="hero-logo-text hero-logo-desktop-text">
               TECHX REIGNITE
             </span>
           </div>
@@ -120,7 +127,7 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* 6. Hero Buttons */}
-          <div className="hero-actions hero-anim-actions" style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center' }}>
+          <div className="hero-actions hero-anim-actions">
             <SpecularButton 
               href="#tracks" 
               size="lg"
