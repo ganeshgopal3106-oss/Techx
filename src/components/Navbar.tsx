@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SpecularButton } from './SpecularButton';
-import logoImg from '../assets/logo.jpeg';
+import logoImg from '../assets/logo-transparent.png';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);

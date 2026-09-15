@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { eventData } from '../data/event';
 import FoldText from './FoldText';
 import { SpecularButton } from './SpecularButton';
-import heroLogoImg from '../assets/logo.jpeg';
+import heroLogoImg from '../assets/logo-transparent.png';
 
 // Target date: 26 September 2026, 09:00:00 AM IST (Thiruvananthapuram UTC+5:30 -> 03:30:00 UTC)
 const targetTime = Date.UTC(2026, 8, 26, 3, 30, 0);
