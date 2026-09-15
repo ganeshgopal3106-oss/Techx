@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FoldText from './FoldText';
 import { SpecularButton } from './SpecularButton';
+import logoImg from '../assets/logo.png';
 
 export const Hero: React.FC = () => {
   // Target date: September 26, 2026 09:00:00 AM IST (Start of Main Event)
@@ -57,20 +58,17 @@ export const Hero: React.FC = () => {
     <section 
       id="hero" 
       className="hero-section section-padding" 
-      style={{ minHeight: '92vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}
+      style={{ minHeight: '92vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden', zIndex: 1 }}
     >
-      <div className="container hero-container" style={{ position: 'relative', zIndex: 1 }}>
+      <div className="container hero-container" style={{ position: 'relative', zIndex: 2 }}>
         <div className="hero-content">
-          {/* 1. Clean Identity / Official Logo */}
+          {/* 1. Official TECHX REIGNITE Logo */}
           <div className="hero-logo-wrapper hero-anim-tag">
             <img
-              src="/logo.png"
+              src={logoImg}
               alt="TECHX REIGNITE"
-              className="hero-logo-mobile-img"
+              className="hero-logo-img"
             />
-            <span className="hero-logo-text hero-logo-desktop-text">
-              TECHX REIGNITE
-            </span>
           </div>
 
           {/* 2. FoldText Kinetic Headline */}

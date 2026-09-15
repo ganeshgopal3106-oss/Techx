@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SpecularButton } from './SpecularButton';
+import logoImg from '../assets/logo.png';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -78,7 +79,7 @@ export const Navbar: React.FC = () => {
             aria-label="TechX Home"
           >
             <img 
-              src="/logo.png" 
+              src={logoImg} 
               alt="IEEE CS SYP TECHX" 
               className="navbar-logo-img"
             />

@@ -1,4 +1,5 @@
 import React from 'react';
+import logoImg from '../assets/logo.png';
 
 export const Footer: React.FC = () => {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
@@ -21,7 +22,7 @@ export const Footer: React.FC = () => {
         {/* LEFT — BRAND */}
         <div className="footer-area footer-brand-area">
           <a href="#hero" onClick={(e) => handleNavClick(e, 'hero')} className="footer-logo-link" aria-label="TECHX REIGNITE Home">
-            <img src="/logo.png" alt="TECHX REIGNITE" className="footer-logo-img" />
+            <img src={logoImg} alt="TECHX REIGNITE" className="footer-logo-img" />
           </a>
           <p className="footer-tagline">
             POWERING MINDS, ONE SPARK AT A TIME.
