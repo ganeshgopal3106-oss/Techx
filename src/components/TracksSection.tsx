@@ -51,8 +51,6 @@ export const TracksSection: React.FC = () => {
         <div className="tracks-showcase-list">
           {tracksData.map((track, index) => {
             const isReversed = index % 2 === 1;
-            const isComingSoon = track.status === 'COMING_SOON';
-            const isOpen = track.status === 'OPEN';
             const poster = getPosterBySlug(track.posterSlug);
 
             return (
@@ -71,20 +69,14 @@ export const TracksSection: React.FC = () => {
                     className="track-card-poster"
                     loading="lazy" 
                   />
-                  {isComingSoon && (
-                    <div className="track-coming-soon-badge">
-                      COMING SOON
-                    </div>
-                  )}
-                  {isOpen && (
-                    <div className="track-open-badge">
-                      OPEN
-                    </div>
-                  )}
                 </div>
 
                 {/* Information Column */}
                 <div className="track-showcase-info">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className="blueprint-tag">{track.badge}</span>
+                  </div>
+
                   <h3 className="track-showcase-title">
                     {track.title}
                   </h3>
@@ -101,24 +93,28 @@ export const TracksSection: React.FC = () => {
                     </div>
                   )}
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                    {isOpen ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginTop: '6px' }}>
+                    {track.registrationEnabled ? (
                       <SpecularButton 
                         href={track.registrationLink} 
                         size="md"
                       >
-                        REGISTER FOR THIS TRACK →
+                        <span>REGISTER</span>
+                        <span aria-hidden="true">→</span>
                       </SpecularButton>
                     ) : (
-                      <SpecularButton
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => openTrackModal(track)}
-                      >
-                        Track Details →
-                      </SpecularButton>
+                      <span className="badge" style={{ color: '#CF8326', borderColor: 'rgba(207, 131, 38, 0.35)', backgroundColor: 'rgba(207, 131, 38, 0.05)', fontWeight: 700, padding: '8px 14px' }}>
+                        COMMON SESSION (TRACK 1 &amp; 2)
+                      </span>
                     )}
-                    <span className="badge">STATUS: {track.status.replace('_', ' ')}</span>
+
+                    <SpecularButton
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => openTrackModal(track)}
+                    >
+                      Details →
+                    </SpecularButton>
                   </div>
                 </div>
               </ScrollReveal>
@@ -177,25 +173,22 @@ export const TracksSection: React.FC = () => {
                 </div>
               )}
 
-              {selectedTrack.status === 'COMING_SOON' ? (
-                <div style={{ backgroundColor: 'var(--bg-secondary)', padding: 'var(--space-md)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', textAlign: 'center' }}>
-                  <div style={{ color: 'var(--accent)', fontWeight: 800, fontSize: '0.95rem', letterSpacing: '0.08em' }}>
-                    REGISTRATION COMING SOON
-                  </div>
-                </div>
-              ) : selectedTrack.status === 'OPEN' || selectedTrack.registrationEnabled ? (
+              {selectedTrack.registrationEnabled ? (
                 <div>
                   <SpecularButton 
                     href={selectedTrack.registrationLink} 
                     size="lg"
                     style={{ width: '100%' }}
                   >
-                    REGISTER FOR THIS TRACK →
+                    <span>REGISTER FOR {selectedTrack.title}</span>
+                    <span aria-hidden="true">→</span>
                   </SpecularButton>
                 </div>
               ) : (
-                <div style={{ backgroundColor: 'var(--bg-secondary)', padding: 'var(--space-md)', textAlign: 'center' }}>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Registration closed.</p>
+                <div style={{ backgroundColor: 'rgba(207, 131, 38, 0.06)', border: '1px solid rgba(207, 131, 38, 0.25)', padding: 'var(--space-md)', borderRadius: 'var(--radius-sm)', textAlign: 'center' }}>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0, lineHeight: 1.5 }}>
+                    Common session for all participants of both <strong>Track 1</strong> and <strong>Track 2</strong>. No separate registration required.
+                  </p>
                 </div>
               )}
             </div>

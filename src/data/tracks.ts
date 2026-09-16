@@ -26,12 +26,12 @@ export const tracksData: Track[] = [
     name: "TRACK 1",
     title: "TRACK 1",
     category: "TECH",
-    description: "Hands-on coding sprints and practical lab sessions.",
-    badge: "TECH / OFFLINE SPRINT",
+    description: "Intensive coding sprints, system building, and practical technical labs.",
+    badge: "TECH / SPRINT",
     competition: "Day 2 CodeSprint Challenge",
     competitionDescription: "Build and deploy prototypes evaluated by industry judges.",
-    status: "COMING_SOON",
-    registrationEnabled: false,
+    status: "OPEN",
+    registrationEnabled: true,
     registrationLink: "/register?track=track-1"
   },
   {
@@ -41,12 +41,12 @@ export const tracksData: Track[] = [
     name: "TRACK 2",
     title: "TRACK 2",
     category: "TECH",
-    description: "Hands-on coding sprints and practical lab sessions.",
-    badge: "TECH / OFFLINE SPRINT",
+    description: "Intensive coding sprints, system building, and practical technical labs.",
+    badge: "TECH / SPRINT",
     competition: "Day 2 CodeSprint Challenge",
     competitionDescription: "Build and deploy prototypes evaluated by industry judges.",
-    status: "COMING_SOON",
-    registrationEnabled: false,
+    status: "OPEN",
+    registrationEnabled: true,
     registrationLink: "/register?track=track-2"
   },
   {
@@ -60,9 +60,9 @@ export const tracksData: Track[] = [
     badge: "TECH / TALKS",
     competition: "Day 2 Technical Ideathon",
     competitionDescription: "Present and defend innovative engineering applications.",
-    status: "COMING_SOON",
+    status: "OPEN",
     registrationEnabled: false,
-    registrationLink: "/register"
+    registrationLink: ""
   },
   {
     id: "nano-mentoring",
@@ -75,8 +75,8 @@ export const tracksData: Track[] = [
     badge: "TRAIN / MENTORING",
     competition: "Day 2 Portfolio Spotlight",
     competitionDescription: "Personalized portfolio reviews and career roadmaps.",
-    status: "COMING_SOON",
+    status: "OPEN",
     registrationEnabled: false,
-    registrationLink: "/register"
+    registrationLink: ""
   }
 ];
