@@ -4333,6 +4333,83 @@ a:focus-visible {
   transform: scale(1.06);
 }
 
+.track-showcase-image-wrap:hover .poster-display-img {
+  transform: scale(1.025);
+}
+
+/* Reusable Poster Display Component Styles */
+.poster-display-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFFCF1;
+  overflow: hidden;
+}
+
+.poster-display-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.poster-display-placeholder {
+  background: linear-gradient(135deg, rgba(255, 252, 241, 0.98), rgba(245, 169, 0, 0.08));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+
+.poster-placeholder-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.poster-placeholder-tag {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #CF8326;
+  text-transform: uppercase;
+}
+
+.poster-placeholder-title {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 850;
+  color: #111111;
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.poster-placeholder-status {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #594B3D;
+  letter-spacing: 0.06em;
+}
+
+.track-modal-poster-wrap {
+  width: 100%;
+  height: 220px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: var(--space-md);
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  background-color: #FFFCF1;
+}
+
 .track-showcase-info {
   display: flex;
   flex-direction: column;

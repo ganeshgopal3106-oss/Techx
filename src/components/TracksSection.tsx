@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { tracksData } from '../data/tracks';
 import type { Track } from '../data/tracks';
+import { getPosterBySlug } from '../data/posters';
+import { PosterDisplay } from './PosterDisplay';
 import { SectionHeader } from './SectionHeader';
 import { ScrollReveal } from './ScrollReveal';
 import { SpecularButton } from './SpecularButton';
@@ -51,6 +53,7 @@ export const TracksSection: React.FC = () => {
             const isReversed = index % 2 === 1;
             const isComingSoon = track.status === 'COMING_SOON';
             const isOpen = track.status === 'OPEN';
+            const poster = getPosterBySlug(track.posterSlug);
 
             return (
               <ScrollReveal key={track.id} variant="fade-up" className={`track-showcase-row ${isReversed ? 'reversed' : ''}`}>
@@ -63,11 +66,10 @@ export const TracksSection: React.FC = () => {
                   onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openTrackModal(track); } }}
                   aria-label={`View details for ${track.title}`}
                 >
-                  <img 
-                    src={track.image} 
-                    alt={track.title} 
-                    className="track-image-blurred"
-                    loading="lazy"
+                  <PosterDisplay 
+                    poster={poster} 
+                    className="track-card-poster"
+                    loading="lazy" 
                   />
                   {isComingSoon && (
                     <div className="track-coming-soon-badge">
@@ -151,6 +153,13 @@ export const TracksSection: React.FC = () => {
             </div>
 
             <div style={{ margin: 'var(--space-md) 0' }}>
+              <div className="track-modal-poster-wrap">
+                <PosterDisplay 
+                  poster={getPosterBySlug(selectedTrack.posterSlug)} 
+                  loading="eager" 
+                />
+              </div>
+
               <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', marginBottom: 'var(--space-md)' }}>
                 {selectedTrack.description}
               </p>
