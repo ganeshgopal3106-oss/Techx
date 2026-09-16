@@ -8,7 +8,7 @@ interface RegisterPageProps {
 }
 
 interface FormState {
-  trackId: string;
+  track: string;
   fullName: string;
   classYear: string;
   branch: string;
@@ -16,7 +16,17 @@ interface FormState {
   ieeeMember: 'yes' | 'no' | '';
   ieeeMemberId: string;
   csMember: 'yes' | 'no' | '';
-  csMemberId: string;
+}
+
+export interface SubmittedRegistration {
+  track: string;
+  fullName: string;
+  classYear: string;
+  branch: string;
+  college: string;
+  ieeeMember: boolean;
+  ieeeMemberId: string;
+  csMember: boolean;
 }
 
 export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrackId }) => {
@@ -24,7 +34,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
   const validInitialTrack = registrationTracks.find(t => t.id === initialTrackId)?.id || '';
 
   const [formData, setFormData] = useState<FormState>({
-    trackId: validInitialTrack,
+    track: validInitialTrack,
     fullName: '',
     classYear: '',
     branch: '',
@@ -32,11 +42,10 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
     ieeeMember: '',
     ieeeMemberId: '',
     csMember: '',
-    csMemberId: '',
   });
 
   const [touched, setTouched] = useState<Record<string, boolean>>({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedData, setSubmittedData] = useState<SubmittedRegistration | null>(null);
 
   // Scroll to top on page load
   useEffect(() => {
@@ -53,8 +62,8 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
 
   // Validation logic
   const errors: Record<string, string> = {};
-  if (!formData.trackId) {
-    errors.trackId = 'Please select a track to proceed.';
+  if (!formData.track) {
+    errors.track = 'Please select a track.';
   }
   if (!formData.fullName.trim()) {
     errors.fullName = 'Full Name is required.';
@@ -63,29 +72,35 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
     errors.classYear = 'Please select your class / year.';
   }
   if (!formData.branch.trim()) {
-    errors.branch = 'Branch / Department is required.';
+    errors.branch = 'Branch is required.';
   }
   if (!formData.college.trim()) {
     errors.college = 'College / Institution is required.';
   }
   if (!formData.ieeeMember) {
-    errors.ieeeMember = 'Please indicate whether you are an IEEE member.';
+    errors.ieeeMember = 'Please select whether you are an IEEE member.';
   } else if (formData.ieeeMember === 'yes' && !formData.ieeeMemberId.trim()) {
     errors.ieeeMemberId = 'IEEE Member ID is required.';
   }
   if (!formData.csMember) {
-    errors.csMember = 'Please indicate whether you are an IEEE Computer Society member.';
-  } else if (formData.csMember === 'yes' && !formData.csMemberId.trim()) {
-    errors.csMemberId = 'IEEE CS Member ID is required.';
+    errors.csMember = 'Please select whether you are an IEEE Computer Society member.';
   }
 
-  const isFormValid = Object.keys(errors).length === 0;
+  const isFormValid =
+    Boolean(formData.track) &&
+    Boolean(formData.fullName.trim()) &&
+    Boolean(formData.classYear) &&
+    Boolean(formData.branch.trim()) &&
+    Boolean(formData.college.trim()) &&
+    Boolean(formData.ieeeMember) &&
+    (formData.ieeeMember === 'no' || Boolean(formData.ieeeMemberId.trim())) &&
+    Boolean(formData.csMember);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Mark all as touched
     setTouched({
-      trackId: true,
+      track: true,
       fullName: true,
       classYear: true,
       branch: true,
@@ -93,57 +108,71 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
       ieeeMember: true,
       ieeeMemberId: true,
       csMember: true,
-      csMemberId: true,
     });
 
     if (isFormValid) {
-      setIsSubmitted(true);
+      const payload: SubmittedRegistration = {
+        track: formData.track,
+        fullName: formData.fullName.trim(),
+        classYear: formData.classYear,
+        branch: formData.branch.trim(),
+        college: formData.college.trim(),
+        ieeeMember: formData.ieeeMember === 'yes',
+        ieeeMemberId: formData.ieeeMember === 'yes' ? formData.ieeeMemberId.trim() : '',
+        csMember: formData.csMember === 'yes',
+      };
+
+      console.log('[TECHX REIGNITE] Registration Submission:', payload);
+      setSubmittedData(payload);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
-  const selectedTrack = registrationTracks.find(t => t.id === formData.trackId);
-
   // Success Confirmation Screen
-  if (isSubmitted) {
+  if (submittedData) {
+    const selectedTrack = registrationTracks.find(t => t.id === submittedData.track);
+
     return (
       <div className="registration-page-wrapper">
         <div className="registration-inner-container">
           <div className="registration-card registration-success-card">
-            <div className="registration-success-badge">✓</div>
-            <span className="registration-tag">[ REGISTRATION INITIATED ]</span>
-            <h2 className="registration-success-title">YOU'RE ON THE LIST</h2>
+            <div className="registration-success-badge" aria-hidden="true">✓</div>
+            <h2 className="registration-success-title">REGISTRATION CONFIRMED</h2>
             <p className="registration-success-desc">
-              Thank you, <strong>{formData.fullName}</strong>! Your registration details for <strong>{selectedTrack?.name}</strong> have been recorded.
+              Your TECHX REIGNITE registration has been received.
             </p>
 
             <div className="registration-summary-box">
               <div className="registration-summary-row">
                 <span className="summary-label">TRACK</span>
-                <span className="summary-val">{selectedTrack?.name}</span>
+                <span className="summary-val">{selectedTrack?.name || submittedData.track}</span>
               </div>
               <div className="registration-summary-row">
-                <span className="summary-label">ATTENDEE</span>
-                <span className="summary-val">{formData.fullName}</span>
-              </div>
-              <div className="registration-summary-row">
-                <span className="summary-label">INSTITUTION</span>
-                <span className="summary-val">{formData.college}</span>
+                <span className="summary-label">FULL NAME</span>
+                <span className="summary-val">{submittedData.fullName}</span>
               </div>
               <div className="registration-summary-row">
                 <span className="summary-label">CLASS / YEAR</span>
-                <span className="summary-val">{formData.classYear} — {formData.branch}</span>
+                <span className="summary-val">{submittedData.classYear}</span>
               </div>
               <div className="registration-summary-row">
-                <span className="summary-label">IEEE MEMBERSHIP</span>
+                <span className="summary-label">BRANCH</span>
+                <span className="summary-val">{submittedData.branch}</span>
+              </div>
+              <div className="registration-summary-row">
+                <span className="summary-label">COLLEGE / INSTITUTION</span>
+                <span className="summary-val">{submittedData.college}</span>
+              </div>
+              <div className="registration-summary-row">
+                <span className="summary-label">IEEE MEMBER</span>
                 <span className="summary-val">
-                  {formData.ieeeMember === 'yes' ? `Yes (${formData.ieeeMemberId})` : 'No'}
+                  {submittedData.ieeeMember ? `YES (${submittedData.ieeeMemberId})` : 'NO'}
                 </span>
               </div>
               <div className="registration-summary-row">
-                <span className="summary-label">IEEE CS MEMBERSHIP</span>
+                <span className="summary-label">IEEE CS MEMBER</span>
                 <span className="summary-val">
-                  {formData.csMember === 'yes' ? `Yes (${formData.csMemberId})` : 'No'}
+                  {submittedData.csMember ? 'YES' : 'NO'}
                 </span>
               </div>
             </div>
@@ -181,10 +210,9 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
         <div className="registration-card">
           {/* Header */}
           <div className="registration-header">
-            <span className="registration-tag">[ TECHX REIGNITE ]</span>
             <h1 className="registration-title">REGISTRATION</h1>
             <p className="registration-subtitle">
-              Choose your track and complete your attendee details.
+              Choose your track and enter your details.
             </p>
           </div>
 
@@ -194,78 +222,67 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                 ============================================================ */}
             <div className="form-section-block">
               <div className="section-title-wrap">
-                <h2 className="section-block-title">SELECT YOUR TRACK</h2>
-                <p className="section-block-subtitle">Choose the track you want to register for.</p>
+                <h2 className="section-block-title">TRACK SELECTION</h2>
               </div>
 
-              <div className="track-cards-grid" role="radiogroup" aria-label="Select Track">
-                {registrationTracks.map((track) => {
-                  const isSelected = formData.trackId === track.id;
-                  return (
-                    <div
-                      key={track.id}
-                      className={`track-choice-card ${isSelected ? 'selected' : ''}`}
-                      onClick={() => handleFieldChange('trackId', track.id)}
-                      role="radio"
-                      aria-checked={isSelected}
-                      tabIndex={0}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          handleFieldChange('trackId', track.id);
-                        }
-                      }}
-                    >
-                      <div className="track-choice-top">
-                        <span className="track-choice-num">{track.num}</span>
-                        <div className={`track-choice-indicator ${isSelected ? 'checked' : ''}`} aria-hidden="true">
-                          {isSelected && <div className="track-indicator-dot" />}
-                        </div>
-                      </div>
-                      <div className="track-choice-name">{track.name}</div>
-                      <div className="track-choice-status">
-                        {isSelected ? '● Selected' : '○ Select this track'}
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="form-field-group">
+                <label htmlFor="reg-track" className="form-field-label">
+                  TRACK <span className="req-star">*</span>
+                </label>
+                <div className="form-select-wrap">
+                  <select
+                    id="reg-track"
+                    className={`form-select ${!formData.track ? 'is-placeholder' : ''} ${touched.track && errors.track ? 'has-error' : ''}`}
+                    value={formData.track}
+                    onChange={(e) => handleFieldChange('track', e.target.value)}
+                    onBlur={() => handleBlur('track')}
+                  >
+                    <option value="" disabled>Select a track</option>
+                    {registrationTracks.map((track) => (
+                      <option key={track.id} value={track.id}>
+                        {track.name}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="select-dropdown-icon" aria-hidden="true">▼</div>
+                </div>
+                {touched.track && errors.track && (
+                  <div className="form-inline-error">{errors.track}</div>
+                )}
               </div>
-              {touched.trackId && errors.trackId && (
-                <div className="form-inline-error">{errors.trackId}</div>
-              )}
             </div>
 
             {/* ============================================================
-                01 / PERSONAL DETAILS
+                PERSONAL DETAILS
                 ============================================================ */}
             <div className="form-section-block">
               <div className="section-title-wrap">
-                <span className="section-step-num">01 / PERSONAL DETAILS</span>
+                <h2 className="section-block-title">PERSONAL DETAILS</h2>
               </div>
 
               <div className="form-fields-stack">
-                {/* Full Name */}
-                <div className="form-field-group">
-                  <label htmlFor="reg-fullname" className="form-field-label">
-                    FULL NAME <span className="req-star">*</span>
-                  </label>
-                  <input
-                    id="reg-fullname"
-                    type="text"
-                    className={`form-input ${touched.fullName && errors.fullName ? 'has-error' : ''}`}
-                    placeholder="Enter your full name"
-                    value={formData.fullName}
-                    onChange={(e) => handleFieldChange('fullName', e.target.value)}
-                    onBlur={() => handleBlur('fullName')}
-                    autoComplete="name"
-                  />
-                  {touched.fullName && errors.fullName && (
-                    <div className="form-inline-error">{errors.fullName}</div>
-                  )}
-                </div>
-
-                {/* Class / Year & Branch Grid */}
+                {/* Row 1: Full Name & Class / Year (Desktop 2-Col) */}
                 <div className="form-two-col">
+                  {/* Full Name */}
+                  <div className="form-field-group">
+                    <label htmlFor="reg-fullname" className="form-field-label">
+                      FULL NAME <span className="req-star">*</span>
+                    </label>
+                    <input
+                      id="reg-fullname"
+                      type="text"
+                      className={`form-input ${touched.fullName && errors.fullName ? 'has-error' : ''}`}
+                      placeholder="Enter your full name"
+                      value={formData.fullName}
+                      onChange={(e) => handleFieldChange('fullName', e.target.value)}
+                      onBlur={() => handleBlur('fullName')}
+                      autoComplete="name"
+                    />
+                    {touched.fullName && errors.fullName && (
+                      <div className="form-inline-error">{errors.fullName}</div>
+                    )}
+                  </div>
+
                   {/* Class / Year */}
                   <div className="form-field-group">
                     <label htmlFor="reg-classyear" className="form-field-label">
@@ -274,7 +291,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                     <div className="form-select-wrap">
                       <select
                         id="reg-classyear"
-                        className={`form-select ${touched.classYear && errors.classYear ? 'has-error' : ''}`}
+                        className={`form-select ${!formData.classYear ? 'is-placeholder' : ''} ${touched.classYear && errors.classYear ? 'has-error' : ''}`}
                         value={formData.classYear}
                         onChange={(e) => handleFieldChange('classYear', e.target.value)}
                         onBlur={() => handleBlur('classYear')}
@@ -292,7 +309,10 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                       <div className="form-inline-error">{errors.classYear}</div>
                     )}
                   </div>
+                </div>
 
+                {/* Row 2: Branch & College / Institution (Desktop 2-Col) */}
+                <div className="form-two-col">
                   {/* Branch */}
                   <div className="form-field-group">
                     <label htmlFor="reg-branch" className="form-field-label">
@@ -302,7 +322,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                       id="reg-branch"
                       type="text"
                       className={`form-input ${touched.branch && errors.branch ? 'has-error' : ''}`}
-                      placeholder="Computer Science & Engineering"
+                      placeholder="Enter your branch"
                       value={formData.branch}
                       onChange={(e) => handleFieldChange('branch', e.target.value)}
                       onBlur={() => handleBlur('branch')}
@@ -311,35 +331,35 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                       <div className="form-inline-error">{errors.branch}</div>
                     )}
                   </div>
-                </div>
 
-                {/* College / Institution */}
-                <div className="form-field-group">
-                  <label htmlFor="reg-college" className="form-field-label">
-                    COLLEGE / INSTITUTION <span className="req-star">*</span>
-                  </label>
-                  <input
-                    id="reg-college"
-                    type="text"
-                    className={`form-input ${touched.college && errors.college ? 'has-error' : ''}`}
-                    placeholder="Enter your college / institution"
-                    value={formData.college}
-                    onChange={(e) => handleFieldChange('college', e.target.value)}
-                    onBlur={() => handleBlur('college')}
-                  />
-                  {touched.college && errors.college && (
-                    <div className="form-inline-error">{errors.college}</div>
-                  )}
+                  {/* College / Institution */}
+                  <div className="form-field-group">
+                    <label htmlFor="reg-college" className="form-field-label">
+                      COLLEGE / INSTITUTION <span className="req-star">*</span>
+                    </label>
+                    <input
+                      id="reg-college"
+                      type="text"
+                      className={`form-input ${touched.college && errors.college ? 'has-error' : ''}`}
+                      placeholder="Enter your college / institution"
+                      value={formData.college}
+                      onChange={(e) => handleFieldChange('college', e.target.value)}
+                      onBlur={() => handleBlur('college')}
+                    />
+                    {touched.college && errors.college && (
+                      <div className="form-inline-error">{errors.college}</div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* ============================================================
-                02 / MEMBERSHIP
+                MEMBERSHIP
                 ============================================================ */}
             <div className="form-section-block">
               <div className="section-title-wrap">
-                <span className="section-step-num">02 / MEMBERSHIP</span>
+                <h2 className="section-block-title">MEMBERSHIP</h2>
               </div>
 
               <div className="form-fields-stack">
@@ -385,7 +405,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                         id="reg-ieeememberid"
                         type="text"
                         className={`form-input ${touched.ieeeMemberId && errors.ieeeMemberId ? 'has-error' : ''}`}
-                        placeholder="Enter IEEE Member ID"
+                        placeholder="Enter your IEEE Member ID"
                         value={formData.ieeeMemberId}
                         onChange={(e) => handleFieldChange('ieeeMemberId', e.target.value)}
                         onBlur={() => handleBlur('ieeeMemberId')}
@@ -417,37 +437,13 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                       role="radio"
                       aria-checked={formData.csMember === 'no'}
                       className={`segmented-toggle-btn ${formData.csMember === 'no' ? 'selected' : ''}`}
-                      onClick={() => {
-                        handleFieldChange('csMember', 'no');
-                        handleFieldChange('csMemberId', '');
-                      }}
+                      onClick={() => handleFieldChange('csMember', 'no')}
                     >
                       NO
                     </button>
                   </div>
                   {touched.csMember && errors.csMember && (
                     <div className="form-inline-error">{errors.csMember}</div>
-                  )}
-
-                  {/* Conditional IEEE CS Member ID with smooth subtle reveal */}
-                  {formData.csMember === 'yes' && (
-                    <div className="conditional-field-block animate-slide-down">
-                      <label htmlFor="reg-csmemberid" className="form-field-label">
-                        IEEE CS MEMBER ID <span className="req-star">*</span>
-                      </label>
-                      <input
-                        id="reg-csmemberid"
-                        type="text"
-                        className={`form-input ${touched.csMemberId && errors.csMemberId ? 'has-error' : ''}`}
-                        placeholder="Enter IEEE CS Member ID"
-                        value={formData.csMemberId}
-                        onChange={(e) => handleFieldChange('csMemberId', e.target.value)}
-                        onBlur={() => handleBlur('csMemberId')}
-                      />
-                      {touched.csMemberId && errors.csMemberId && (
-                        <div className="form-inline-error">{errors.csMemberId}</div>
-                      )}
-                    </div>
                   )}
                 </div>
               </div>
@@ -463,12 +459,12 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, initialTrack
                 disabled={!isFormValid}
                 className="registration-submit-btn"
               >
-                <span>CONTINUE</span>
+                <span>CONFIRM</span>
                 <span aria-hidden="true">→</span>
               </SpecularButton>
               {!isFormValid && (
                 <p className="form-disabled-hint">
-                  Please complete all required fields above to continue.
+                  Please complete all required fields above to confirm your registration.
                 </p>
               )}
             </div>

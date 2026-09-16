@@ -2483,105 +2483,7 @@ section[id] {
   margin: 0;
 }
 
-.section-step-num {
-  font-family: var(--font-sans);
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #CF8326;
-  text-transform: uppercase;
-}
 
-/* 2-Track Choice Cards */
-.track-cards-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.track-choice-card {
-  background-color: #FFFCF1;
-  border: 1px solid rgba(17, 17, 17, 0.16);
-  border-radius: 16px;
-  padding: 20px 22px;
-  cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-out-expo);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  user-select: none;
-  outline: none;
-}
-
-.track-choice-card:hover {
-  border-color: rgba(207, 131, 38, 0.6);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(17, 17, 17, 0.06);
-}
-
-.track-choice-card.selected {
-  border-color: #CF8326;
-  background-color: rgba(207, 131, 38, 0.08);
-  box-shadow: 0 4px 18px rgba(207, 131, 38, 0.16);
-}
-
-.track-choice-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.track-choice-num {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: #CF8326;
-  letter-spacing: 0.08em;
-}
-
-.track-choice-indicator {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(17, 17, 17, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all var(--duration-fast);
-}
-
-.track-choice-indicator.checked {
-  border-color: #CF8326;
-}
-
-.track-indicator-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #CF8326;
-}
-
-.track-choice-name {
-  font-family: var(--font-sans);
-  font-size: 1.25rem;
-  font-weight: 850;
-  letter-spacing: -0.01em;
-  color: #111111;
-  text-transform: uppercase;
-}
-
-.track-choice-status {
-  font-family: var(--font-sans);
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #594B3D;
-  transition: color var(--duration-fast);
-}
-
-.track-choice-card.selected .track-choice-status {
-  color: #111111;
-  font-weight: 700;
-}
 
 /* Form Fields */
 .form-fields-stack {
@@ -2678,6 +2580,19 @@ section[id] {
   box-shadow: 0 0 0 3px rgba(207, 131, 38, 0.18);
 }
 
+.form-select.is-placeholder {
+  color: #756556;
+}
+
+.form-select option {
+  color: #111111;
+  background-color: #FFFCF1;
+}
+
+.form-select option:disabled {
+  color: #756556;
+}
+
 .select-dropdown-icon {
   position: absolute;
   right: 14px;
@@ -2702,7 +2617,7 @@ section[id] {
 
 .segmented-toggle-btn {
   flex: 1;
-  height: 38px;
+  height: 42px;
   border-radius: 9px;
   font-family: var(--font-sans);
   font-size: 0.85rem;
@@ -2716,6 +2631,10 @@ section[id] {
   justify-content: center;
   background-color: transparent;
   color: #111111;
+}
+
+.segmented-toggle-btn:hover:not(.selected) {
+  background-color: rgba(17, 17, 17, 0.05);
 }
 
 .segmented-toggle-btn.selected {
@@ -2872,11 +2791,6 @@ section[id] {
     padding: 28px 20px;
     border-radius: 20px;
     gap: 24px;
-  }
-
-  .track-cards-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
   }
 
   .form-two-col {
